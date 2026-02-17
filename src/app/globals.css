@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@400;700&family=Inter:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Brand colors */
+  --color-bright-indigo: #0036D8;
+  --color-pacific-cyan: #3A7D8C;
+  --color-ink-black: #13161F;
+  --color-parchment: #FAF6F0;
+
+  /* Semantic tokens */
+  --color-bg-primary: #FAF6F0;
+  --color-bg-secondary: #F0EBE3;
+  --color-accent: #0036D8;
+  --color-surface-inverse: #13161F;
+  --color-surface-muted: #E8E4DE;
+  --color-border: #C4BEB4;
+  --color-border-muted: #E0DCD6;
+
+  /* On-color tokens */
+  --color-on-bg-primary: #13161F;
+  --color-on-bg-secondary: #13161F;
+  --color-on-accent: #FFFFFF;
+  --color-on-surface-inverse: #FAF6F0;
+  --color-on-surface-muted: #5C5C68;
+
+  /* Typography */
+  --font-heading: 'Averia Serif Libre', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* Spacing */
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+}
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-bg-primary text-on-bg-primary font-body antialiased;
+    font-feature-settings: 'liga' 1, 'calt' 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
+  h1 { @apply text-h1; }
+  h2 { @apply text-h2; }
+  h3 { @apply text-h3; }
+  h4 { @apply text-h4; }
+  h5 { @apply text-h5; }
+  h6 { @apply text-h6; }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-accent text-on-accent px-6 py-3 text-button font-medium
+           transition-all duration-150 ease-out
+           hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply bg-transparent border border-border text-on-bg-primary px-6 py-3 text-button font-medium
+           transition-all duration-150 ease-out
+           hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2;
+  }
+
+  .surface-inverse {
+    @apply bg-surface-inverse text-on-surface-inverse;
+  }
+
+  .film-grain {
+    @apply pointer-events-none fixed inset-0 z-50 opacity-[0.03];
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
