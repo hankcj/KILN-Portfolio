@@ -1,7 +1,7 @@
 /**
  * Home Page Content
  * 
- * Status accumulation load animation - slow, deliberate, cinematic.
+ * Clean layout with load animation that clears after complete.
  */
 
 'use client';
@@ -11,77 +11,44 @@ import { gsap } from 'gsap';
 import { LivingEffects, GlitchText } from '@/components/dom/LivingEffects';
 import { useAppStore } from '@/lib/store';
 
-// Corner status labels
-const CORNER_LABELS = [
-  { text: 'REF: 001-A', position: 'top-left' },
-  { text: 'EST. 2024', position: 'top-right' },
-  { text: 'SYS_RDY', position: 'bottom-left' },
-  { text: 'v1.0.0', position: 'bottom-right' },
-];
-
 export default function HomePage() {
   const { startTransition } = useAppStore();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [showContent, setShowContent] = useState(false);
-  const contentVisibleRef = useRef(false);
+  const [animationComplete, setAnimationComplete] = useState(false);
 
-  // Status accumulation sequence - slow, cinematic
+  // Load animation sequence
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         onComplete: () => {
-          // Ensure content is visible at end
-          setShowContent(true);
-          gsap.set('.main-content', { opacity: 1, visibility: 'visible' });
+          setAnimationComplete(true);
         }
       });
 
-      // PHASE 1: Corner labels appear (hard cuts, slow stagger - 3000ms total)
-      tl.fromTo('.corner-label', 
+      // PHASE 1: Boot sequence text appears
+      tl.fromTo('.boot-text', 
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: 0.1, stagger: 0.4, ease: 'power2.out' }
+      );
+
+      // PHASE 2: Fade boot text, reveal main content
+      tl.to('.boot-overlay', {
+        opacity: 0,
+        duration: 0.6,
+        ease: 'power2.inOut'
+      }, '+=0.5');
+
+      // PHASE 3: Main content reveals
+      tl.fromTo('.main-content', 
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+        '-=0.3'
+      );
+
+      tl.fromTo('.nav-link', 
         { opacity: 0 },
-        { 
-          opacity: 1, 
-          duration: 0.08, 
-          stagger: 0.6,
-          ease: 'steps(1)'
-        }
-      );
-
-      // PHASE 2: Frame lines draw (2000ms)
-      tl.fromTo('.frame-line-h', 
-        { scaleX: 0 },
-        { scaleX: 1, duration: 1.2, ease: 'power2.inOut' },
+        { opacity: 1, duration: 0.3, stagger: 0.1, ease: 'steps(1)' },
         '-=0.5'
-      );
-      tl.fromTo('.frame-line-v', 
-        { scaleY: 0 },
-        { scaleY: 1, duration: 1.2, ease: 'power2.inOut' },
-        '<0.3'
-      );
-
-      // PHASE 3: Content appears (set showContent and animate lines)
-      tl.call(() => {
-        setShowContent(true);
-        contentVisibleRef.current = true;
-      });
-
-      // Animate each content block with clip-path reveal
-      tl.fromTo('.nav-item', 
-        { opacity: 0, clipPath: 'inset(0 100% 0 0)' },
-        { opacity: 1, clipPath: 'inset(0 0% 0 0)', duration: 0.4, stagger: 0.2, ease: 'power3.out' }
-      );
-
-      tl.fromTo('.print-block', 
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: 'power2.out' },
-        '-=0.5'
-      );
-
-      // Title glitch/reveal effect
-      tl.fromTo('.title-main',
-        { opacity: 0, scale: 0.9 },
-        { opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out' },
-        '-=0.8'
       );
 
     }, containerRef);
@@ -98,59 +65,31 @@ export default function HomePage() {
     <main ref={containerRef} className="min-h-screen relative overflow-hidden">
       <LivingEffects />
 
-      {/* Background - static */}
+      {/* Background */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-3xl" />
       </div>
 
-      {/* PHASE 1 & 2: Corner labels and frame - always visible */}
-      <div className="fixed inset-8 z-40 pointer-events-none">
-        {/* Corner labels */}
-        {CORNER_LABELS.map((label, i) => (
-          <div
-            key={i}
-            className={`corner-label absolute font-mono text-system text-on-surface-muted opacity-0 ${
-              label.position === 'top-left' ? 'top-0 left-0' :
-              label.position === 'top-right' ? 'top-0 right-0' :
-              label.position === 'bottom-left' ? 'bottom-0 left-0' :
-              'bottom-0 right-0'
-            }`}
-          >
-            {label.text}
-          </div>
-        ))}
-
-        {/* Frame lines - horizontal */}
-        <div 
-          className="frame-line-h absolute top-0 left-16 right-16 h-px bg-accent/30 origin-left"
-          style={{ transform: 'scaleX(0)' }}
-        />
-        <div 
-          className="frame-line-h absolute bottom-0 left-16 right-16 h-px bg-accent/30 origin-right"
-          style={{ transform: 'scaleX(0)' }}
-        />
-
-        {/* Frame lines - vertical */}
-        <div 
-          className="frame-line-v absolute left-0 top-16 bottom-16 w-px bg-accent/30 origin-top"
-          style={{ transform: 'scaleY(0)' }}
-        />
-        <div 
-          className="frame-line-v absolute right-0 top-16 bottom-16 w-px bg-accent/30 origin-bottom"
-          style={{ transform: 'scaleY(0)' }}
-        />
+      {/* Boot animation overlay - disappears after load */}
+      <div 
+        className={`boot-overlay fixed inset-0 z-50 flex items-center justify-center bg-bg-primary transition-opacity duration-500 ${animationComplete ? 'pointer-events-none opacity-0' : ''}`}
+      >
+        <div className="space-y-3">
+          <div className="boot-text font-mono text-system text-accent opacity-0">// INIT_SEQUENCE</div>
+          <div className="boot-text font-mono text-system text-accent opacity-0">C  LOAD_MODULES</div>
+          <div className="boot-text font-mono text-system text-accent opacity-0">{'>>'} MOUNT_SYSTEMS</div>
+          <div className="boot-text font-mono text-system text-accent opacity-0">** READY</div>
+        </div>
       </div>
 
-      {/* PHASE 3: Main content */}
-      <div 
-        className="main-content relative z-10 min-h-screen flex flex-col justify-between px-6 md:px-16 lg:px-24 py-32"
-        style={{ opacity: showContent ? 1 : 0, visibility: showContent ? 'visible' : 'hidden' }}
-      >
-        {/* Navigation */}
-        <nav className="fixed inset-0 z-50 pointer-events-none">
+      {/* Main content */}
+      <div className="main-content relative z-10 min-h-screen flex flex-col justify-between px-8 md:px-16 lg:px-24 py-12" style={{ opacity: 0 }}>
+        
+        {/* Navigation - scattered in corners */}
+        <nav className="fixed inset-0 z-40 pointer-events-none">
           <a 
             href="/"
-            className="nav-item absolute top-8 left-8 font-heading text-h4 text-on-bg-primary hover:text-accent transition-colors pointer-events-auto"
+            className="nav-link pointer-events-auto absolute top-8 left-8 font-heading text-h4 text-on-bg-primary hover:text-accent transition-colors opacity-0"
           >
             K
           </a>
@@ -158,7 +97,7 @@ export default function HomePage() {
           <a 
             href="/work"
             onClick={handleNavigate('work')}
-            className="nav-item absolute top-8 right-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors pointer-events-auto"
+            className="nav-link pointer-events-auto absolute top-8 right-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors opacity-0"
           >
             <GlitchText>C  WORK</GlitchText>
           </a>
@@ -166,7 +105,7 @@ export default function HomePage() {
           <a 
             href="/signal"
             onClick={handleNavigate('signal')}
-            className="nav-item absolute bottom-8 left-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors pointer-events-auto"
+            className="nav-link pointer-events-auto absolute bottom-8 left-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors opacity-0"
           >
             <GlitchText>C  SIGNAL</GlitchText>
           </a>
@@ -174,12 +113,13 @@ export default function HomePage() {
           <a 
             href="/system"
             onClick={handleNavigate('system')}
-            className="nav-item absolute bottom-8 right-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors pointer-events-auto"
+            className="nav-link pointer-events-auto absolute bottom-8 right-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors opacity-0"
           >
             <GlitchText>// SYSTEM</GlitchText>
           </a>
 
-          <div className="print-block absolute left-8 top-1/2 -translate-y-1/2 hidden lg:block">
+          {/* Side text */}
+          <div className="nav-link absolute left-8 top-1/2 -translate-y-1/2 hidden lg:block opacity-0">
             <div 
               className="font-mono text-system text-on-surface-muted"
               style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
@@ -188,7 +128,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="print-block absolute right-8 top-1/2 -translate-y-1/2 hidden lg:block">
+          <div className="nav-link absolute right-8 top-1/2 -translate-y-1/2 hidden lg:block opacity-0">
             <div 
               className="font-mono text-system text-on-surface-muted"
               style={{ writingMode: 'vertical-rl' }}
@@ -202,47 +142,46 @@ export default function HomePage() {
         <div className="flex flex-col justify-between h-full">
           
           {/* Top header */}
-          <div className="flex justify-between items-start">
-            <div className="print-block font-mono text-system text-on-surface-muted">
+          <div className="flex justify-between items-start pt-4">
+            <div className="font-mono text-system text-on-surface-muted">
               // BOOT_SEQUENCE <span className="animate-pulse">_</span>
             </div>
-            <div className="print-block font-mono text-system text-on-surface-muted text-right">
+            <div className="font-mono text-system text-on-surface-muted text-right">
+              EST. 2024<br />
               STATUS: ONLINE
             </div>
           </div>
 
           {/* Center - KILN title */}
-          <div className="relative my-auto">
-            <div className="relative">
-              <div className="print-block flex items-center gap-4 mb-4">
-                <div className="h-px bg-accent w-16" />
-                <span className="font-mono text-system text-accent">
-                  ENTRY POINT
-                </span>
-              </div>
+          <div className="relative my-auto py-20">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="h-px bg-accent w-16" />
+              <span className="font-mono text-system text-accent">
+                ENTRY POINT
+              </span>
+            </div>
 
-              <h1 className="title-main font-heading text-display-xl md:text-[12rem] lg:text-[16rem] text-on-bg-primary leading-[0.85] tracking-tight">
-                KILN
-              </h1>
+            <h1 className="font-heading text-display-xl md:text-[12rem] lg:text-[16rem] text-on-bg-primary leading-[0.85] tracking-tight">
+              KILN
+            </h1>
 
-              <div className="print-block mt-2 md:mt-0 md:absolute md:top-4 md:right-0 lg:right-20">
-                <p className="font-heading text-h3 md:text-h2 text-on-bg-tertiary max-w-xs leading-tight">
-                  personal<br />studio
-                </p>
-              </div>
+            <div className="mt-4 md:absolute md:top-20 md:right-0 lg:right-20">
+              <p className="font-heading text-h3 md:text-h2 text-on-bg-tertiary leading-tight">
+                personal<br />studio
+              </p>
+            </div>
 
-              <div className="print-block flex items-center gap-4 mt-8">
-                <span className="font-mono text-system text-on-surface-muted">
-                  // LOADING COMPLETE
-                </span>
-                <div className="h-px bg-border-custom flex-1 max-w-xs" />
-              </div>
+            <div className="flex items-center gap-4 mt-8">
+              <span className="font-mono text-system text-on-surface-muted">
+                // LOADING COMPLETE
+              </span>
+              <div className="h-px bg-border-custom flex-1 max-w-xs" />
             </div>
           </div>
 
           {/* Bottom - Two column info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mt-auto max-w-4xl">
-            <div className="print-block space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mt-auto max-w-4xl pb-4">
+            <div className="space-y-2">
               <div className="font-mono text-system text-on-surface-muted mb-2">
                 C  TYPE
               </div>
@@ -252,7 +191,7 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="print-block space-y-2">
+            <div className="space-y-2">
               <div className="font-mono text-system text-on-surface-muted mb-2">
                 C  STATUS
               </div>
@@ -264,7 +203,7 @@ export default function HomePage() {
           </div>
 
           {/* Footer */}
-          <div className="print-block flex justify-between items-end mt-16 pt-8 border-t border-border-muted">
+          <div className="flex justify-between items-end mt-12 pt-8 border-t border-border-muted">
             <div className="font-mono text-system text-on-surface-muted">
               REF: 001-A
             </div>
