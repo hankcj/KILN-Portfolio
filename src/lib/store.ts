@@ -10,6 +10,7 @@ import { create } from 'zustand';
 interface AppState {
   // Navigation / routing state
   currentPage: string;
+  setCurrentPage: (page: string) => void;
   
   // Transition state
   isTransitioning: boolean;
@@ -40,6 +41,7 @@ interface AppState {
 export const useAppStore = create<AppState>((set) => ({
   // Route state
   currentPage: 'home',
+  setCurrentPage: (page) => set({ currentPage: page }),
   
   // Transition state
   isTransitioning: false,

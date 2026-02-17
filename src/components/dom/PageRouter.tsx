@@ -6,26 +6,25 @@
 
 'use client';
 
-import { useEffect, useRef, useCallback, useState } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { useAppStore } from '@/lib/store';
 import HomePage from '@/app/home-page';
 import WorkPage from '@/app/work-page';
 
 export function PageRouter() {
-  const { currentPage, isTransitioning, transitionTarget, endTransition } = useAppStore();
+  const { 
+    currentPage, 
+    setCurrentPage,
+    isTransitioning, 
+    transitionTarget, 
+    endTransition 
+  } = useAppStore();
+  
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const isAnimatingRef = useRef(false);
-  const [displayedPage, setDisplayedPage] = useState(currentPage);
-
-  // Sync displayed page with store when not transitioning
-  useEffect(() => {
-    if (!isTransitioning) {
-      setDisplayedPage(currentPage);
-    }
-  }, [currentPage, isTransitioning]);
 
   // Handle transition animation
   const runTransition = useCallback(() => {
@@ -35,12 +34,12 @@ export function PageRouter() {
 
     const tl = gsap.timeline({
       onComplete: () => {
-        // Update displayed page
-        setDisplayedPage(transitionTarget);
-        // Reset animation state
-        isAnimatingRef.current = false;
-        // Tell store transition is done
+        // Update the store's current page
+        setCurrentPage(transitionTarget);
+        // End transition state
         endTransition();
+        // Reset animation flag
+        isAnimatingRef.current = false;
       }
     });
 
@@ -68,20 +67,8 @@ export function PageRouter() {
       repeat: 3
     });
 
-    // PHASE 4: SWITCH PAGE (hidden)
-    tl.call(() => {
-      setDisplayedPage(transitionTarget);
-    });
-
-    // PHASE 5: PULL BACK (750-1300ms)
-    // Set initial state for new page
-    tl.set(contentRef.current, {
-      scale: 0.7,
-      opacity: 0,
-      filter: 'blur(15px)'
-    });
-
-    // Animate to normal
+    // PHASE 4: PULL BACK (750-1300ms)
+    // Content pulls back from zoomed in state
     tl.to(contentRef.current, {
       scale: 1,
       opacity: 1,
@@ -98,12 +85,11 @@ export function PageRouter() {
       ease: 'power2.in'
     }, '-=0.3');
 
-  }, [transitionTarget, endTransition]);
+  }, [transitionTarget, setCurrentPage, endTransition]);
 
   // Trigger transition when isTransitioning becomes true
   useEffect(() => {
     if (isTransitioning && transitionTarget && !isAnimatingRef.current) {
-      // Small delay to ensure React has rendered
       const timer = setTimeout(() => {
         runTransition();
       }, 50);
@@ -111,15 +97,27 @@ export function PageRouter() {
     }
   }, [isTransitioning, transitionTarget, runTransition]);
 
+  // Reset content transform when page changes (for non-transition navigation)
+  useEffect(() => {
+    if (!isTransitioning && contentRef.current) {
+      gsap.set(contentRef.current, {
+        scale: 1,
+        opacity: 1,
+        filter: 'blur(0px)',
+        clearProps: 'transform,filter,opacity'
+      });
+    }
+  }, [currentPage, isTransitioning]);
+
   return (
     <div ref={containerRef} className="relative min-h-screen">
-      {/* Page content */}
+      {/* Page content - always renders currentPage from store */}
       <div 
         ref={contentRef}
         className="relative z-10 will-change-transform"
         style={{ transformOrigin: 'center center' }}
       >
-        {getPageComponent(displayedPage)}
+        {getPageComponent(currentPage)}
       </div>
 
       {/* Noise overlay - only during transition */}
