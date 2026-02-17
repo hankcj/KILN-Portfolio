@@ -66,15 +66,21 @@ function AnimatedGrain() {
 
 // System clock that updates every second
 function SystemClock() {
+  const [mounted, setMounted] = useState(false);
   const [time, setTime] = useState('');
   const [uptime, setUptime] = useState(0);
+  const [memory, setMemory] = useState(45.0);
 
   useEffect(() => {
+    setMounted(true);
+    
     const updateTime = () => {
       const now = new Date();
       // Format: HH:MM:SS | Unix timestamp | Uptime counter
       setTime(now.toISOString().split('T')[1].split('.')[0]);
       setUptime(prev => prev + 1);
+      // Slowly vary memory usage
+      setMemory(40 + Math.random() * 20);
     };
 
     updateTime();
@@ -83,20 +89,38 @@ function SystemClock() {
     return () => clearInterval(interval);
   }, []);
 
+  // Don't render until mounted to avoid hydration mismatch
+  if (!mounted) {
+    return (
+      <div className="fixed bottom-24 left-8 z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block">
+        <div>SYS_TIME: --:--:--</div>
+        <div>UPTIME: 000000s</div>
+        <div>MEM_USAGE: --.-%</div>
+      </div>
+    );
+  }
+
   return (
     <div className="fixed bottom-24 left-8 z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block">
       <div>SYS_TIME: {time}</div>
       <div>UPTIME: {uptime.toString().padStart(6, '0')}s</div>
-      <div>MEM_USAGE: {(Math.random() * 30 + 40).toFixed(1)}%</div>
+      <div>MEM_USAGE: {memory.toFixed(1)}%</div>
     </div>
   );
 }
 
 // Random data stream at bottom of screen
 function DataStream() {
-  const [lines, setLines] = useState<string[]>([]);
+  const [mounted, setMounted] = useState(false);
+  const [lines, setLines] = useState<string[]>([
+    '// RENDER_INIT [OK]',
+    'C  LOAD_START [ACTV]',
+    '>> SYNC_PROC [DONE]',
+  ]);
 
   useEffect(() => {
+    setMounted(true);
+    
     const generateLine = () => {
       const prefixes = ['//', 'C', '>>', '<<', '**'];
       const actions = ['RENDER', 'LOAD', 'SYNC', 'PROC', 'SCAN', 'INDEX'];
@@ -110,9 +134,6 @@ function DataStream() {
       return `${prefix} ${action}_${id} [${state}]`;
     };
 
-    // Initial lines
-    setLines(Array(3).fill(null).map(generateLine));
-
     // Update random line every few seconds
     const interval = setInterval(() => {
       setLines(prev => {
@@ -125,6 +146,17 @@ function DataStream() {
 
     return () => clearInterval(interval);
   }, []);
+
+  // Don't render dynamic content until mounted
+  if (!mounted) {
+    return (
+      <div className="fixed bottom-24 right-8 z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block text-right">
+        <div style={{ opacity: 0.3 }}>// RENDER_INIT [OK]</div>
+        <div style={{ opacity: 0.5 }}>C  LOAD_START [ACTV]</div>
+        <div style={{ opacity: 0.7 }}>>> SYNC_PROC [DONE]</div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed bottom-24 right-8 z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block text-right">
@@ -200,9 +232,16 @@ function AmbientFloat() {
 export function GlitchText({ children, className = '' }: { children: string; className?: string }) {
   const textRef = useRef<HTMLSpanElement>(null);
   const [displayText, setDisplayText] = useState(children);
+  const [mounted, setMounted] = useState(false);
   const originalText = children;
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789//C_*';
     
     const glitch = () => {
@@ -236,11 +275,12 @@ export function GlitchText({ children, className = '' }: { children: string; cla
     const interval = setInterval(glitch, 3000 + Math.random() * 5000);
 
     return () => clearInterval(interval);
-  }, [originalText]);
+  }, [mounted, originalText]);
 
+  // Render original text on server, glitched text on client after mount
   return (
     <span ref={textRef} className={className}>
-      {displayText}
+      {mounted ? displayText : originalText}
     </span>
   );
 }
