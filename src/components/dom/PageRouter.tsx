@@ -17,9 +17,8 @@ export function PageRouter() {
   const { currentPage, isTransitioning, transitionTarget, endTransition } = useAppStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const [displayedPage, setDisplayedPage] = useState(currentPage);
-  const [previousPage, setPreviousPage] = useState<string | null>(null);
+  const [nextPage, setNextPage] = useState<string | null>(null);
   const currentContentRef = useRef<HTMLDivElement>(null);
-  const nextContentRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
 
@@ -27,60 +26,72 @@ export function PageRouter() {
   useEffect(() => {
     if (!isTransitioning || !transitionTarget) return;
 
+    // Store the page we're going to
+    setNextPage(transitionTarget);
+
     const ctx = gsap.context(() => {
-      // Store the page we're leaving
-      setPreviousPage(displayedPage);
-      
-      // Build timeline
+      // TIMELINE: Microfiche transition sequence
       const tl = gsap.timeline({
         onComplete: () => {
           setDisplayedPage(transitionTarget);
-          setPreviousPage(null);
+          setNextPage(null);
+          // Reset current content for next time
+          gsap.set(currentContentRef.current, {
+            scale: 1,
+            opacity: 1,
+            filter: 'blur(0px)'
+          });
           endTransition();
         }
       });
 
-      // PHASE 1: Zoom into current page (0-600ms)
-      // Current page scales up and fades to blur
+      // PHASE 1: ZOOM INTO CURRENT PAGE (0-800ms)
+      // The page zooms way in and blurs, as if looking too close at microfiche
       tl.to(currentContentRef.current, {
-        scale: 2.5,
-        opacity: 0,
-        filter: 'blur(8px)',
-        duration: 0.6,
+        scale: 4,
+        opacity: 0.3,
+        filter: 'blur(20px) brightness(0.5)',
+        duration: 0.8,
         ease: 'power3.in'
       });
 
-      // PHASE 2: Show noise overlay (400-800ms)
-      // Intense static/noise appears
+      // PHASE 2: NOISE TAKES OVER (600-1000ms)
+      // Static/noise becomes visible as we "zoom into the grain"
       tl.to(overlayRef.current, {
-        opacity: 1,
-        duration: 0.3,
+        opacity: 0.9,
+        duration: 0.4,
         ease: 'power2.out'
-      }, '-=0.3');
+      }, '-=0.4');
 
       // Show transition label
       tl.to(labelRef.current, {
         opacity: 1,
-        duration: 0.2
-      }, '-=0.2');
-
-      // Intensify grain during transition
-      tl.to('.film-grain', {
-        opacity: 0.15,
-        duration: 0.2
+        duration: 0.3
       }, '-=0.3');
 
-      // PHASE 3: Flash (600-800ms)
-      // Brief accent color flash
+      // Intensify grain
+      tl.to('.grain-overlay', {
+        opacity: 0.2,
+        duration: 0.3
+      }, '-=0.3');
+
+      // PHASE 3: FLASH/TRANSITION POINT (800-1000ms)
+      // Brief flash of accent color - the "slide change" moment
       tl.to(overlayRef.current, {
-        backgroundColor: 'rgba(0, 54, 216, 0.2)',
+        backgroundColor: 'rgba(0, 54, 216, 0.3)',
         duration: 0.1,
         yoyo: true,
         repeat: 1
       });
 
-      // PHASE 4: Reveal new page (800-1400ms)
-      // Hide noise, new page scales down into view
+      // Hide current page completely
+      tl.set(currentContentRef.current, {
+        opacity: 0,
+        scale: 4
+      });
+
+      // PHASE 4: PULL BACK TO NEW PAGE (1000-1600ms)
+      // New page emerges from the noise, pulling back into view
       tl.to(labelRef.current, {
         opacity: 0,
         duration: 0.2
@@ -89,62 +100,46 @@ export function PageRouter() {
       tl.to(overlayRef.current, {
         opacity: 0,
         backgroundColor: 'transparent',
-        duration: 0.3,
+        duration: 0.4,
         ease: 'power2.in'
       }, '-=0.1');
 
-      tl.to('.film-grain', {
+      tl.to('.grain-overlay', {
         opacity: 0.04,
         duration: 0.4
       }, '-=0.3');
 
-      // Prepare next page
-      gsap.set(nextContentRef.current, {
-        scale: 1.5,
-        opacity: 0,
-        filter: 'blur(10px)'
-      });
-
-      tl.to(nextContentRef.current, {
-        scale: 1,
-        opacity: 1,
-        filter: 'blur(0px)',
-        duration: 0.6,
-        ease: 'power3.out'
-      }, '-=0.2');
+      // New page comes into focus from zoomed-in state
+      tl.fromTo(currentContentRef.current, 
+        {
+          scale: 0.5,
+          opacity: 0,
+          filter: 'blur(30px) brightness(1.2)'
+        },
+        {
+          scale: 1,
+          opacity: 1,
+          filter: 'blur(0px) brightness(1)',
+          duration: 0.6,
+          ease: 'power3.out'
+        },
+        '-=0.3'
+      );
 
     }, containerRef);
 
     return () => ctx.revert();
-  }, [isTransitioning, transitionTarget, endTransition, displayedPage]);
-
-  // Reset current content when not transitioning
-  useEffect(() => {
-    if (!isTransitioning) {
-      gsap.set(currentContentRef.current, {
-        scale: 1,
-        opacity: 1,
-        filter: 'blur(0px)'
-      });
-    }
-  }, [isTransitioning]);
+  }, [isTransitioning, transitionTarget, endTransition]);
 
   return (
-    <div ref={containerRef} className="relative min-h-screen">
-      {/* Current page content */}
+    <div ref={containerRef} className="relative min-h-screen overflow-hidden">
+      {/* Current page content - this gets zoomed and replaced */}
       <div 
         ref={currentContentRef}
-        className={`${isTransitioning && previousPage ? 'pointer-events-none' : ''}`}
+        className="relative z-10"
+        style={{ transformOrigin: 'center center' }}
       >
-        {!previousPage && getPageComponent(displayedPage)}
-      </div>
-
-      {/* Next page content (during transition) */}
-      <div 
-        ref={nextContentRef}
-        className="absolute inset-0 pointer-events-none opacity-0"
-      >
-        {transitionTarget && getPageComponent(transitionTarget)}
+        {getPageComponent(displayedPage)}
       </div>
 
       {/* Noise overlay for transition */}
@@ -152,9 +147,18 @@ export function PageRouter() {
         ref={overlayRef}
         className="fixed inset-0 z-[9997] pointer-events-none opacity-0"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundSize: '200px 200px',
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundSize: '150px 150px',
+          backgroundColor: 'rgba(19, 22, 31, 0.95)',
           mixBlendMode: 'overlay'
+        }}
+      />
+
+      {/* Grain overlay (extra intense during transition) */}
+      <div 
+        className="grain-overlay fixed inset-0 z-[9996] pointer-events-none opacity-[0.04]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`,
         }}
       />
 
@@ -170,11 +174,24 @@ export function PageRouter() {
           <div className="font-heading text-h2 text-on-bg-primary">
             {transitionTarget?.toUpperCase()}_ARCHIVE
           </div>
-          <div className="mt-4 w-32 h-px bg-accent mx-auto overflow-hidden">
-            <div className="h-full bg-on-bg-primary animate-pulse" style={{ width: '50%' }} />
+          <div className="mt-6 w-48 h-px bg-accent/30 mx-auto overflow-hidden relative">
+            <div 
+              className="h-full bg-accent absolute left-0 top-0" 
+              style={{ 
+                width: '30%',
+                animation: 'slideLoader 1s ease-in-out infinite'
+              }} 
+            />
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes slideLoader {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(300%); }
+        }
+      `}</style>
     </div>
   );
 }

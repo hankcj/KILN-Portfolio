@@ -8,7 +8,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Link from 'next/link';
 import { gsap } from 'gsap';
 import { LivingEffects, GlitchText, MouseParallax } from '@/components/dom/LivingEffects';
 import { useAppStore } from '@/lib/store';
@@ -167,7 +166,7 @@ export default function HomePage() {
         </div>
       </MouseParallax>
 
-      {/* UNORTHODOX NAVIGATION - scattered */}
+      {/* UNORTHODOX NAVIGATION - scattered in 4 corners only */}
       <nav className="fixed inset-0 z-50 pointer-events-none">
         {/* Top left - Identity */}
         <span 
@@ -299,8 +298,8 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* BOTTOM SECTION - Three column info */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 mt-auto">
+        {/* BOTTOM SECTION - Two column info (removed C NAVIGATION) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mt-auto max-w-4xl">
           {/* Column 1 - What this is */}
           <div ref={el => infoRefs.current[0] = el} className="space-y-2">
             <div className="font-mono text-system text-on-surface-muted mb-2">
@@ -321,36 +320,6 @@ export default function HomePage() {
               Currently building systems that think. Writing about the intersection 
               of technology, design, and human experience.
             </p>
-          </div>
-
-          {/* Column 3 - Entry CTA */}
-          <div ref={el => infoRefs.current[2] = el} className="space-y-2">
-            <div className="font-mono text-system text-on-surface-muted mb-2">
-              C  NAVIGATION
-            </div>
-            <div className="flex flex-col gap-2">
-              <a 
-                href="/work" 
-                onClick={handleNavigate('work')}
-                className="text-small text-on-bg-primary hover:text-accent transition-colors group flex items-center gap-2"
-              >
-                <span className="text-accent group-hover:translate-x-1 transition-transform">→</span> Browse outputs
-              </a>
-              <a 
-                href="/signal" 
-                onClick={handleNavigate('signal')}
-                className="text-small text-on-bg-primary hover:text-accent transition-colors group flex items-center gap-2"
-              >
-                <span className="text-accent group-hover:translate-x-1 transition-transform">→</span> Read signal
-              </a>
-              <a 
-                href="/system" 
-                onClick={handleNavigate('system')}
-                className="text-small text-on-bg-primary hover:text-accent transition-colors group flex items-center gap-2"
-              >
-                <span className="text-accent group-hover:translate-x-1 transition-transform">→</span> Inspect system
-              </a>
-            </div>
           </div>
         </div>
 
