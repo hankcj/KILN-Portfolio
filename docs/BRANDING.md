@@ -249,8 +249,10 @@ Components must use **semantic tokens** only. Reference token names, not hex, in
 
 ## 8. Motion and feedback
 
-- **Transitions:** Subtle only. 150–200ms for state changes (hover, focus, open/close). Easing: `ease-out` or `ease-in-out`.
-- **No decorative motion:** No ambient animation or decorative motion. Use motion only for state change and loading/feedback (e.g. spinners, progress).
+- **Micro interactions:** 150–200ms for state changes (hover, focus, open/close). Easing: `ease-out` or `ease-in-out`.
+- **Page load animations:** 3000–4000ms for entrance sequences. Heavy, deliberate pacing that signals "system initialization." Users should have time to perceive each phase.
+- **Page transitions:** 2000–2500ms for microfiche-style zoom transitions. Cinematic, not rushed.
+- **No decorative motion:** No ambient animation or decorative motion. Use motion only for state change and loading/feedback.
 - **Reduced motion:** Respect `prefers-reduced-motion: reduce` by disabling or shortening non-essential transitions.
 
 ---

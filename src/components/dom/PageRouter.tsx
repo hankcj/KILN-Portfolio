@@ -1,7 +1,7 @@
 /**
  * Page Router
  * 
- * Manages page rendering with microfiche transition.
+ * Manages page rendering with slow, cinematic microfiche transition.
  */
 
 'use client';
@@ -21,7 +21,7 @@ export function PageRouter() {
   const blankRef = useRef<HTMLDivElement>(null);
   const isRunningRef = useRef(false);
 
-  // Handle transition
+  // Handle transition - slow and cinematic (4000ms total)
   useEffect(() => {
     if (!isTransitioning || !transitionTarget || isRunningRef.current) {
       return;
@@ -37,50 +37,50 @@ export function PageRouter() {
 
     const goingForward = transitionTarget !== 'home';
 
-    // Stage 1: Fade content to blank
+    // Stage 1: Fade content to blank (800ms)
     setStage('fadeout');
     gsap.to(contentEl, {
       opacity: 0,
       scale: goingForward ? 1.1 : 0.9,
       filter: 'blur(10px)',
-      duration: 0.4,
+      duration: 0.8,
       ease: 'power2.in'
     });
 
-    // Stage 2: Show blank and zoom
+    // Stage 2: Show blank and zoom (1000ms)
     setTimeout(() => {
       setStage('blank');
       gsap.set(blankEl, { opacity: 1, scale: 1 });
       gsap.to(blankEl, {
         scale: goingForward ? 2.5 : 0.4,
-        duration: 0.6,
+        duration: 1.0,
         ease: 'power2.inOut'
       });
-    }, 400);
-
-    // Stage 3: Text display
-    setTimeout(() => {
-      setStage('text');
     }, 800);
 
-    // Stage 4: Deep zoom
+    // Stage 3: Text display (1200ms hold)
+    setTimeout(() => {
+      setStage('text');
+    }, 1200);
+
+    // Stage 4: Deep zoom (800ms)
     setTimeout(() => {
       gsap.to(blankEl, {
         scale: goingForward ? 5 : 0.1,
         opacity: 0,
-        duration: 0.4,
+        duration: 0.8,
         ease: 'power3.in'
       });
-    }, 1400);
+    }, 2000);
 
     // Stage 5: Switch page
     setTimeout(() => {
       setStage('switch');
       setDisplayedPage(transitionTarget);
       setCurrentPage(transitionTarget);
-    }, 1800);
+    }, 2800);
 
-    // Stage 6: Reveal
+    // Stage 6: Reveal (1200ms)
     setTimeout(() => {
       setStage('reveal');
       gsap.set(blankEl, { opacity: 0, scale: 1 });
@@ -94,7 +94,7 @@ export function PageRouter() {
           opacity: 1,
           scale: 1,
           filter: 'blur(0px)',
-          duration: 0.6,
+          duration: 1.2,
           ease: 'power3.out',
           onComplete: () => {
             endTransition();
@@ -102,7 +102,7 @@ export function PageRouter() {
           }
         }
       );
-    }, 2000);
+    }, 3200);
 
   }, [isTransitioning, transitionTarget, setCurrentPage, endTransition]);
 
