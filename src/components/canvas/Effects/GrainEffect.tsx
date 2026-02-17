@@ -9,7 +9,7 @@
 
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { ShaderMaterial } from 'three';
+import { ShaderMaterial, Mesh } from 'three';
 
 const vertexShader = `
   varying vec2 vUv;
@@ -37,7 +37,7 @@ const fragmentShader = `
 `;
 
 export function GrainEffect() {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const meshRef = useRef<Mesh>(null);
   const materialRef = useRef<ShaderMaterial>(null);
 
   const uniforms = useMemo(
