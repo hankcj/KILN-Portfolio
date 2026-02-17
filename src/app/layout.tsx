@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'KILN — Digital Museum',
+  title: 'KILN — Personal Studio',
   description: 'A personal studio and publishing space. Not a portfolio. A continuous practice.',
 };
 
