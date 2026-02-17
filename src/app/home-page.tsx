@@ -1,7 +1,7 @@
 /**
  * Home Page Content
  * 
- * Brutalist entrance with glitch/scan effects instead of gradual fades.
+ * Status accumulation load animation - system labels form frame, content prints in.
  */
 
 'use client';
@@ -11,76 +11,74 @@ import { gsap } from 'gsap';
 import { LivingEffects, GlitchText } from '@/components/dom/LivingEffects';
 import { useAppStore } from '@/lib/store';
 
+// Corner status labels
+const CORNER_LABELS = [
+  { text: 'REF: 001-A', position: 'top-left' },
+  { text: 'EST. 2024', position: 'top-right' },
+  { text: 'SYS_RDY', position: 'bottom-left' },
+  { text: 'v1.0.0', position: 'bottom-right' },
+];
+
 export default function HomePage() {
   const { startTransition } = useAppStore();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [bootSequence, setBootSequence] = useState<string[]>([]);
   const [showContent, setShowContent] = useState(false);
-  const [glitchText, setGlitchText] = useState('');
-  
-  const finalTitle = 'KILN';
+  const [printedLines, setPrintedLines] = useState<number>(0);
+  const [frameComplete, setFrameComplete] = useState(false);
 
-  // Brutalist boot sequence
+  // Status accumulation sequence
   useEffect(() => {
-    const sequence = [
-      '// INIT...',
-      'C  BOOT_SEQ_START',
-      '>> LOADING_CORE',
-      '** SYSTEM_CHECK',
-      '// RENDER_READY',
-    ];
+    const tl = gsap.timeline();
 
-    // Show boot lines rapidly
-    sequence.forEach((line, i) => {
-      setTimeout(() => {
-        setBootSequence(prev => [...prev, line]);
-      }, i * 80);
-    });
+    // PHASE 1: Corner labels appear (hard cuts, staggered)
+    tl.fromTo('.corner-label', 
+      { opacity: 0 },
+      { 
+        opacity: 1, 
+        duration: 0.05, 
+        stagger: 0.1,
+        ease: 'steps(1)',
+        onComplete: () => setFrameComplete(true)
+      }
+    );
 
-    // Clear boot and show title with glitch
-    setTimeout(() => {
-      setBootSequence([]);
-      setShowContent(true);
-      
-      // Glitch effect on title
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@$%&';
-      let iterations = 0;
-      const maxIterations = 15;
-      
-      const glitchInterval = setInterval(() => {
-        setGlitchText(
-          finalTitle
-            .split('')
-            .map((char, index) => {
-              if (index < iterations / 3) return finalTitle[index];
-              return chars[Math.floor(Math.random() * chars.length)];
-            })
-            .join('')
-        );
-        
-        iterations++;
-        if (iterations > maxIterations) {
-          clearInterval(glitchInterval);
-          setGlitchText(finalTitle);
-        }
-      }, 50);
-    }, 600);
+    // PHASE 2: Frame lines draw
+    tl.fromTo('.frame-line-h', 
+      { scaleX: 0 },
+      { scaleX: 1, duration: 0.4, ease: 'power2.out' },
+      '-=0.1'
+    );
+    tl.fromTo('.frame-line-v', 
+      { scaleY: 0 },
+      { scaleY: 1, duration: 0.4, ease: 'power2.out' },
+      '<'
+    );
 
-    // Animate other elements with hard cuts
-    setTimeout(() => {
-      gsap.fromTo('.nav-item', 
-        { opacity: 0, x: -20 },
-        { opacity: 1, x: 0, duration: 0.15, stagger: 0.05, ease: 'steps(1)' }
-      );
-    }, 900);
+    // PHASE 3: Content prints line by line
+    tl.call(() => setShowContent(true));
+    
+    // Print each line with stagger
+    const lines = document.querySelectorAll('.print-line');
+    tl.fromTo(lines, 
+      { opacity: 0, x: -10 },
+      { 
+        opacity: 1, 
+        x: 0, 
+        duration: 0.03, 
+        stagger: 0.08,
+        ease: 'steps(1)'
+      },
+      '+=0.2'
+    );
 
-    setTimeout(() => {
-      gsap.fromTo('.info-block',
-        { opacity: 0, clipPath: 'inset(0 100% 0 0)' },
-        { opacity: 1, clipPath: 'inset(0 0% 0 0)', duration: 0.3, stagger: 0.1, ease: 'power2.out' }
-      );
-    }, 1100);
+    // Print nav items
+    tl.fromTo('.nav-item', 
+      { opacity: 0 },
+      { opacity: 1, duration: 0.05, stagger: 0.1, ease: 'steps(1)' },
+      '<0.3'
+    );
 
+    return () => { tl.kill(); };
   }, []);
 
   const handleNavigate = (page: string) => (e: React.MouseEvent) => {
@@ -92,39 +90,60 @@ export default function HomePage() {
     <main ref={containerRef} className="min-h-screen relative overflow-hidden">
       <LivingEffects />
 
-      {/* Background elements - static, no mouse parallax */}
+      {/* Background - static */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-3xl" />
-        <div className="absolute inset-0 opacity-[0.03]">
-          <div className="h-full w-px bg-on-bg-primary absolute left-[10%]" />
-          <div className="h-full w-px bg-on-bg-primary absolute left-[50%]" />
-          <div className="h-full w-px bg-on-bg-primary absolute left-[90%]" />
-          <div className="w-full h-px bg-on-bg-primary absolute top-[15%]" />
-          <div className="w-full h-px bg-on-bg-primary absolute top-[85%]" />
-        </div>
       </div>
 
-      {/* Boot sequence overlay */}
-      {bootSequence.length > 0 && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-bg-primary">
-          <div className="font-mono text-system text-accent space-y-1">
-            {bootSequence.map((line, i) => (
-              <div key={i} style={{ opacity: i === bootSequence.length - 1 ? 1 : 0.5 }}>
-                {line}
-              </div>
-            ))}
+      {/* PHASE 1 & 2: Corner labels and frame */}
+      <div className="fixed inset-8 z-40 pointer-events-none">
+        {/* Corner labels */}
+        {CORNER_LABELS.map((label, i) => (
+          <div
+            key={i}
+            className={`corner-label absolute font-mono text-system text-on-surface-muted opacity-0 ${
+              label.position === 'top-left' ? 'top-0 left-0' :
+              label.position === 'top-right' ? 'top-0 right-0' :
+              label.position === 'bottom-left' ? 'bottom-0 left-0' :
+              'bottom-0 right-0'
+            }`}
+          >
+            {label.text}
           </div>
-        </div>
-      )}
+        ))}
 
-      {/* Main content */}
+        {/* Frame lines - horizontal */}
+        <div 
+          className="frame-line-h absolute top-0 left-16 right-16 h-px bg-accent/30 origin-left"
+          style={{ transform: 'scaleX(0)' }}
+        />
+        <div 
+          className="frame-line-h absolute bottom-0 left-16 right-16 h-px bg-accent/30 origin-right"
+          style={{ transform: 'scaleX(0)' }}
+        />
+
+        {/* Frame lines - vertical */}
+        <div 
+          className="frame-line-v absolute left-0 top-16 bottom-16 w-px bg-accent/30 origin-top"
+          style={{ transform: 'scaleY(0)' }}
+        />
+        <div 
+          className="frame-line-v absolute right-0 top-16 bottom-16 w-px bg-accent/30 origin-bottom"
+          style={{ transform: 'scaleY(0)' }}
+        />
+      </div>
+
+      {/* PHASE 3: Content prints inside frame */}
       {showContent && (
         <>
           {/* Navigation */}
           <nav className="fixed inset-0 z-50">
-            <span className="nav-item absolute top-8 left-8 font-heading text-h4 text-on-bg-primary hover:text-accent transition-colors cursor-pointer opacity-0">
+            <a 
+              href="/"
+              className="nav-item absolute top-8 left-8 font-heading text-h4 text-on-bg-primary hover:text-accent transition-colors opacity-0"
+            >
               K
-            </span>
+            </a>
 
             <a 
               href="/work"
@@ -150,7 +169,7 @@ export default function HomePage() {
               <GlitchText>// SYSTEM</GlitchText>
             </a>
 
-            <div className="absolute left-8 top-1/2 -translate-y-1/2 hidden lg:block">
+            <div className="print-line absolute left-8 top-1/2 -translate-y-1/2 hidden lg:block opacity-0">
               <div 
                 className="font-mono text-system text-on-surface-muted"
                 style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
@@ -159,7 +178,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden lg:block">
+            <div className="print-line absolute right-8 top-1/2 -translate-y-1/2 hidden lg:block opacity-0">
               <div 
                 className="font-mono text-system text-on-surface-muted"
                 style={{ writingMode: 'vertical-rl' }}
@@ -169,41 +188,40 @@ export default function HomePage() {
             </div>
           </nav>
 
-          {/* Main content */}
+          {/* Main content - prints line by line */}
           <div className="relative z-10 min-h-screen flex flex-col justify-between px-6 md:px-16 lg:px-24 py-32">
             
             {/* Top header */}
             <div className="flex justify-between items-start">
-              <div className="font-mono text-system text-on-surface-muted">
-                // BOOT SEQUENCE <span className="animate-pulse">_</span>
+              <div className="print-line font-mono text-system text-on-surface-muted opacity-0">
+                // BOOT_SEQUENCE <span className="animate-pulse">_</span>
               </div>
-              <div className="font-mono text-system text-on-surface-muted text-right">
-                EST. 2024<br />
+              <div className="print-line font-mono text-system text-on-surface-muted text-right opacity-0">
                 STATUS: ONLINE
               </div>
             </div>
 
-            {/* Center - Glitching KILN title */}
+            {/* Center - KILN title */}
             <div className="relative my-auto">
               <div className="relative">
-                <div className="flex items-center gap-4 mb-4">
+                <div className="print-line flex items-center gap-4 mb-4 opacity-0">
                   <div className="h-px bg-accent w-16" />
                   <span className="font-mono text-system text-accent">
                     ENTRY POINT
                   </span>
                 </div>
 
-                <h1 className="font-heading text-display-xl md:text-[12rem] lg:text-[16rem] text-on-bg-primary leading-[0.85] tracking-tight">
-                  {glitchText || finalTitle}
+                <h1 className="print-line font-heading text-display-xl md:text-[12rem] lg:text-[16rem] text-on-bg-primary leading-[0.85] tracking-tight opacity-0">
+                  KILN
                 </h1>
 
-                <div className="mt-2 md:mt-0 md:absolute md:top-4 md:right-0 lg:right-20">
+                <div className="print-line mt-2 md:mt-0 md:absolute md:top-4 md:right-0 lg:right-20 opacity-0">
                   <p className="font-heading text-h3 md:text-h2 text-on-bg-tertiary max-w-xs leading-tight">
                     personal<br />studio
                   </p>
                 </div>
 
-                <div className="flex items-center gap-4 mt-8">
+                <div className="print-line flex items-center gap-4 mt-8 opacity-0">
                   <span className="font-mono text-system text-on-surface-muted">
                     // LOADING COMPLETE
                   </span>
@@ -214,7 +232,7 @@ export default function HomePage() {
 
             {/* Bottom - Two column info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mt-auto max-w-4xl">
-              <div className="info-block space-y-2" style={{ opacity: 0 }}>
+              <div className="print-line space-y-2 opacity-0">
                 <div className="font-mono text-system text-on-surface-muted mb-2">
                   C  TYPE
                 </div>
@@ -224,7 +242,7 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="info-block space-y-2" style={{ opacity: 0 }}>
+              <div className="print-line space-y-2 opacity-0">
                 <div className="font-mono text-system text-on-surface-muted mb-2">
                   C  STATUS
                 </div>
@@ -236,7 +254,7 @@ export default function HomePage() {
             </div>
 
             {/* Footer */}
-            <div className="flex justify-between items-end mt-16 pt-8 border-t border-border-muted">
+            <div className="print-line flex justify-between items-end mt-16 pt-8 border-t border-border-muted opacity-0">
               <div className="font-mono text-system text-on-surface-muted">
                 REF: 001-A
               </div>
@@ -247,16 +265,10 @@ export default function HomePage() {
                 </span>
               </div>
               <div className="font-mono text-system text-on-surface-muted">
-                SYS_RDY
+                LAST_UPDATE: 2024.02.17
               </div>
             </div>
           </div>
-
-          {/* Corner brackets */}
-          <div className="fixed top-8 left-8 w-4 h-4 border-l border-t border-accent/30 pointer-events-none" />
-          <div className="fixed top-8 right-8 w-4 h-4 border-r border-t border-accent/30 pointer-events-none" />
-          <div className="fixed bottom-8 left-8 w-4 h-4 border-l border-b border-accent/30 pointer-events-none" />
-          <div className="fixed bottom-8 right-8 w-4 h-4 border-r border-b border-accent/30 pointer-events-none" />
         </>
       )}
     </main>
