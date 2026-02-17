@@ -2,15 +2,21 @@
  * Zustand Store
  * 
  * Acts as the "nervous system" linking DOM UI to WebGL scene state.
- * Enables synchronized interaction without tight coupling.
+ * Handles page transitions and navigation state.
  */
 
 import { create } from 'zustand';
 
 interface AppState {
   // Navigation / routing state
-  currentRoute: string;
-  setCurrentRoute: (route: string) => void;
+  currentPage: string;
+  setCurrentPage: (page: string) => void;
+  
+  // Transition state
+  isTransitioning: boolean;
+  transitionTarget: string | null;
+  startTransition: (target: string) => void;
+  endTransition: () => void;
 
   // Interaction state for DOM → WebGL communication
   hoveredItem: string | null;
@@ -34,8 +40,20 @@ interface AppState {
 
 export const useAppStore = create<AppState>((set) => ({
   // Route state
-  currentRoute: '/',
-  setCurrentRoute: (route) => set({ currentRoute: route }),
+  currentPage: 'home',
+  setCurrentPage: (page) => set({ currentPage: page }),
+
+  // Transition state
+  isTransitioning: false,
+  transitionTarget: null,
+  startTransition: (target) => set({ 
+    isTransitioning: true, 
+    transitionTarget: target 
+  }),
+  endTransition: () => set({ 
+    isTransitioning: false, 
+    transitionTarget: null 
+  }),
 
   // Interaction state
   hoveredItem: null,

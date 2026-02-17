@@ -92,7 +92,7 @@ function SystemClock() {
   // Don't render until mounted to avoid hydration mismatch
   if (!mounted) {
     return (
-      <div className="fixed bottom-24 left-8 z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block">
+      <div className="fixed bottom-32 left-8 z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block">
         <div>SYS_TIME: --:--:--</div>
         <div>UPTIME: 000000s</div>
         <div>MEM_USAGE: --.-%</div>
@@ -101,7 +101,7 @@ function SystemClock() {
   }
 
   return (
-    <div className="fixed bottom-24 left-8 z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block">
+    <div className="fixed bottom-32 left-8 z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block">
       <div>SYS_TIME: {time}</div>
       <div>UPTIME: {uptime.toString().padStart(6, '0')}s</div>
       <div>MEM_USAGE: {memory.toFixed(1)}%</div>
@@ -150,7 +150,7 @@ function DataStream() {
   // Don't render dynamic content until mounted
   if (!mounted) {
     return (
-      <div className="fixed bottom-24 right-8 z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block text-right">
+      <div className="fixed bottom-32 right-8 z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block text-right">
         <div style={{ opacity: 0.3 }}>// RENDER_INIT [OK]</div>
         <div style={{ opacity: 0.5 }}>C  LOAD_START [ACTV]</div>
         <div style={{ opacity: 0.7 }}>>> SYNC_PROC [DONE]</div>
@@ -159,7 +159,7 @@ function DataStream() {
   }
 
   return (
-    <div className="fixed bottom-24 right-8 z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block text-right">
+    <div className="fixed bottom-32 right-8 z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block text-right">
       {lines.map((line, i) => (
         <div 
           key={i} 
