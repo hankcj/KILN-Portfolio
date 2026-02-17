@@ -14,10 +14,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="min-h-screen">
-        {/* Film grain overlay */}
+    <html lang="en" className="dark">
+      <body className="min-h-screen bg-bg-primary text-on-bg-primary overflow-x-hidden">
+        {/* Visual effects layers */}
         <div className="film-grain" aria-hidden="true" />
+        <div className="scanlines" aria-hidden="true" />
+        <div className="grid-overlay" aria-hidden="true" />
+        <div className="vignette" aria-hidden="true" />
         
         {/* WebGL Canvas Layer */}
         <SceneManager />

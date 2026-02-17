@@ -2,12 +2,13 @@
  * Outputs List Component
  * 
  * Grid/list of work outputs with hover interactions.
+ * Dark mode styled.
  */
 
 'use client';
 
 import { useAppStore } from '@/lib/store';
-import { SystemText } from './Typography';
+import { SystemText, Label } from './Typography';
 import { cn } from '@/lib/utils';
 
 interface Output {
@@ -25,7 +26,7 @@ interface OutputsListProps {
 
 export function OutputsList({ outputs }: OutputsListProps) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border-custom">
       {outputs.map((output) => (
         <OutputCard key={output.id} output={output} />
       ))}
@@ -40,23 +41,23 @@ function OutputCard({ output }: { output: Output }) {
     <a
       href={`/work/${output.id}`}
       className={cn(
-        'group block bg-bg-primary p-8 transition-colors duration-200',
-        'hover:bg-bg-secondary'
+        'group block bg-bg-primary p-8 transition-all duration-300',
+        'hover:bg-bg-secondary border border-transparent hover:border-border-custom'
       )}
       onMouseEnter={() => setHoveredItem(output.id)}
       onMouseLeave={() => setHoveredItem(null)}
     >
-      <div className="flex justify-between items-start mb-4">
-        <SystemText variant="fortran">{output.type.toUpperCase()}</SystemText>
-        <SystemText variant="fortran">{output.status.toUpperCase()}</SystemText>
+      <div className="flex justify-between items-start mb-6">
+        <Label>{output.type}</Label>
+        <Label>{output.status}</Label>
       </div>
 
-      <h3 className="font-heading text-h3 mb-2 text-on-bg-primary group-hover:text-accent transition-colors">
+      <h3 className="font-heading text-h3 mb-3 text-on-bg-primary group-hover:text-accent transition-colors duration-200">
         {output.title}
       </h3>
 
       {output.description && (
-        <p className="text-small text-on-surface-muted mb-4 line-clamp-2">
+        <p className="text-small text-on-bg-tertiary mb-6 line-clamp-2">
           {output.description}
         </p>
       )}

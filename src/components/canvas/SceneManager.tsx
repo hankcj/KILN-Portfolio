@@ -3,6 +3,7 @@
  * 
  * Global WebGL canvas manager.
  * Handles scene switching, route-based scenes, and quality adaptation.
+ * Dark mode optimized.
  */
 
 'use client';
@@ -12,6 +13,7 @@ import { useEffect } from 'react';
 import { useAppStore } from '@/lib/store';
 import { fpsMonitor, getInitialQuality, adaptiveQuality, QualityLevel } from '@/lib/perf';
 import { prefersReducedMotion } from '@/lib/motion';
+import { EntranceScene } from './Scenes/EntranceScene';
 
 interface SceneManagerProps {
   children?: React.ReactNode;
@@ -55,7 +57,7 @@ export function SceneManager({ children }: SceneManagerProps) {
     return null;
   }
 
-  const dpr = getDPR(webglQuality);
+  const dpr = typeof window !== 'undefined' ? getDPR(webglQuality) : 1;
 
   return (
     <div className="fixed inset-0 z-0 pointer-events-none">
@@ -74,8 +76,12 @@ export function SceneManager({ children }: SceneManagerProps) {
           background: 'transparent',
         }}
       >
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 5]} intensity={1} />
+        {/* Ambient lighting for dark scene */}
+        <ambientLight intensity={0.1} />
+        <pointLight position={[10, 10, 10]} intensity={0.3} color="#FAF6F0" />
+        <pointLight position={[-10, -10, -10]} intensity={0.1} color="#0036D8" />
+        
+        <EntranceScene />
         {children}
       </Canvas>
     </div>
@@ -83,11 +89,13 @@ export function SceneManager({ children }: SceneManagerProps) {
 }
 
 function getDPR(quality: QualityLevel): number {
+  if (typeof window === 'undefined') return 1;
+  
   switch (quality) {
     case 'high':
-      return Math.min(window?.devicePixelRatio || 2, 2);
+      return Math.min(window.devicePixelRatio || 2, 2);
     case 'medium':
-      return Math.min(window?.devicePixelRatio || 1.5, 1.5);
+      return Math.min(window.devicePixelRatio || 1.5, 1.5);
     case 'low':
       return 1;
     default:

@@ -16,7 +16,7 @@ interface LayoutProps {
 
 export function Layout({ children, className }: LayoutProps) {
   return (
-    <div className={cn('min-h-screen flex flex-col', className)}>
+    <div className={cn('min-h-screen flex flex-col relative z-10', className)}>
       <Navigation />
       <div className="flex-1">{children}</div>
       <Footer />
@@ -26,15 +26,15 @@ export function Layout({ children, className }: LayoutProps) {
 
 function Navigation() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-40 px-8 py-6 flex justify-between items-center pointer-events-none">
+    <nav className="fixed top-0 left-0 right-0 z-40 px-6 md:px-8 py-6 flex justify-between items-center">
       <a 
         href="/" 
-        className="pointer-events-auto font-heading text-h4 text-on-bg-primary hover:text-accent transition-colors duration-150"
+        className="font-heading text-h4 text-on-bg-primary hover:text-accent transition-colors duration-150 tracking-tight"
       >
         KILN
       </a>
       
-      <div className="pointer-events-auto flex items-center gap-8">
+      <div className="flex items-center gap-8">
         <NavLink href="/work">Work</NavLink>
         <NavLink href="/signal">Signal</NavLink>
         <NavLink href="/system">System</NavLink>
@@ -47,7 +47,7 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
   return (
     <a
       href={href}
-      className="text-small font-medium text-on-bg-primary hover:text-accent transition-colors duration-150"
+      className="text-small font-medium text-on-bg-secondary hover:text-on-bg-primary transition-colors duration-150 uppercase tracking-widest"
     >
       {children}
     </a>
@@ -56,13 +56,13 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
 
 function Footer() {
   return (
-    <footer className="surface-inverse py-12 px-8">
-      <div className="max-w-6xl mx-auto flex justify-between items-center">
-        <p className="text-caption text-on-surface-inverse opacity-60">
-          © {new Date().getFullYear()} KILN
-        </p>
-        <p className="text-caption text-on-surface-inverse opacity-40 font-mono">
+    <footer className="border-t border-border-custom py-12 px-6 md:px-8 bg-bg-primary">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <p className="text-caption text-on-surface-muted font-mono">
           // SYSIN DD *
+        </p>
+        <p className="text-caption text-on-surface-muted">
+          © {new Date().getFullYear()} KILN
         </p>
       </div>
     </footer>

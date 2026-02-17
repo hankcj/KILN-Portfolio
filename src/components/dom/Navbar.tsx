@@ -3,6 +3,7 @@
  * 
  * Minimal, persistent navigation.
  * Part of the Archive/Utility layer.
+ * Dark mode styled.
  */
 
 'use client';
@@ -20,12 +21,12 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 px-8 py-6">
+    <header className="fixed top-0 left-0 right-0 z-40 px-6 md:px-8 py-6">
       <nav className="flex justify-between items-center">
         {/* Logo */}
         <a 
           href="/" 
-          className="font-heading text-h4 text-on-bg-primary hover:text-accent transition-colors duration-150"
+          className="font-heading text-h4 text-on-bg-primary hover:text-accent transition-colors duration-150 tracking-tight"
         >
           KILN
         </a>
@@ -45,15 +46,25 @@ export function Navbar() {
           className="md:hidden p-2 text-on-bg-primary"
           aria-label="Toggle menu"
         >
-          <div className={cn('w-6 h-0.5 bg-current transition-all', isOpen && 'rotate-45 translate-y-1')} />
-          <div className={cn('w-6 h-0.5 bg-current mt-1.5 transition-all', isOpen && '-rotate-45 -translate-y-1')} />
+          <div className={cn(
+            'w-6 h-0.5 bg-current transition-all duration-200',
+            isOpen && 'rotate-45 translate-y-2'
+          )} />
+          <div className={cn(
+            'w-6 h-0.5 bg-current mt-1.5 transition-all duration-200',
+            isOpen && 'opacity-0'
+          )} />
+          <div className={cn(
+            'w-6 h-0.5 bg-current mt-1.5 transition-all duration-200',
+            isOpen && '-rotate-45 -translate-y-2'
+          )} />
         </button>
       </nav>
 
       {/* Mobile Menu */}
       <div
         className={cn(
-          'md:hidden fixed inset-0 top-20 bg-bg-primary transition-opacity duration-200',
+          'md:hidden fixed inset-0 top-20 bg-bg-primary border-t border-border-custom transition-all duration-300',
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         )}
       >
@@ -78,7 +89,7 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
   return (
     <a
       href={href}
-      className="text-small font-medium text-on-bg-primary hover:text-accent transition-colors duration-150 uppercase tracking-wider"
+      className="text-small font-medium text-on-bg-secondary hover:text-on-bg-primary transition-colors duration-150 uppercase tracking-widest"
     >
       {children}
     </a>

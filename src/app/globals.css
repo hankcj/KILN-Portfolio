@@ -11,25 +11,35 @@
   --color-ink-black: #13161F;
   --color-parchment: #FAF6F0;
 
-  /* Semantic tokens */
-  --color-bg-primary: #FAF6F0;
-  --color-bg-secondary: #F0EBE3;
-  --color-accent: #0036D8;
-  --color-surface-inverse: #13161F;
-  --color-surface-muted: #E8E4DE;
-  --color-border: #C4BEB4;
-  --color-border-muted: #E0DCD6;
+  /* DARK MODE as default - flipped from light theme */
+  /* Surface tokens - dark backgrounds */
+  --color-bg-primary: #13161F;           /* Ink Black - main background */
+  --color-bg-secondary: #1A1D27;         /* Slightly lighter Ink */
+  --color-bg-tertiary: #22252F;          /* For cards/panels on dark */
+  
+  --color-accent: #0036D8;               /* Bright Indigo */
+  --color-accent-hover: #002BB8;         /* Darker Indigo for hover */
+  
+  --color-surface-inverse: #FAF6F0;      /* Parchment - inverse blocks */
+  --color-surface-muted: #2A2D37;        /* Muted dark surface */
+  
+  --color-border: rgba(250, 246, 240, 0.15);        /* Parchment low opacity */
+  --color-border-muted: rgba(250, 246, 240, 0.08);  /* Very subtle */
 
-  /* On-color tokens */
-  --color-on-bg-primary: #13161F;
-  --color-on-bg-secondary: #13161F;
-  --color-on-accent: #FFFFFF;
-  --color-on-surface-inverse: #FAF6F0;
-  --color-on-surface-muted: #5C5C68;
+  /* On-color tokens - light text on dark backgrounds */
+  --color-on-bg-primary: #FAF6F0;        /* Parchment on Ink Black */
+  --color-on-bg-secondary: #E8E4DE;      /* Slightly muted parchment */
+  --color-on-bg-tertiary: #C4BEB4;       /* More muted for less important text */
+  
+  --color-on-accent: #FFFFFF;            /* White on Bright Indigo */
+  
+  --color-on-surface-inverse: #13161F;   /* Ink Black on Parchment */
+  --color-on-surface-muted: #8A8580;     /* Muted text on dark surfaces */
 
   /* Typography */
-  --font-heading: 'Averia Serif Libre', Georgia, serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-heading: "Averia Serif Libre", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Code", monospace;
 
   /* Spacing */
   --space-2: 0.5rem;
@@ -41,6 +51,10 @@
   --space-10: 2.5rem;
   --space-12: 3rem;
   --space-16: 4rem;
+
+  /* Grain intensity - more pronounced for dark aesthetic */
+  --grain-intensity: 0.06;
+  --grain-opacity: 0.04;
 }
 
 @layer base {
@@ -55,10 +69,19 @@
   body {
     @apply bg-bg-primary text-on-bg-primary font-body antialiased;
     font-feature-settings: 'liga' 1, 'calt' 1;
+    background-color: #13161F;
+    color: #FAF6F0;
+  }
+
+  /* Selection styling */
+  ::selection {
+    background-color: rgba(0, 54, 216, 0.3);
+    color: #FAF6F0;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
+    color: var(--color-on-bg-primary);
   }
 
   h1 { @apply text-h1; }
@@ -81,25 +104,158 @@
 }
 
 @layer components {
+  /* Film grain overlay - more pronounced for dark aesthetic */
+  .film-grain {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    animation: grain 0.5s steps(10) infinite;
+  }
+
+  @keyframes grain {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-2%, -2%); }
+    20% { transform: translate(2%, -1%); }
+    30% { transform: translate(-1%, 2%); }
+    40% { transform: translate(1%, -2%); }
+    50% { transform: translate(-2%, 1%); }
+    60% { transform: translate(2%, 2%); }
+    70% { transform: translate(-1%, -1%); }
+    80% { transform: translate(1%, 1%); }
+    90% { transform: translate(-2%, -2%); }
+  }
+
+  /* Scanlines for retro/scientific feel */
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px
+    );
+    opacity: 0.4;
+  }
+
+  /* Buttons - dark mode styles */
   .btn-primary {
-    @apply bg-accent text-on-accent px-6 py-3 text-button font-medium
-           transition-all duration-150 ease-out
-           hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2;
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 150ms ease-out;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-accent-hover);
+    box-shadow: 0 0 20px rgba(0, 54, 216, 0.3);
+  }
+
+  .btn-primary:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-accent), 0 0 0 4px rgba(0, 54, 216, 0.2);
   }
 
   .btn-secondary {
-    @apply bg-transparent border border-border text-on-bg-primary px-6 py-3 text-button font-medium
-           transition-all duration-150 ease-out
-           hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2;
+    background-color: transparent;
+    color: var(--color-on-bg-primary);
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 150ms ease-out;
+    border: 1px solid var(--color-border);
+    cursor: pointer;
   }
 
+  .btn-secondary:hover {
+    background-color: var(--color-bg-secondary);
+    border-color: var(--color-on-bg-secondary);
+  }
+
+  /* Surface variants */
   .surface-inverse {
-    @apply bg-surface-inverse text-on-surface-inverse;
+    background-color: var(--color-surface-inverse);
+    color: var(--color-on-surface-inverse);
   }
 
-  .film-grain {
-    @apply pointer-events-none fixed inset-0 z-50 opacity-[0.03];
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  .surface-muted {
+    background-color: var(--color-surface-muted);
+    color: var(--color-on-bg-secondary);
+  }
+
+  /* Text utilities */
+  .text-muted {
+    color: var(--color-on-bg-tertiary);
+  }
+
+  .text-subtle {
+    color: var(--color-on-surface-muted);
+  }
+
+  /* Border utilities */
+  .border-subtle {
+    border-color: var(--color-border);
+  }
+
+  .border-muted {
+    border-color: var(--color-border-muted);
+  }
+
+  /* System text / JCL style */
+  .system-text {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-on-surface-muted);
+  }
+
+  /* Grid pattern overlay */
+  .grid-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    background-image: 
+      linear-gradient(rgba(250, 246, 240, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(250, 246, 240, 0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  /* Vignette effect */
+  .vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+    background: radial-gradient(
+      ellipse at center,
+      transparent 0%,
+      transparent 50%,
+      rgba(19, 22, 31, 0.4) 100%
+    );
   }
 }
 
