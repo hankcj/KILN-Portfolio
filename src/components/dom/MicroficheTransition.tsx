@@ -1,19 +1,19 @@
 /**
  * Microfiche Transition
  * 
- * Loading text clustered in bottom area, blank page state, no grain.
+ * Typewriter loading text in white, clustered in bottom area.
  */
 
 'use client';
 
 import { useEffect, useState } from 'react';
 
-// Loading text clustered in bottom-left area
-const LOADING_TEXTS = [
-  { text: '// LOADING_ARCHIVE', delay: 0 },
-  { text: 'C  ACCESS_GRANTED', delay: 150 },
-  { text: 'READING_INDEX...', delay: 300 },
-  { text: 'SYS_RDY', delay: 450 },
+// Loading text - clustered in bottom-left area
+const LOADING_LINES = [
+  '// LOADING_ARCHIVE',
+  'C  ACCESS_GRANTED',
+  'READING_INDEX...',
+  'SYS_RDY',
 ];
 
 interface MicroficheTransitionProps {
@@ -21,20 +21,52 @@ interface MicroficheTransitionProps {
 }
 
 export function MicroficheTransition({ stage }: MicroficheTransitionProps) {
-  const [visibleLines, setVisibleLines] = useState<number[]>([]);
+  const [typedLines, setTypedLines] = useState<string[]>(['', '', '', '']);
+  const [currentLine, setCurrentLine] = useState(0);
+  const [showText, setShowText] = useState(false);
 
-  // Animate text appearance
+  // Typewriter effect when entering 'text' stage
   useEffect(() => {
-    if (stage === 'text') {
-      LOADING_TEXTS.forEach((item) => {
-        setTimeout(() => {
-          setVisibleLines(prev => [...prev, item.delay]);
-        }, item.delay);
-      });
-    } else if (stage === 'zoom2' || stage === 'idle') {
-      setVisibleLines([]);
+    if (stage === 'text' && !showText) {
+      setShowText(true);
+      
+      const typeLine = (lineIndex: number) => {
+        if (lineIndex >= LOADING_LINES.length) {
+          return; // All lines typed
+        }
+
+        const text = LOADING_LINES[lineIndex];
+        let charIndex = 0;
+        
+        const typeChar = () => {
+          if (charIndex <= text.length) {
+            setTypedLines(prev => {
+              const newLines = [...prev];
+              newLines[lineIndex] = text.slice(0, charIndex);
+              return newLines;
+            });
+            charIndex++;
+            setTimeout(typeChar, 35); // 35ms per character
+          } else {
+            // Line complete, start next line
+            setTimeout(() => {
+              setCurrentLine(lineIndex + 1);
+              typeLine(lineIndex + 1);
+            }, 250);
+          }
+        };
+
+        typeChar();
+      };
+
+      typeLine(0);
+    } else if (stage === 'idle') {
+      // Reset when idle
+      setShowText(false);
+      setTypedLines(['', '', '', '']);
+      setCurrentLine(0);
     }
-  }, [stage]);
+  }, [stage, showText]);
 
   if (stage === 'idle') return null;
 
@@ -55,50 +87,65 @@ export function MicroficheTransition({ stage }: MicroficheTransitionProps) {
         }}
       />
 
-      {/* Loading text - clustered in bottom left */}
+      {/* Loading text - clustered in bottom left with typewriter effect */}
       <div 
-        className="absolute bottom-20 left-10 flex flex-col gap-2 pointer-events-none"
+        className="absolute bottom-20 left-10 flex flex-col gap-2 pointer-events-none font-mono text-system"
         style={{
           opacity: showContent ? 1 : 0,
           transition: 'opacity 0.2s ease'
         }}
       >
-        {LOADING_TEXTS.map((item, i) => {
-          const isVisible = visibleLines.includes(item.delay);
-          return (
-            <div
-              key={i}
-              className="font-mono text-system pointer-events-none"
-              style={{
-                color: isVisible ? 'rgba(0, 54, 216, 0.9)' : 'rgba(0, 54, 216, 0.2)',
-                opacity: isVisible ? 1 : 0,
-                transition: 'all 0.3s ease-out',
-                textShadow: isVisible ? '0 0 10px rgba(0, 54, 216, 0.5)' : 'none',
-                transform: isVisible ? 'translateX(0)' : 'translateX(-10px)',
-              }}
-            >
-              {item.text}
-            </div>
-          );
-        })}
+        {LOADING_LINES.map((line, i) => (
+          <div 
+            key={i}
+            className="h-6"
+            style={{
+              color: '#FAF6F0', // Parchment white from branding
+              opacity: i <= currentLine ? 1 : 0,
+              transition: 'opacity 0.1s',
+              textShadow: i < currentLine ? '0 0 10px rgba(250, 246, 240, 0.3)' : 'none'
+            }}
+          >
+            {typedLines[i]}
+            {i === currentLine && stage === 'text' && (
+              <span className="animate-pulse" style={{ color: '#FAF6F0' }}>_</span>
+            )}
+          </div>
+        ))}
       </div>
 
       {/* Corner brackets during transition */}
       <div 
-        className="absolute top-10 left-10 w-6 h-6 border-l border-t border-accent/40 pointer-events-none"
-        style={{ opacity: showContent ? 1 : 0, transition: 'opacity 0.3s' }}
+        className="absolute top-10 left-10 w-6 h-6 border-l border-t pointer-events-none"
+        style={{ 
+          opacity: showContent ? 1 : 0, 
+          transition: 'opacity 0.3s',
+          borderColor: 'rgba(250, 246, 240, 0.2)'
+        }}
       />
       <div 
-        className="absolute top-10 right-10 w-6 h-6 border-r border-t border-accent/40 pointer-events-none"
-        style={{ opacity: showContent ? 1 : 0, transition: 'opacity 0.3s' }}
+        className="absolute top-10 right-10 w-6 h-6 border-r border-t pointer-events-none"
+        style={{ 
+          opacity: showContent ? 1 : 0, 
+          transition: 'opacity 0.3s',
+          borderColor: 'rgba(250, 246, 240, 0.2)'
+        }}
       />
       <div 
-        className="absolute bottom-10 left-10 w-6 h-6 border-l border-b border-accent/40 pointer-events-none"
-        style={{ opacity: showContent ? 1 : 0, transition: 'opacity 0.3s' }}
+        className="absolute bottom-10 left-10 w-6 h-6 border-l border-b pointer-events-none"
+        style={{ 
+          opacity: showContent ? 1 : 0, 
+          transition: 'opacity 0.3s',
+          borderColor: 'rgba(250, 246, 240, 0.2)'
+        }}
       />
       <div 
-        className="absolute bottom-10 right-10 w-6 h-6 border-r border-b border-accent/40 pointer-events-none"
-        style={{ opacity: showContent ? 1 : 0, transition: 'opacity 0.3s' }}
+        className="absolute bottom-10 right-10 w-6 h-6 border-r border-b pointer-events-none"
+        style={{ 
+          opacity: showContent ? 1 : 0, 
+          transition: 'opacity 0.3s',
+          borderColor: 'rgba(250, 246, 240, 0.2)'
+        }}
       />
     </div>
   );

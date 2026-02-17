@@ -1,7 +1,7 @@
 /**
  * Home Page Content
  * 
- * Clean layout with load animation that clears after complete.
+ * Clean layout with typewriter boot animation.
  */
 
 'use client';
@@ -11,49 +11,78 @@ import { gsap } from 'gsap';
 import { LivingEffects, GlitchText } from '@/components/dom/LivingEffects';
 import { useAppStore } from '@/lib/store';
 
+const BOOT_LINES = [
+  '// INIT_SEQUENCE',
+  'C  LOAD_MODULES',
+  '>> MOUNT_SYSTEMS',
+  '** READY',
+];
+
 export default function HomePage() {
   const { startTransition } = useAppStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const [animationComplete, setAnimationComplete] = useState(false);
+  const [typedLines, setTypedLines] = useState<string[]>(['', '', '', '']);
+  const [currentLine, setCurrentLine] = useState(0);
 
-  // Load animation sequence
+  // Typewriter effect for boot sequence
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        onComplete: () => {
+    const typeLine = (lineIndex: number) => {
+      if (lineIndex >= BOOT_LINES.length) {
+        // All lines typed, fade to content
+        setTimeout(() => {
           setAnimationComplete(true);
+          gsap.to('.boot-overlay', {
+            opacity: 0,
+            duration: 0.6,
+            ease: 'power2.inOut',
+            onComplete: () => {
+              gsap.set('.boot-overlay', { display: 'none' });
+            }
+          });
+          // Reveal main content
+          gsap.fromTo('.main-content', 
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
+          );
+          gsap.fromTo('.nav-link', 
+            { opacity: 0 },
+            { opacity: 1, duration: 0.3, stagger: 0.1, ease: 'steps(1)' }
+          );
+        }, 400);
+        return;
+      }
+
+      const text = BOOT_LINES[lineIndex];
+      let charIndex = 0;
+      
+      const typeChar = () => {
+        if (charIndex <= text.length) {
+          setTypedLines(prev => {
+            const newLines = [...prev];
+            newLines[lineIndex] = text.slice(0, charIndex);
+            return newLines;
+          });
+          charIndex++;
+          setTimeout(typeChar, 40); // 40ms per character
+        } else {
+          // Line complete, start next line after pause
+          setTimeout(() => {
+            setCurrentLine(lineIndex + 1);
+            typeLine(lineIndex + 1);
+          }, 300);
         }
-      });
+      };
 
-      // PHASE 1: Boot sequence text appears
-      tl.fromTo('.boot-text', 
-        { opacity: 0, x: -20 },
-        { opacity: 1, x: 0, duration: 0.1, stagger: 0.4, ease: 'power2.out' }
-      );
+      typeChar();
+    };
 
-      // PHASE 2: Fade boot text, reveal main content
-      tl.to('.boot-overlay', {
-        opacity: 0,
-        duration: 0.6,
-        ease: 'power2.inOut'
-      }, '+=0.5');
+    // Start typing after brief delay
+    const timer = setTimeout(() => {
+      typeLine(0);
+    }, 200);
 
-      // PHASE 3: Main content reveals
-      tl.fromTo('.main-content', 
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
-        '-=0.3'
-      );
-
-      tl.fromTo('.nav-link', 
-        { opacity: 0 },
-        { opacity: 1, duration: 0.3, stagger: 0.1, ease: 'steps(1)' },
-        '-=0.5'
-      );
-
-    }, containerRef);
-
-    return () => ctx.revert();
+    return () => clearTimeout(timer);
   }, []);
 
   const handleNavigate = (page: string) => (e: React.MouseEvent) => {
@@ -70,15 +99,28 @@ export default function HomePage() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-3xl" />
       </div>
 
-      {/* Boot animation overlay - disappears after load */}
+      {/* Boot animation overlay - typewriter effect */}
       <div 
-        className={`boot-overlay fixed inset-0 z-50 flex items-center justify-center bg-bg-primary transition-opacity duration-500 ${animationComplete ? 'pointer-events-none opacity-0' : ''}`}
+        className="boot-overlay fixed inset-0 z-50 flex items-center justify-center bg-bg-primary"
+        style={{ opacity: 1 }}
       >
-        <div className="space-y-3">
-          <div className="boot-text font-mono text-system text-accent opacity-0">// INIT_SEQUENCE</div>
-          <div className="boot-text font-mono text-system text-accent opacity-0">C  LOAD_MODULES</div>
-          <div className="boot-text font-mono text-system text-accent opacity-0">{'>>'} MOUNT_SYSTEMS</div>
-          <div className="boot-text font-mono text-system text-accent opacity-0">** READY</div>
+        <div className="space-y-3 font-mono text-system">
+          {BOOT_LINES.map((line, i) => (
+            <div 
+              key={i} 
+              className="h-6"
+              style={{ 
+                color: '#FAF6F0', // Parchment white
+                opacity: i <= currentLine ? 1 : 0,
+                transition: 'opacity 0.1s'
+              }}
+            >
+              {typedLines[i]}
+              {i === currentLine && (
+                <span className="animate-pulse" style={{ color: '#FAF6F0' }}>_</span>
+              )}
+            </div>
+          ))}
         </div>
       </div>
 
