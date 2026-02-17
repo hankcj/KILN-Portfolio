@@ -10,6 +10,7 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { gsap } from 'gsap';
+import { LivingEffects, GlitchText, MouseParallax } from '@/components/dom/LivingEffects';
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -19,6 +20,7 @@ export default function Home() {
   const cornerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const lineRefs = useRef<(HTMLDivElement | null)[]>([]);
   const infoRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const scanRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -113,14 +115,13 @@ export default function Home() {
         ease: 'power2.out'
       });
 
-      // Pulsing animation for live indicator
-      gsap.to('.live-dot', {
-        scale: 1.5,
-        opacity: 0.5,
-        duration: 1,
+      // Scan line animation - continuous vertical sweep
+      gsap.to(scanRef.current, {
+        top: '100%',
+        duration: 4,
         repeat: -1,
-        yoyo: true,
-        ease: 'power2.inOut'
+        ease: 'power2.inOut',
+        repeatDelay: 2
       });
 
     }, containerRef);
@@ -137,22 +138,43 @@ export default function Home() {
     });
   };
 
+  // Random blinking cursor for system text
+  const blinkRef = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const tl = gsap.timeline({ repeat: -1 });
+    tl.to(blinkRef.current, { opacity: 0, duration: 0.5 })
+      .to(blinkRef.current, { opacity: 1, duration: 0.5 });
+    return () => { tl.kill(); };
+  }, []);
+
   return (
     <main ref={containerRef} className="min-h-screen relative overflow-hidden">
-      {/* Background atmospheric elements */}
-      <div className="fixed inset-0 pointer-events-none">
-        {/* Large gradient orb */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-3xl" />
-        
-        {/* Grid lines for structure */}
-        <div className="absolute inset-0 opacity-[0.03]">
-          <div ref={el => lineRefs.current[0] = el} className="h-full w-px bg-on-bg-primary absolute left-[10%]" />
-          <div ref={el => lineRefs.current[1] = el} className="h-full w-px bg-on-bg-primary absolute left-[50%]" />
-          <div ref={el => lineRefs.current[2] = el} className="h-full w-px bg-on-bg-primary absolute left-[90%]" />
-          <div ref={el => lineRefs.current[3] = el} className="w-full h-px bg-on-bg-primary absolute top-[15%]" />
-          <div ref={el => lineRefs.current[4] = el} className="w-full h-px bg-on-bg-primary absolute top-[85%]" />
+      {/* Living effects layer */}
+      <LivingEffects />
+
+      {/* Scan line sweep */}
+      <div 
+        ref={scanRef}
+        className="fixed left-0 right-0 h-px bg-accent/20 pointer-events-none z-30"
+        style={{ top: '-2px', boxShadow: '0 0 20px rgba(0, 54, 216, 0.3)' }}
+      />
+
+      {/* Background atmospheric elements with parallax */}
+      <MouseParallax intensity={0.01}>
+        <div className="fixed inset-0 pointer-events-none">
+          {/* Large gradient orb */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-3xl" />
+          
+          {/* Grid lines for structure */}
+          <div className="absolute inset-0 opacity-[0.03]">
+            <div ref={el => lineRefs.current[0] = el} className="h-full w-px bg-on-bg-primary absolute left-[10%]" />
+            <div ref={el => lineRefs.current[1] = el} className="h-full w-px bg-on-bg-primary absolute left-[50%]" />
+            <div ref={el => lineRefs.current[2] = el} className="h-full w-px bg-on-bg-primary absolute left-[90%]" />
+            <div ref={el => lineRefs.current[3] = el} className="w-full h-px bg-on-bg-primary absolute top-[15%]" />
+            <div ref={el => lineRefs.current[4] = el} className="w-full h-px bg-on-bg-primary absolute top-[85%]" />
+          </div>
         </div>
-      </div>
+      </MouseParallax>
 
       {/* UNORTHODOX NAVIGATION - scattered, not in a bar */}
       <nav className="fixed inset-0 z-50 pointer-events-none">
@@ -175,7 +197,7 @@ export default function Home() {
           onMouseLeave={handleNavHover}
           className="pointer-events-auto absolute top-8 right-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors"
         >
-          C  WORK
+          <GlitchText>C  WORK</GlitchText>
         </Link>
 
         {/* Bottom left - Signal */}
@@ -186,7 +208,7 @@ export default function Home() {
           onMouseLeave={handleNavHover}
           className="pointer-events-auto absolute bottom-8 left-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors"
         >
-          C  SIGNAL
+          <GlitchText>C  SIGNAL</GlitchText>
         </Link>
 
         {/* Bottom right - System */}
@@ -197,7 +219,7 @@ export default function Home() {
           onMouseLeave={handleNavHover}
           className="pointer-events-auto absolute bottom-8 right-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors"
         >
-          // SYSTEM
+          <GlitchText>// SYSTEM</GlitchText>
         </Link>
 
         {/* Vertical side nav - left middle */}
@@ -233,7 +255,7 @@ export default function Home() {
         {/* TOP SECTION - System header */}
         <div className="flex justify-between items-start">
           <div className="font-mono text-system text-on-surface-muted">
-            // BOOT SEQUENCE
+            // BOOT SEQUENCE <span ref={blinkRef}>_</span>
           </div>
           <div className="font-mono text-system text-on-surface-muted text-right">
             EST. 2024<br />
@@ -261,9 +283,11 @@ export default function Home() {
             </div>
 
             {/* KILN - massive display */}
-            <h1 ref={titleRef} className="font-heading text-display-xl md:text-[12rem] lg:text-[16rem] text-on-bg-primary leading-[0.85] tracking-tight">
-              KILN
-            </h1>
+            <MouseParallax intensity={0.02}>
+              <h1 ref={titleRef} className="font-heading text-display-xl md:text-[12rem] lg:text-[16rem] text-on-bg-primary leading-[0.85] tracking-tight">
+                KILN
+              </h1>
+            </MouseParallax>
 
             {/* Subtitle - overlapping style */}
             <div ref={subtitleRef} className="mt-2 md:mt-0 md:absolute md:top-4 md:right-0 lg:right-20">
@@ -331,7 +355,7 @@ export default function Home() {
             REF: 001-A
           </div>
           <div className="flex items-center gap-4">
-            <div className="live-dot w-2 h-2 bg-accent rounded-full" />
+            <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
             <span className="font-mono text-system text-on-surface-muted">
               LIVE
             </span>

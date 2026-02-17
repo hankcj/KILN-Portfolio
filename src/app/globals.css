@@ -52,9 +52,7 @@
   --space-12: 3rem;
   --space-16: 4rem;
 
-  /* Grain intensity - more pronounced for dark aesthetic */
-  --grain-intensity: 0.06;
-  --grain-opacity: 0.04;
+  /* Grain handled by LivingEffects component */
 }
 
 @layer base {
