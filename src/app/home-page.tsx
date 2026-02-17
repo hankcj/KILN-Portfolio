@@ -1,350 +1,264 @@
 /**
  * Home Page Content
  * 
- * The entrance/landing page content extracted into a component
- * for use with the microfiche transition system.
+ * Brutalist entrance with glitch/scan effects instead of gradual fades.
  */
 
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-import { LivingEffects, GlitchText, MouseParallax } from '@/components/dom/LivingEffects';
+import { LivingEffects, GlitchText } from '@/components/dom/LivingEffects';
 import { useAppStore } from '@/lib/store';
 
 export default function HomePage() {
   const { startTransition } = useAppStore();
   const containerRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLDivElement>(null);
-  const navRefs = useRef<(HTMLElement | null)[]>([]);
-  const cornerRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const lineRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const infoRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [bootSequence, setBootSequence] = useState<string[]>([]);
+  const [showContent, setShowContent] = useState(false);
+  const [glitchText, setGlitchText] = useState('');
+  
+  const finalTitle = 'KILN';
 
+  // Brutalist boot sequence
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Initial states
-      gsap.set(titleRef.current, { 
-        y: 100, 
-        opacity: 0,
-        clipPath: 'inset(100% 0 0 0)'
-      });
-      gsap.set(subtitleRef.current, { 
-        x: -30, 
-        opacity: 0 
-      });
-      gsap.set(navRefs.current, { 
-        opacity: 0,
-        y: -20 
-      });
-      gsap.set(cornerRefs.current, { 
-        scale: 0,
-        opacity: 0 
-      });
-      gsap.set(lineRefs.current, { 
-        scaleX: 0,
-        transformOrigin: 'left center'
-      });
-      gsap.set(infoRefs.current, { 
-        y: 30, 
-        opacity: 0 
-      });
+    const sequence = [
+      '// INIT...',
+      'C  BOOT_SEQ_START',
+      '>> LOADING_CORE',
+      '** SYSTEM_CHECK',
+      '// RENDER_READY',
+    ];
 
-      // Main timeline
-      const tl = gsap.timeline({ 
-        defaults: { ease: 'power3.out' },
-        delay: 0.3
-      });
+    // Show boot lines rapidly
+    sequence.forEach((line, i) => {
+      setTimeout(() => {
+        setBootSequence(prev => [...prev, line]);
+      }, i * 80);
+    });
 
-      // Corner brackets first
-      tl.to(cornerRefs.current, {
-        scale: 1,
-        opacity: 1,
-        duration: 0.6,
-        stagger: 0.1
-      });
+    // Clear boot and show title with glitch
+    setTimeout(() => {
+      setBootSequence([]);
+      setShowContent(true);
+      
+      // Glitch effect on title
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@$%&';
+      let iterations = 0;
+      const maxIterations = 15;
+      
+      const glitchInterval = setInterval(() => {
+        setGlitchText(
+          finalTitle
+            .split('')
+            .map((char, index) => {
+              if (index < iterations / 3) return finalTitle[index];
+              return chars[Math.floor(Math.random() * chars.length)];
+            })
+            .join('')
+        );
+        
+        iterations++;
+        if (iterations > maxIterations) {
+          clearInterval(glitchInterval);
+          setGlitchText(finalTitle);
+        }
+      }, 50);
+    }, 600);
 
-      // Grid lines draw in
-      tl.to(lineRefs.current, {
-        scaleX: 1,
-        duration: 1.2,
-        stagger: 0.05,
-        ease: 'power2.inOut'
-      }, '-=0.4');
+    // Animate other elements with hard cuts
+    setTimeout(() => {
+      gsap.fromTo('.nav-item', 
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: 0.15, stagger: 0.05, ease: 'steps(1)' }
+      );
+    }, 900);
 
-      // Navigation fades in
-      tl.to(navRefs.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.1
-      }, '-=0.8');
+    setTimeout(() => {
+      gsap.fromTo('.info-block',
+        { opacity: 0, clipPath: 'inset(0 100% 0 0)' },
+        { opacity: 1, clipPath: 'inset(0 0% 0 0)', duration: 0.3, stagger: 0.1, ease: 'power2.out' }
+      );
+    }, 1100);
 
-      // Main title reveal
-      tl.to(titleRef.current, {
-        y: 0,
-        opacity: 1,
-        clipPath: 'inset(0% 0 0 0)',
-        duration: 1.4,
-        ease: 'power4.out'
-      }, '-=0.6');
-
-      // Subtitle slides in
-      tl.to(subtitleRef.current, {
-        x: 0,
-        opacity: 1,
-        duration: 1,
-        ease: 'power3.out'
-      }, '-=0.8');
-
-      // Info columns rise up
-      tl.to(infoRefs.current, {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: 'power3.out'
-      }, '-=0.6');
-
-      // Background K letter fades in slowly
-      gsap.to('.bg-letter', {
-        opacity: 0.03,
-        duration: 2,
-        delay: 0.5,
-        ease: 'power2.out'
-      });
-
-    }, containerRef);
-
-    return () => ctx.revert();
   }, []);
 
-  // Hover animations for nav
-  const handleNavHover = (e: React.MouseEvent<HTMLElement>) => {
-    gsap.to(e.currentTarget, {
-      x: e.type === 'mouseenter' ? 5 : 0,
-      duration: 0.3,
-      ease: 'power2.out'
-    });
-  };
-
-  // Handle page transitions
   const handleNavigate = (page: string) => (e: React.MouseEvent) => {
     e.preventDefault();
     startTransition(page);
   };
 
-  // Random blinking cursor for system text
-  const blinkRef = useRef<HTMLSpanElement>(null);
-  useEffect(() => {
-    const tl = gsap.timeline({ repeat: -1 });
-    tl.to(blinkRef.current, { opacity: 0, duration: 0.5 })
-      .to(blinkRef.current, { opacity: 1, duration: 0.5 });
-    return () => { tl.kill(); };
-  }, []);
-
   return (
     <main ref={containerRef} className="min-h-screen relative overflow-hidden">
-      {/* Living effects */}
       <LivingEffects />
 
-      {/* Background atmospheric elements with parallax */}
-      <MouseParallax intensity={0.01}>
-        <div className="fixed inset-0 pointer-events-none">
-          {/* Large gradient orb */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-3xl" />
-          
-          {/* Grid lines for structure */}
-          <div className="absolute inset-0 opacity-[0.03]">
-            <div ref={el => lineRefs.current[0] = el} className="h-full w-px bg-on-bg-primary absolute left-[10%]" />
-            <div ref={el => lineRefs.current[1] = el} className="h-full w-px bg-on-bg-primary absolute left-[50%]" />
-            <div ref={el => lineRefs.current[2] = el} className="h-full w-px bg-on-bg-primary absolute left-[90%]" />
-            <div ref={el => lineRefs.current[3] = el} className="w-full h-px bg-on-bg-primary absolute top-[15%]" />
-            <div ref={el => lineRefs.current[4] = el} className="w-full h-px bg-on-bg-primary absolute top-[85%]" />
-          </div>
-        </div>
-      </MouseParallax>
-
-      {/* UNORTHODOX NAVIGATION - scattered in 4 corners only */}
-      <nav className="fixed inset-0 z-50 pointer-events-none">
-        {/* Top left - Identity */}
-        <span 
-          ref={el => navRefs.current[0] = el}
-          onMouseEnter={handleNavHover}
-          onMouseLeave={handleNavHover}
-          className="pointer-events-auto absolute top-8 left-8 font-heading text-h4 text-on-bg-primary hover:text-accent transition-colors cursor-pointer"
-        >
-          K
-        </span>
-
-        {/* Top right - Work link */}
-        <a 
-          ref={el => navRefs.current[1] = el}
-          href="/work"
-          onClick={handleNavigate('work')}
-          onMouseEnter={handleNavHover}
-          onMouseLeave={handleNavHover}
-          className="pointer-events-auto absolute top-8 right-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors"
-        >
-          <GlitchText>C  WORK</GlitchText>
-        </a>
-
-        {/* Bottom left - Signal */}
-        <a 
-          ref={el => navRefs.current[2] = el}
-          href="/signal"
-          onClick={handleNavigate('signal')}
-          onMouseEnter={handleNavHover}
-          onMouseLeave={handleNavHover}
-          className="pointer-events-auto absolute bottom-8 left-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors"
-        >
-          <GlitchText>C  SIGNAL</GlitchText>
-        </a>
-
-        {/* Bottom right - System */}
-        <a 
-          ref={el => navRefs.current[3] = el}
-          href="/system"
-          onClick={handleNavigate('system')}
-          onMouseEnter={handleNavHover}
-          onMouseLeave={handleNavHover}
-          className="pointer-events-auto absolute bottom-8 right-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors"
-        >
-          <GlitchText>// SYSTEM</GlitchText>
-        </a>
-
-        {/* Vertical side nav - left middle */}
-        <div 
-          ref={el => navRefs.current[4] = el}
-          className="absolute left-8 top-1/2 -translate-y-1/2 hidden lg:block"
-        >
-          <div 
-            className="font-mono text-system text-on-surface-muted"
-            style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
-          >
-            PORTFOLIO_V1.0.0
-          </div>
-        </div>
-
-        {/* Vertical side nav - right middle */}
-        <div 
-          ref={el => navRefs.current[5] = el}
-          className="absolute right-8 top-1/2 -translate-y-1/2 hidden lg:block"
-        >
-          <div 
-            className="font-mono text-system text-on-surface-muted"
-            style={{ writingMode: 'vertical-rl' }}
-          >
-            48.8566° N 2.3522° E
-          </div>
-        </div>
-      </nav>
-
-      {/* MAIN CONTENT */}
-      <div className="relative z-10 min-h-screen flex flex-col justify-between px-6 md:px-16 lg:px-24 py-32">
-        
-        {/* TOP SECTION - System header */}
-        <div className="flex justify-between items-start">
-          <div className="font-mono text-system text-on-surface-muted">
-            // BOOT SEQUENCE <span ref={blinkRef}>_</span>
-          </div>
-          <div className="font-mono text-system text-on-surface-muted text-right">
-            EST. 2024<br />
-            STATUS: ONLINE
-          </div>
-        </div>
-
-        {/* CENTER - The massive KILN typography */}
-        <div className="relative my-auto">
-          {/* Background giant text */}
-          <div className="bg-letter absolute -left-4 md:-left-16 top-1/2 -translate-y-1/2 pointer-events-none select-none opacity-0">
-            <span className="font-heading text-[20vw] md:text-[25vw] text-on-bg-primary leading-none tracking-tighter">
-              K
-            </span>
-          </div>
-
-          {/* Main title block */}
-          <div className="relative">
-            {/* Line above */}
-            <div className="flex items-center gap-4 mb-4">
-              <div ref={el => lineRefs.current[5] = el} className="h-px bg-accent w-16" />
-              <span className="font-mono text-system text-accent">
-                ENTRY POINT
-              </span>
-            </div>
-
-            {/* KILN - massive display */}
-            <MouseParallax intensity={0.02}>
-              <h1 ref={titleRef} className="font-heading text-display-xl md:text-[12rem] lg:text-[16rem] text-on-bg-primary leading-[0.85] tracking-tight">
-                KILN
-              </h1>
-            </MouseParallax>
-
-            {/* Subtitle */}
-            <div ref={subtitleRef} className="mt-2 md:mt-0 md:absolute md:top-4 md:right-0 lg:right-20">
-              <p className="font-heading text-h3 md:text-h2 text-on-bg-tertiary max-w-xs leading-tight">
-                personal<br />studio
-              </p>
-            </div>
-
-            {/* Line below */}
-            <div className="flex items-center gap-4 mt-8">
-              <span className="font-mono text-system text-on-surface-muted">
-                // LOADING COMPLETE
-              </span>
-              <div ref={el => lineRefs.current[6] = el} className="h-px bg-border-custom flex-1 max-w-xs" />
-            </div>
-          </div>
-        </div>
-
-        {/* BOTTOM SECTION - Two column info (removed C NAVIGATION) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mt-auto max-w-4xl">
-          {/* Column 1 - What this is */}
-          <div ref={el => infoRefs.current[0] = el} className="space-y-2">
-            <div className="font-mono text-system text-on-surface-muted mb-2">
-              C  TYPE
-            </div>
-            <p className="text-small text-on-bg-secondary leading-relaxed">
-              Personal studio & publishing space. Not a portfolio. Not a blog. 
-              A continuous practice of systems, essays, and experiments.
-            </p>
-          </div>
-
-          {/* Column 2 - Current status */}
-          <div ref={el => infoRefs.current[1] = el} className="space-y-2">
-            <div className="font-mono text-system text-on-surface-muted mb-2">
-              C  STATUS
-            </div>
-            <p className="text-small text-on-bg-secondary leading-relaxed">
-              Currently building systems that think. Writing about the intersection 
-              of technology, design, and human experience.
-            </p>
-          </div>
-        </div>
-
-        {/* Bottom decorative elements */}
-        <div className="flex justify-between items-end mt-16 pt-8 border-t border-border-muted">
-          <div className="font-mono text-system text-on-surface-muted">
-            REF: 001-A
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-            <span className="font-mono text-system text-on-surface-muted">
-              LIVE
-            </span>
-          </div>
-          <div className="font-mono text-system text-on-surface-muted">
-            SYS_RDY
-          </div>
+      {/* Background elements - static, no mouse parallax */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-3xl" />
+        <div className="absolute inset-0 opacity-[0.03]">
+          <div className="h-full w-px bg-on-bg-primary absolute left-[10%]" />
+          <div className="h-full w-px bg-on-bg-primary absolute left-[50%]" />
+          <div className="h-full w-px bg-on-bg-primary absolute left-[90%]" />
+          <div className="w-full h-px bg-on-bg-primary absolute top-[15%]" />
+          <div className="w-full h-px bg-on-bg-primary absolute top-[85%]" />
         </div>
       </div>
 
-      {/* Decorative corner brackets */}
-      <div ref={el => cornerRefs.current[0] = el} className="fixed top-8 left-8 w-4 h-4 border-l border-t border-accent/30 pointer-events-none" />
-      <div ref={el => cornerRefs.current[1] = el} className="fixed top-8 right-8 w-4 h-4 border-r border-t border-accent/30 pointer-events-none" />
-      <div ref={el => cornerRefs.current[2] = el} className="fixed bottom-8 left-8 w-4 h-4 border-l border-b border-accent/30 pointer-events-none" />
-      <div ref={el => cornerRefs.current[3] = el} className="fixed bottom-8 right-8 w-4 h-4 border-r border-b border-accent/30 pointer-events-none" />
+      {/* Boot sequence overlay */}
+      {bootSequence.length > 0 && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-bg-primary">
+          <div className="font-mono text-system text-accent space-y-1">
+            {bootSequence.map((line, i) => (
+              <div key={i} style={{ opacity: i === bootSequence.length - 1 ? 1 : 0.5 }}>
+                {line}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Main content */}
+      {showContent && (
+        <>
+          {/* Navigation */}
+          <nav className="fixed inset-0 z-50">
+            <span className="nav-item absolute top-8 left-8 font-heading text-h4 text-on-bg-primary hover:text-accent transition-colors cursor-pointer opacity-0">
+              K
+            </span>
+
+            <a 
+              href="/work"
+              onClick={handleNavigate('work')}
+              className="nav-item absolute top-8 right-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors opacity-0"
+            >
+              <GlitchText>C  WORK</GlitchText>
+            </a>
+
+            <a 
+              href="/signal"
+              onClick={handleNavigate('signal')}
+              className="nav-item absolute bottom-8 left-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors opacity-0"
+            >
+              <GlitchText>C  SIGNAL</GlitchText>
+            </a>
+
+            <a 
+              href="/system"
+              onClick={handleNavigate('system')}
+              className="nav-item absolute bottom-8 right-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors opacity-0"
+            >
+              <GlitchText>// SYSTEM</GlitchText>
+            </a>
+
+            <div className="absolute left-8 top-1/2 -translate-y-1/2 hidden lg:block">
+              <div 
+                className="font-mono text-system text-on-surface-muted"
+                style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+              >
+                PORTFOLIO_V1.0.0
+              </div>
+            </div>
+
+            <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden lg:block">
+              <div 
+                className="font-mono text-system text-on-surface-muted"
+                style={{ writingMode: 'vertical-rl' }}
+              >
+                48.8566° N 2.3522° E
+              </div>
+            </div>
+          </nav>
+
+          {/* Main content */}
+          <div className="relative z-10 min-h-screen flex flex-col justify-between px-6 md:px-16 lg:px-24 py-32">
+            
+            {/* Top header */}
+            <div className="flex justify-between items-start">
+              <div className="font-mono text-system text-on-surface-muted">
+                // BOOT SEQUENCE <span className="animate-pulse">_</span>
+              </div>
+              <div className="font-mono text-system text-on-surface-muted text-right">
+                EST. 2024<br />
+                STATUS: ONLINE
+              </div>
+            </div>
+
+            {/* Center - Glitching KILN title */}
+            <div className="relative my-auto">
+              <div className="relative">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-px bg-accent w-16" />
+                  <span className="font-mono text-system text-accent">
+                    ENTRY POINT
+                  </span>
+                </div>
+
+                <h1 className="font-heading text-display-xl md:text-[12rem] lg:text-[16rem] text-on-bg-primary leading-[0.85] tracking-tight">
+                  {glitchText || finalTitle}
+                </h1>
+
+                <div className="mt-2 md:mt-0 md:absolute md:top-4 md:right-0 lg:right-20">
+                  <p className="font-heading text-h3 md:text-h2 text-on-bg-tertiary max-w-xs leading-tight">
+                    personal<br />studio
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-4 mt-8">
+                  <span className="font-mono text-system text-on-surface-muted">
+                    // LOADING COMPLETE
+                  </span>
+                  <div className="h-px bg-border-custom flex-1 max-w-xs" />
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom - Two column info */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mt-auto max-w-4xl">
+              <div className="info-block space-y-2" style={{ opacity: 0 }}>
+                <div className="font-mono text-system text-on-surface-muted mb-2">
+                  C  TYPE
+                </div>
+                <p className="text-small text-on-bg-secondary leading-relaxed">
+                  Personal studio & publishing space. Not a portfolio. Not a blog. 
+                  A continuous practice of systems, essays, and experiments.
+                </p>
+              </div>
+
+              <div className="info-block space-y-2" style={{ opacity: 0 }}>
+                <div className="font-mono text-system text-on-surface-muted mb-2">
+                  C  STATUS
+                </div>
+                <p className="text-small text-on-bg-secondary leading-relaxed">
+                  Currently building systems that think. Writing about the intersection 
+                  of technology, design, and human experience.
+                </p>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex justify-between items-end mt-16 pt-8 border-t border-border-muted">
+              <div className="font-mono text-system text-on-surface-muted">
+                REF: 001-A
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+                <span className="font-mono text-system text-on-surface-muted">
+                  LIVE
+                </span>
+              </div>
+              <div className="font-mono text-system text-on-surface-muted">
+                SYS_RDY
+              </div>
+            </div>
+          </div>
+
+          {/* Corner brackets */}
+          <div className="fixed top-8 left-8 w-4 h-4 border-l border-t border-accent/30 pointer-events-none" />
+          <div className="fixed top-8 right-8 w-4 h-4 border-r border-t border-accent/30 pointer-events-none" />
+          <div className="fixed bottom-8 left-8 w-4 h-4 border-l border-b border-accent/30 pointer-events-none" />
+          <div className="fixed bottom-8 right-8 w-4 h-4 border-r border-b border-accent/30 pointer-events-none" />
+        </>
+      )}
     </main>
   );
 }

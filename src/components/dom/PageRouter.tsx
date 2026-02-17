@@ -2,7 +2,6 @@
  * Page Router
  * 
  * Manages page rendering with microfiche transition.
- * Zooms into blank space with clustered loading text.
  */
 
 'use client';
@@ -20,29 +19,25 @@ export function PageRouter() {
   const [stage, setStage] = useState<'idle' | 'fadeout' | 'blank' | 'text' | 'switch' | 'reveal'>('idle');
   const contentRef = useRef<HTMLDivElement>(null);
   const blankRef = useRef<HTMLDivElement>(null);
-  const timersRef = useRef<NodeJS.Timeout[]>([]);
-
-  const clearAllTimers = useCallback(() => {
-    timersRef.current.forEach(clearTimeout);
-    timersRef.current = [];
-  }, []);
+  const isRunningRef = useRef(false);
 
   // Handle transition
   useEffect(() => {
-    if (!isTransitioning || !transitionTarget) {
-      setStage('idle');
+    if (!isTransitioning || !transitionTarget || isRunningRef.current) {
       return;
     }
 
+    isRunningRef.current = true;
     const contentEl = contentRef.current;
     const blankEl = blankRef.current;
-    if (!contentEl || !blankEl) return;
-
-    clearAllTimers();
+    if (!contentEl || !blankEl) {
+      isRunningRef.current = false;
+      return;
+    }
 
     const goingForward = transitionTarget !== 'home';
 
-    // Stage 1: Fade content to blank (400ms)
+    // Stage 1: Fade content to blank
     setStage('fadeout');
     gsap.to(contentEl, {
       opacity: 0,
@@ -52,10 +47,9 @@ export function PageRouter() {
       ease: 'power2.in'
     });
 
-    // Stage 2: Show blank state with zoom (600ms)
-    const blankTimer = setTimeout(() => {
+    // Stage 2: Show blank and zoom
+    setTimeout(() => {
       setStage('blank');
-      // Show blank, zoom into it
       gsap.set(blankEl, { opacity: 1, scale: 1 });
       gsap.to(blankEl, {
         scale: goingForward ? 2.5 : 0.4,
@@ -63,16 +57,14 @@ export function PageRouter() {
         ease: 'power2.inOut'
       });
     }, 400);
-    timersRef.current.push(blankTimer);
 
-    // Stage 3: Show loading text (800ms hold)
-    const textTimer = setTimeout(() => {
+    // Stage 3: Text display
+    setTimeout(() => {
       setStage('text');
     }, 800);
-    timersRef.current.push(textTimer);
 
-    // Stage 4: Deep zoom (400ms)
-    const deepZoomTimer = setTimeout(() => {
+    // Stage 4: Deep zoom
+    setTimeout(() => {
       gsap.to(blankEl, {
         scale: goingForward ? 5 : 0.1,
         opacity: 0,
@@ -80,22 +72,18 @@ export function PageRouter() {
         ease: 'power3.in'
       });
     }, 1400);
-    timersRef.current.push(deepZoomTimer);
 
     // Stage 5: Switch page
-    const switchTimer = setTimeout(() => {
+    setTimeout(() => {
       setStage('switch');
       setDisplayedPage(transitionTarget);
       setCurrentPage(transitionTarget);
     }, 1800);
-    timersRef.current.push(switchTimer);
 
-    // Stage 6: Reveal (600ms)
-    const revealTimer = setTimeout(() => {
+    // Stage 6: Reveal
+    setTimeout(() => {
       setStage('reveal');
-      // Reset blank
       gsap.set(blankEl, { opacity: 0, scale: 1 });
-      // Show new content
       gsap.fromTo(contentEl, 
         {
           opacity: 0,
@@ -110,16 +98,13 @@ export function PageRouter() {
           ease: 'power3.out',
           onComplete: () => {
             endTransition();
+            isRunningRef.current = false;
           }
         }
       );
     }, 2000);
-    timersRef.current.push(revealTimer);
 
-    return () => {
-      clearAllTimers();
-    };
-  }, [isTransitioning, transitionTarget, setCurrentPage, endTransition, clearAllTimers]);
+  }, [isTransitioning, transitionTarget, setCurrentPage, endTransition]);
 
   // Reset when not transitioning
   useEffect(() => {
@@ -135,29 +120,37 @@ export function PageRouter() {
       if (blankRef.current) {
         gsap.set(blankRef.current, { opacity: 0, scale: 1 });
       }
+      isRunningRef.current = false;
     }
   }, [isTransitioning]);
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* Transition effects - show blank background during fadeout, blank, and text stages */}
+      {/* Transition effects */}
       <MicroficheTransition 
         stage={stage === 'fadeout' || stage === 'blank' || stage === 'text' ? 'text' : stage === 'switch' ? 'zoom2' : 'idle'} 
       />
       
-      {/* Blank state (for zooming into) */}
+      {/* Blank state - behind content */}
       <div 
         ref={blankRef}
-        className="fixed inset-0 z-20 bg-bg-primary opacity-0"
-        style={{ transformOrigin: 'center center' }}
+        className="fixed inset-0 bg-bg-primary pointer-events-none"
+        style={{ 
+          opacity: 0,
+          zIndex: 20,
+          transformOrigin: 'center center'
+        }}
       />
 
-      {/* Page content */}
+      {/* Page content - always interactive when not transitioning */}
       <div 
         ref={contentRef}
         id="page-content"
-        className="relative z-10"
-        style={{ transformOrigin: 'center center' }}
+        className="relative"
+        style={{ 
+          transformOrigin: 'center center',
+          zIndex: 30
+        }}
       >
         {getPageComponent(displayedPage)}
       </div>

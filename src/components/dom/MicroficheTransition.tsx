@@ -41,19 +41,23 @@ export function MicroficheTransition({ stage }: MicroficheTransitionProps) {
   const showContent = stage === 'text' || stage === 'zoom2';
 
   return (
-    <div className="fixed inset-0 z-30 pointer-events-none">
+    <div 
+      className="fixed inset-0 z-[100] pointer-events-none"
+      style={{ pointerEvents: 'none' }}
+    >
       {/* Blank dark background during transition */}
       <div 
         className="absolute inset-0 bg-bg-primary"
         style={{
           opacity: showContent ? 1 : 0,
-          transition: 'opacity 0.3s ease'
+          transition: 'opacity 0.3s ease',
+          pointerEvents: 'none'
         }}
       />
 
       {/* Loading text - clustered in bottom left */}
       <div 
-        className="absolute bottom-20 left-10 flex flex-col gap-2"
+        className="absolute bottom-20 left-10 flex flex-col gap-2 pointer-events-none"
         style={{
           opacity: showContent ? 1 : 0,
           transition: 'opacity 0.2s ease'
@@ -64,7 +68,7 @@ export function MicroficheTransition({ stage }: MicroficheTransitionProps) {
           return (
             <div
               key={i}
-              className="font-mono text-system"
+              className="font-mono text-system pointer-events-none"
               style={{
                 color: isVisible ? 'rgba(0, 54, 216, 0.9)' : 'rgba(0, 54, 216, 0.2)',
                 opacity: isVisible ? 1 : 0,
@@ -81,19 +85,19 @@ export function MicroficheTransition({ stage }: MicroficheTransitionProps) {
 
       {/* Corner brackets during transition */}
       <div 
-        className="absolute top-10 left-10 w-6 h-6 border-l border-t border-accent/40"
+        className="absolute top-10 left-10 w-6 h-6 border-l border-t border-accent/40 pointer-events-none"
         style={{ opacity: showContent ? 1 : 0, transition: 'opacity 0.3s' }}
       />
       <div 
-        className="absolute top-10 right-10 w-6 h-6 border-r border-t border-accent/40"
+        className="absolute top-10 right-10 w-6 h-6 border-r border-t border-accent/40 pointer-events-none"
         style={{ opacity: showContent ? 1 : 0, transition: 'opacity 0.3s' }}
       />
       <div 
-        className="absolute bottom-10 left-10 w-6 h-6 border-l border-b border-accent/40"
+        className="absolute bottom-10 left-10 w-6 h-6 border-l border-b border-accent/40 pointer-events-none"
         style={{ opacity: showContent ? 1 : 0, transition: 'opacity 0.3s' }}
       />
       <div 
-        className="absolute bottom-10 right-10 w-6 h-6 border-r border-b border-accent/40"
+        className="absolute bottom-10 right-10 w-6 h-6 border-r border-b border-accent/40 pointer-events-none"
         style={{ opacity: showContent ? 1 : 0, transition: 'opacity 0.3s' }}
       />
     </div>
