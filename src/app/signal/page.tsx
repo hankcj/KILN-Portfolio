@@ -9,6 +9,8 @@ import { getPosts } from '@/lib/ghost';
 import SignalPage from '@/app/signal-page';
 import { Metadata } from 'next';
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: 'Signal — KILN',
   description: 'Transmission log. Essays on design systems, creative technology, and digital craft.',

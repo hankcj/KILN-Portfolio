@@ -1,0 +1,43 @@
+# Ghost on EC2 for https://ghost.studiokiln.io
+# Run on the EC2 host; Nginx on host proxies to 127.0.0.1:2368.
+# Usage: docker compose up -d
+
+services:
+  ghost:
+    image: ghost:latest
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:2368:2368"
+    environment:
+      url: https://ghost.studiokiln.io
+      NODE_ENV: production
+      database__client: mysql
+      database__connection__host: db
+      database__connection__user: ghost
+      database__connection__password: ghost
+      database__connection__database: ghost
+    volumes:
+      - ghost-data:/var/lib/ghost/content
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ghostroot
+      MARIADB_USER: ghost
+      MARIADB_PASSWORD: ghost
+      MARIADB_DATABASE: ghost
+    volumes:
+      - ghost-mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  ghost-data:
+  ghost-mysql:

@@ -22,13 +22,16 @@ Your KILN portfolio now has a fully integrated publishing platform using Ghost C
 
 Self-host Ghost on your preferred platform:
 
-**Option A: DigitalOcean (Easiest)**
+**Option A: EC2 + Nginx + SSL (ghost.studiokiln.io)**  
+See [GHOST_EC2_DEPLOY.md](./GHOST_EC2_DEPLOY.md) for a full runbook: Docker Ghost behind Nginx with Let's Encrypt at https://ghost.studiokiln.io. Config files are in [deploy/ghost/](../deploy/ghost/).
+
+**Option B: DigitalOcean (Easiest)**
 ```bash
 # Use the 1-Click Ghost droplet
 # https://marketplace.digitalocean.com/apps/ghost
 ```
 
-**Option B: Docker**
+**Option C: Docker (generic)**
 ```yaml
 # docker-compose.yml
 version: '3.1'
@@ -88,6 +91,10 @@ npm run dev
 - Tags display
 - Navigation back to index
 
+### Individual posts
+
+Each post has a canonical URL at `/signal/[slug]` (e.g. `/signal/my-essay-title`). These pages are statically generated at build time when Ghost is configured; new or updated posts are picked up on demand and revalidated every 60 seconds (ISR), so you do not need a full rebuild to see new content.
+
 ### Page Transitions
 Each destination has unique microcopy during transitions:
 - **Home**: `RETURNING_TO_ORIGIN`, `RESET_NAVIGATION`
@@ -140,8 +147,10 @@ You can proxy this through your Next.js site if desired.
 
 ## Next Steps
 
-1. Deploy your Ghost instance
-2. Add environment variables
-3. Write your first post in Ghost
-4. Rebuild your site to include the new content
-5. Set up Substack cross-posting workflow
+1. Deploy your Ghost instance (e.g. DigitalOcean 1-Click or Docker).
+2. In Ghost Admin, create a Custom Integration and copy the Content API Key.
+3. Add `GHOST_URL` and `GHOST_CONTENT_API_KEY` to `.env.local` (copy from `.env.local.example`).
+4. Run `npm install` if you have not already (ensures `@tryghost/content-api` is installed).
+5. Run `npm run dev` to test, or `npm run build` and deploy. New content revalidates every 60 seconds; no rebuild required for new posts.
+6. Write your first post in Ghost (editor at `https://<your-ghost-url>/ghost`).
+7. Optionally set up Substack cross-posting workflow.
