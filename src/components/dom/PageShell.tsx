@@ -168,15 +168,10 @@ export function PageShell({
   useEffect(() => {
     if (!animateEntrance || !contentRef.current || isTransitioning || incomingTransition.active) return;
 
+    const el = contentRef.current;
     const ctx = gsap.context(() => {
-      gsap.from(contentRef.current, {
-        y: 30,
-        opacity: 0,
-        filter: 'blur(0px)',
-        duration: 0.8,
-        ease: 'power3.out',
-        delay: 0.2
-      });
+      // Use fromTo so we animate TO opacity 1 (content div starts with opacity-0 class)
+      gsap.fromTo(el, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.2 });
     });
 
     return () => ctx.revert();
@@ -442,6 +437,16 @@ export function SimplePageShell({
     return () => clearTimeout(timer);
   }, [incomingTransition.active, incomingTransition.remainingTime]);
   
+  // Entrance animation when not in an incoming transition (e.g. direct load of /signal/[slug])
+  useEffect(() => {
+    if (!contentRef.current || incomingTransition.active) return;
+    const el = contentRef.current;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(el, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out', delay: 0.1 });
+    });
+    return () => ctx.revert();
+  }, [incomingTransition.active]);
+
   // Handle outgoing transition (when user navigates away)
   useEffect(() => {
     if (!contentRef.current) return;
