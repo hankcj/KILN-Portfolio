@@ -6,6 +6,7 @@
  */
 
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
 import { Metadata } from 'next';
 import { SimplePageShell } from '@/components/dom/PageShell';
 import { getPostBySlug, getPosts } from '@/lib/ghost';
@@ -17,7 +18,8 @@ interface SignalPostPageProps {
 }
 
 export async function generateStaticParams() {
-  const { posts } = await getPosts({ limit: 'all' });
+  const result = await getPosts({ limit: 'all' });
+  const posts = result?.posts ?? [];
   return posts.map((post) => ({ slug: post.slug }));
 }
 
@@ -98,10 +100,12 @@ export default async function SignalPostPage({ params }: SignalPostPageProps) {
               {post.primary_author && (
                 <div className="flex items-center gap-4 mt-6">
                   {post.primary_author.profile_image && (
-                    <img
+                    <Image
                       src={post.primary_author.profile_image}
                       alt={post.primary_author.name}
-                      className="w-12 h-12 rounded-full object-cover border border-border-muted"
+                      width={48}
+                      height={48}
+                      className="rounded-full object-cover border border-border-muted"
                     />
                   )}
                   <div>
@@ -131,11 +135,13 @@ export default async function SignalPostPage({ params }: SignalPostPageProps) {
             </header>
 
             {post.feature_image && (
-              <figure className="mb-12">
-                <img
+              <figure className="mb-12 relative w-full aspect-video border border-border-muted overflow-hidden">
+                <Image
                   src={post.feature_image}
                   alt={post.title}
-                  className="w-full aspect-video object-cover border border-border-muted"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 896px) 100vw, 896px"
                 />
               </figure>
             )}

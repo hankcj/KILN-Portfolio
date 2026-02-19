@@ -17,11 +17,12 @@ export const metadata: Metadata = {
 };
 
 export default async function SignalRoute() {
-  const { posts } = await getPosts({
+  const result = await getPosts({
     limit: 'all',
     include: ['tags', 'authors'],
     order: 'published_at DESC',
   });
+  const posts = result?.posts ?? [];
 
   return <SignalPage posts={posts} />;
 }

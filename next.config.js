@@ -7,6 +7,13 @@ const nextConfig = {
   distDir: process.env.EXPORT === 'true' ? 'dist' : '.next',
   images: {
     unoptimized: process.env.EXPORT === 'true',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ghost.studiokiln.io',
+        pathname: '/**',
+      },
+    ],
   },
   webpack: (config) => {
     config.module.rules.push({

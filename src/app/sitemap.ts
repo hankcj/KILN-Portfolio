@@ -50,10 +50,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let postRoutes: MetadataRoute.Sitemap = [];
   
   try {
-    const { posts } = await getPosts({
+    const result = await getPosts({
       limit: 'all',
       include: ['authors'],
     });
+    const posts = result?.posts ?? [];
 
     postRoutes = posts.map((post) => ({
       url: `${BASE_URL}/signal/${post.slug}`,

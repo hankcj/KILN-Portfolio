@@ -14,12 +14,13 @@ const SITE_DESCRIPTION = 'Essays, research, and long-form writing on systems, de
 
 export async function GET() {
   try {
-    const { posts } = await getPosts({
+    const result = await getPosts({
       limit: 'all',
       include: ['authors', 'tags'],
       order: 'published_at DESC',
       filter: 'visibility:public',
     });
+    const posts = result?.posts ?? [];
 
     const rss = generateRSS(posts);
 
@@ -44,8 +45,9 @@ export async function GET() {
 
 function generateRSS(posts: Awaited<ReturnType<typeof getPosts>>['posts']): string {
   const now = new Date().toUTCString();
-  
-  const items = posts.map((post) => {
+  const list = Array.isArray(posts) ? posts : [];
+
+  const items = list.map((post) => {
     const pubDate = new Date(post.published_at).toUTCString();
     const author = post.primary_author?.name || 'KILN';
     const categories = (post.tags || [])

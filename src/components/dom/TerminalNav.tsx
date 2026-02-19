@@ -159,6 +159,8 @@ export function TerminalNav() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
+    // navigateTo is defined later in the component; stable in practice
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, selectedIndex]);
 
   // Animate overlay open/close

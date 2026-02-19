@@ -179,10 +179,12 @@ function AmbientFloat() {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!orbRef.current || !gridRef.current) return;
+    const orb = orbRef.current;
+    const grid = gridRef.current;
+    if (!orb || !grid) return;
 
     // Slow orb breathing
-    gsap.to(orbRef.current, {
+    gsap.to(orb, {
       scale: 1.1,
       opacity: 0.08,
       duration: 8,
@@ -192,7 +194,7 @@ function AmbientFloat() {
     });
 
     // Subtle grid shift
-    gsap.to(gridRef.current, {
+    gsap.to(grid, {
       backgroundPosition: '50px 50px',
       duration: 20,
       repeat: -1,
@@ -200,7 +202,7 @@ function AmbientFloat() {
     });
 
     return () => {
-      gsap.killTweensOf([orbRef.current, gridRef.current]);
+      gsap.killTweensOf([orb, grid]);
     };
   }, []);
 
