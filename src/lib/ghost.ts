@@ -90,14 +90,17 @@ export async function getPosts(options?: {
   }
 
   try {
-    const posts = await ghostClient.posts.browse({
+    // SDK returns the posts array with .meta attached, not { posts, meta }
+    const result = await ghostClient.posts.browse({
       limit: options?.limit || 'all',
       page: options?.page || 1,
       filter: options?.filter,
       order: options?.order || 'published_at DESC',
       include: (options?.include || DEFAULT_INCLUDES) as ('tags' | 'authors')[],
     });
-    return posts as unknown as { posts: GhostPost[]; meta: { pagination: { page: number; limit: number; pages: number; total: number } } };
+    const postList = Array.isArray(result) ? result : [];
+    const meta = (result as { meta?: typeof emptyPostsResponse.meta })?.meta ?? emptyPostsResponse.meta;
+    return { posts: postList as GhostPost[], meta };
   } catch (error) {
     console.error('Error fetching posts from Ghost:', error);
     return emptyPostsResponse;
