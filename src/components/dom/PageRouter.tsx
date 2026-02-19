@@ -2,6 +2,7 @@
  * Page Router
  * 
  * Manages page rendering with slow, cinematic microfiche transition.
+ * Now with Signal page integration for Ghost CMS content.
  */
 
 'use client';
@@ -10,8 +11,10 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { useAppStore } from '@/lib/store';
 import { MicroficheTransition } from './MicroficheTransition';
+import { PageShell } from './PageShell';
 import HomePage from '@/app/home-page';
 import WorkPage from '@/app/work-page';
+import SignalPage from '@/app/signal-page';
 
 export function PageRouter() {
   const { currentPage, setCurrentPage, isTransitioning, transitionTarget, endTransition } = useAppStore();
@@ -63,11 +66,10 @@ export function PageRouter() {
       setStage('text');
     }, 1200);
 
-    // Stage 4: Deep zoom (800ms)
+    // Stage 4: Deep zoom (800ms) - keep opacity at 1 to cover content
     setTimeout(() => {
       gsap.to(blankEl, {
         scale: goingForward ? 5 : 0.1,
-        opacity: 0,
         duration: 0.8,
         ease: 'power3.in'
       });
@@ -124,11 +126,19 @@ export function PageRouter() {
     }
   }, [isTransitioning]);
 
+  // Determine which transition text to show based on destination
+  const transitionStage = stage === 'fadeout' || stage === 'blank' || stage === 'text' 
+    ? 'text' 
+    : stage === 'switch' 
+      ? 'zoom2' 
+      : 'idle';
+
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* Transition effects */}
+      {/* Transition effects with destination-aware microcopy */}
       <MicroficheTransition 
-        stage={stage === 'fadeout' || stage === 'blank' || stage === 'text' ? 'text' : stage === 'switch' ? 'zoom2' : 'idle'} 
+        stage={transitionStage}
+        destination={transitionTarget || 'default'}
       />
       
       {/* Blank state - behind content */}
@@ -158,6 +168,50 @@ export function PageRouter() {
   );
 }
 
+// Placeholder for Signal page before posts are loaded
+// Uses PageShell for consistent decorative elements
+function SignalPagePlaceholder() {
+  return (
+    <PageShell 
+      currentPage="signal"
+      leftSideText="TRANSMISSION_LOG"
+      rightSideText="00 ENTRIES LOGGED"
+      animateEntrance={false}
+    >
+      <div className="min-h-screen pt-32 px-6 md:px-16 lg:px-24">
+        <header className="mb-16">
+          <div className="flex justify-between items-start mb-4">
+            <p className="font-mono text-system text-on-surface-muted tracking-widest">
+              C  TRANSMISSION LOG
+            </p>
+            <p className="font-mono text-system text-on-surface-muted">
+              VIEW: CHRONOLOGICAL
+            </p>
+          </div>
+          <h1 className="font-heading text-display text-on-bg-primary mb-4">
+            SIGNAL
+          </h1>
+          <p className="text-body text-on-bg-tertiary max-w-xl">
+            Loading transmissions...
+          </p>
+        </header>
+        <div className="space-y-px bg-border-custom">
+          {[1, 2, 3].map((i) => (
+            <div 
+              key={i}
+              className="block bg-bg-primary p-8 animate-pulse"
+            >
+              <div className="h-6 bg-bg-secondary w-1/4 mb-4" />
+              <div className="h-8 bg-bg-secondary w-3/4 mb-3" />
+              <div className="h-4 bg-bg-secondary w-full" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </PageShell>
+  );
+}
+
 function getPageComponent(page: string) {
   switch (page) {
     case 'home':
@@ -165,16 +219,28 @@ function getPageComponent(page: string) {
     case 'work':
       return <WorkPage />;
     case 'signal':
-      return (
-        <div className="min-h-screen bg-bg-primary pt-32 px-8">
-          <h1 className="font-heading text-display text-on-bg-primary">SIGNAL</h1>
-        </div>
-      );
+      // Signal page requires server data fetching, so we show a placeholder
+      // In production, the actual route at /signal handles data fetching
+      return <SignalPagePlaceholder />;
     case 'system':
       return (
-        <div className="min-h-screen bg-bg-primary pt-32 px-8">
-          <h1 className="font-heading text-display text-on-bg-primary">SYSTEM</h1>
-        </div>
+        <PageShell 
+          currentPage="system"
+          leftSideText="SYS_DOCS_V1.0"
+          rightSideText="48.8566° N 2.3522° E"
+          animateEntrance={false}
+        >
+          <div className="min-h-screen pt-32 px-6 md:px-16 lg:px-24">
+            <header className="mb-16">
+              <p className="font-mono text-system text-on-surface-muted mb-4 tracking-widest">
+                {'// SYSTEM DIAGNOSTIC'}
+              </p>
+              <h1 className="font-heading text-display text-on-bg-primary">
+                SYSTEM
+              </h1>
+            </header>
+          </div>
+        </PageShell>
       );
     default:
       return <HomePage />;

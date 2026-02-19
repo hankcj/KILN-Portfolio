@@ -1,283 +1,349 @@
-# KILN Branding Guide
+# KILN Brand & Layout Standards
 
-This document defines the visual identity and design tokens for KILN. Use it as the single source of truth when building the frontend. All styling must follow these rules to ensure consistency and accessibility.
+## Overview
 
----
-
-## 1. Brand overview
-
-- **Name:** KILN / Project Kiln.
-- **Positioning:** A personal studio portfolio and publishing space — a digital museum for long-form writing, systems thinking, and selective work outputs. Not a generic agency portfolio or a CMS-heavy marketing site.
-- **Tone:** Clear, structured, minimal friction. Authoritative but not cold. Serious, crafted, and intentional. No playful or casual flair; the space feels dependable, inhabited, and built to age gracefully.
+This document defines the consistent visual and interaction standards across all pages in the KILN site. The goal is to ensure that only **content** changes between pages, while **navigation**, **decorations**, and **system elements** remain consistent.
 
 ---
 
-## 2. Logo and wordmark usage
+## Page Structure Standards
 
-Official logo assets are stored in the frontend and served as static assets:
+### Required Elements (Every Page)
 
-| Asset | Path (in repo) | Served at (when app runs) |
-|-------|----------------|----------------------------|
-| **Kiln Wordmark** | `frontend/public/logo/kiln-wordmark.png` | `/logo/kiln-wordmark.png` |
-| **Kiln Logo (Black)** | `frontend/public/logo/kiln-logo-black.png` | `/logo/kiln-logo-black.png` |
+All pages MUST include:
 
-Use these two files for all product logos. Do not recreate the wordmark or mark in code; use the provided PNGs to preserve the approved type and proportions.
+1. **Corner Navigation** - The "scattered corner" navigation system
+   - `K` logo (top-left) - Links to home
+   - `C  WORK` (top-right) - Links to work archive
+   - `C  SIGNAL` (bottom-left) - Links to signal/journal
+   - `// SYSTEM` (bottom-right) - Links to system/colophon
 
-### 2.1 Wordmark (KILN)
+2. **Corner Brackets** - Decorative frame elements
+   - 4 corner brackets (top-left, top-right, bottom-left, bottom-right)
+   - Accent color (#0036D8) at 50% opacity
+   - 1px border width, 16px (w-4 h-4) size
 
-- **File:** `kiln-wordmark.png`. The word "KILN" in serif type (Averia Serif Libre style), light (Parchment `#FAF6F0`) on dark (Ink Black `#13161F`).
-- **Use for:** App header/identity, auth screens (e.g. login), splash or loading, and any place the full name is the focus.
-- **Approved backgrounds:** Use only on surfaces that match or are compatible with the asset:
-  - **On dark (Ink Black / `--color-surface-inverse`):** Use the wordmark as provided (Parchment on dark). No changes.
-  - **On light (Parchment / `--color-bg-primary`):** Prefer an inverse treatment: use a version on dark, or ensure the wordmark is the dark-on-light variant. If only the provided asset is available, place it on a dark background or use the Logo (Black) for light backgrounds where the full wordmark is not required.
-- **Minimum size:** Do not display the wordmark smaller than **96px** in height (or equivalent cap height) to preserve legibility.
-- **Clear space:** Maintain clear space around the wordmark equal to the height of the "K" (or the letter cap height) on all sides. Do not place type, icons, or other graphics inside this zone.
+3. **Living Effects** - System atmosphere
+   - Film grain overlay (subtle, animated)
+   - Scanlines (very subtle)
+   - System clock (bottom-left, hidden on mobile)
 
-### 2.2 Logo (Black) — symbol mark
+4. **Side Text** (Desktop only, optional but recommended)
+   - Left side: Vertical text, rotated 180deg
+   - Right side: Vertical text
+   - System mono font, muted color
 
-- **File:** `kiln-logo-black.png`. Circular mark with a stylized "K," rendered in dark gray/black outline.
-- **Use for:** Favicon, app icon, compact headers, nav branding, and anywhere a compact mark is needed. Ideal when the full wordmark would be too large or when the word "KILN" appears in type nearby.
-- **Approved backgrounds:** Use **only on light backgrounds** where the dark mark has sufficient contrast:
-  - Parchment (`--color-bg-primary`), `--color-bg-secondary`, white, or light gray. Ensures the logo remains visible (the asset is designed for light backgrounds).
-- **Do not:** Use on dark or black backgrounds; the mark will not have adequate contrast. For dark areas (e.g. footer, dark header), use the wordmark asset instead (Parchment on dark).
-- **Minimum size:** Do not display the logo smaller than **24px** in height/width so the circular outline and "K" remain recognizable.
-- **Clear space:** Clear space around the mark should be at least half the height (or width) of the logo on all sides.
+### Page Shell Components
 
-### 2.3 Logo usage rules (all assets)
+Use the provided shell components for consistency:
 
-- **Do not stretch or distort.** Keep aspect ratio locked when scaling.
-- **Do not recolor.** Use the provided files as-is. Do not tint, invert (except as noted for light/dark contexts), or apply color overlays that change the approved relationship between mark and background.
-- **Do not add effects.** No drop shadows, glows, or decorative filters unless specified in a future brand update.
-- **Contrast:** Always ensure the logo or wordmark meets contrast requirements (WCAG 2.1 AA for graphical objects: 3:1 against the background). The provided pairings (Parchment on Ink Black; dark mark on Parchment/light) satisfy this when used as specified.
-- **Single source:** All logo use in the product must reference these assets from `frontend/public/logo/`. Do not duplicate or alter the files for different contexts; use CSS (e.g. object-fit, max-height) to size and position.
+#### For Client Components (with animations)
+```tsx
+import { PageShell } from '@/components/dom/PageShell';
 
----
+export default function MyPage() {
+  return (
+    <PageShell 
+      currentPage="work"        // Current page identifier
+      leftSideText="..."        // Left vertical text
+      rightSideText="..."       // Right vertical text
+    >
+      {/* Your page content */}
+    </PageShell>
+  );
+}
+```
 
-## 3. Color system
+#### For Server Components
+```tsx
+import { SimplePageShell } from '@/components/dom/PageShell';
 
-### 3.1 Palette (KILN_Palette)
-
-| Name           | Hex       | Role / context |
-|----------------|-----------|----------------|
-| Bright Indigo  | `#0036D8` | Primary accent, key actions, focus states. |
-| Pacific Cyan   | `#3A7D8C` | **Restricted.** Very subtle use only (see §3.4). |
-| Ink Black      | `#13161F` | Dark surfaces, primary text on light backgrounds. |
-| Parchment      | `#FAF6F0` | Light surfaces, primary content areas. |
-
-### 3.2 Semantic "on-color" tokens (required)
-
-**Rule:** Every surface that displays text or icons must have a corresponding **on-color** token. Text and icons must never use raw hex values; they must use semantic tokens so that visibility and contrast are guaranteed across the site.
-
-**Surface tokens** (backgrounds and filled UI):
-
-| Token                     | Purpose |
-|---------------------------|--------|
-| `--color-bg-primary`      | Main app background. |
-| `--color-bg-secondary`   | Panels, sidebars, alternate rows. |
-| `--color-accent`         | Primary buttons, key CTAs, focus rings. |
-| `--color-surface-inverse`| Dark bars, footer, inverse blocks. |
-| `--color-surface-muted`  | Disabled or low-emphasis surfaces. |
-| `--color-border`         | Dividers, input borders (decorative; not for text). |
-| `--color-border-muted`   | Subtle dividers. |
-
-**On-color tokens** (text and icons on those surfaces):
-
-| Token                       | Used on surface        | Purpose |
-|-----------------------------|------------------------|--------|
-| `--color-on-bg-primary`     | `--color-bg-primary`    | Body text, primary content. |
-| `--color-on-bg-secondary`   | `--color-bg-secondary`  | Text on panels/secondary areas. |
-| `--color-on-accent`         | `--color-accent`       | Button text, icons on accent. |
-| `--color-on-surface-inverse`| `--color-surface-inverse` | Text/icons on dark areas. |
-| `--color-on-surface-muted`  | `--color-surface-muted` | Disabled or placeholder text. |
-
-**Visibility rule:** For any new component, ask: "What surface is this text/icon on?" Then use the matching `--color-on-*` token. Do not introduce ad-hoc colors for type or icons.
-
-### 3.3 Token-to-hex mapping (light theme)
-
-Default theme is light. Implement these mappings in the frontend theme file so that semantic tokens resolve to accessible pairs.
-
-| Semantic token                | Hex (light theme) | Notes |
-|-------------------------------|------------------|--------|
-| `--color-bg-primary`          | `#FAF6F0`        | Parchment. |
-| `--color-bg-secondary`        | `#F0EBE3`        | Slightly darker Parchment (derive or define). |
-| `--color-accent`              | `#0036D8`        | Bright Indigo. |
-| `--color-surface-inverse`    | `#13161F`        | Ink Black. |
-| `--color-surface-muted`      | `#E8E4DE`        | Muted light (ensure contrast with on-muted). |
-| `--color-border`             | `#13161F` (low opacity) or `#C4BEB4` | Visible but not heavy. |
-| `--color-border-muted`       | Lighter than `--color-border`. | |
-| `--color-on-bg-primary`       | `#13161F`        | Ink Black on Parchment. |
-| `--color-on-bg-secondary`     | `#13161F`        | Same; or slightly muted if desired. |
-| `--color-on-accent`          | `#FFFFFF`        | White on Bright Indigo (meets contrast). |
-| `--color-on-surface-inverse` | `#FAF6F0`        | Parchment on Ink Black. |
-| `--color-on-surface-muted`    | `#5C5C68` or similar | Dark gray; must meet 4.5:1 on muted surface. |
-
-**Dark theme (future):** When adding dark mode, keep the same token names and swap the hex values (e.g. `--color-bg-primary` becomes dark, `--color-on-bg-primary` becomes light). Do not introduce new token names for dark mode.
-
-### 3.4 Pacific Cyan (#3A7D8C) — restricted use
-
-Pacific Cyan has **visibility concerns** and must be used only in very subtle ways.
-
-- **Sole approved use:** **Button hover only.** As a subtle tint or overlay on the primary button (e.g. primary button hover state). Do not use as a solid background for large areas, as body text, or as a primary UI color.
-- **Do not:** Use for backgrounds, links, icons, borders (except perhaps a very subtle hover glow), or any text. Do not use for large surfaces or cards.
-
-If in doubt, omit Pacific Cyan and use a slight darkening or brightening of Bright Indigo for hover instead.
-
-### 3.5 Contrast and accessibility
-
-- **WCAG 2.1 AA** is required for all text: at least **4.5:1** contrast for normal text, **3:1** for large text (e.g. 18px+ or 14px+ bold).
-- Semantic on-color tokens must be chosen so that each `--color-on-*` / surface pair meets these ratios. Validate during implementation (e.g. with contrast checkers).
-- **Focus indicators:** Use `--color-accent` (Bright Indigo) or a high-contrast outline (2px) so focus is visible. Never remove focus styles.
+export default async function MyServerPage() {
+  return (
+    <SimplePageShell
+      currentPage="signal"
+      leftSideText="..."
+      rightSideText="..."
+    >
+      {/* Your page content */}
+    </SimplePageShell>
+  );
+}
+```
 
 ---
 
-## 4. Typography
+## Navigation Behavior
 
-### 4.1 Font families
+### Active State
+- The current page's nav item is highlighted in **accent color** (#0036D8)
+- No hover effect on active item
+- Other items show GlitchText effect on hover
 
-- **Headings and titles:** **Averia Serif Libre.**  
-  Use for: page titles, section headers, card titles, modal titles, essay headers, artifact names.  
-  Fallback: `Georgia, "Times New Roman", serif`.  
-  Weights: `400` (regular), `700` (bold). Load only these weights.
+### Home Navigation
+- The `K` logo in top-left always returns to home
+- On home page, the K is highlighted in accent color
+- On other pages, K is parchment white with hover accent
 
-- **Body and UI:** **Inter.**  
-  Use for: body copy, buttons, labels, inputs, table text, navigation, captions, small print.  
-  Fallback: `system-ui, -apple-system, sans-serif`.  
-  Weights: `400` (regular), `500` (medium), `600` (semibold).
-
-**Token recommendation:**  
-`--font-heading: "Averia Serif Libre", Georgia, serif;`  
-`--font-body: "Inter", system-ui, sans-serif;`
-
-### 4.2 Type scale
-
-Use a **1.25** modular scale (major third). Base size **16px** (1rem). Line height and size in rem:
-
-| Role        | Size   | Line height | Token (suggestion) | Font |
-|-------------|--------|-------------|--------------------|------|
-| H1          | 2.488rem | 1.2      | `--text-h1`        | Averia Serif Libre |
-| H2          | 1.99rem  | 1.25     | `--text-h2`        | Averia Serif Libre |
-| H3          | 1.592rem | 1.3      | `--text-h3`        | Averia Serif Libre |
-| H4          | 1.274rem | 1.35     | `--text-h4`        | Averia Serif Libre |
-| H5          | 1.019rem | 1.4      | `--text-h5`        | Averia Serif Libre |
-| H6          | 0.815rem | 1.4      | `--text-h6`        | Averia Serif Libre |
-| Body        | 1rem     | 1.5      | `--text-body`      | Inter |
-| Body small  | 0.875rem | 1.45     | `--text-small`     | Inter |
-| Caption     | 0.75rem  | 1.4      | `--text-caption`   | Inter |
-| Button label| 0.875rem | 1.25     | `--text-button`    | Inter |
-
-All text colors must use the appropriate **on-color** token for the surface (e.g. `--color-on-bg-primary` for body on the main background).
+### Transitions
+- All navigation uses the App Store's `startTransition()` for consistent page transitions
+- The transition microcopy changes based on destination (see below)
 
 ---
 
-## 5. Spacing and layout
+## Transition Microcopy
 
-### 5.1 Spacing scale
+Each destination has specific loading text:
 
-Base unit **4px**. Use semantic spacing tokens for padding and margins so layout stays consistent.
-
-| Token        | Value  | Use |
-|--------------|--------|-----|
-| `--space-2`  | 0.5rem (8px)  | Tight inline spacing. |
-| `--space-3`  | 0.75rem (12px)| Inline gaps, small padding. |
-| `--space-4`  | 1rem (16px)   | Default component padding. |
-| `--space-5`  | 1.25rem (20px)| |
-| `--space-6`  | 1.5rem (24px) | Section spacing. |
-| `--space-8`  | 2rem (32px)   | Block spacing. |
-| `--space-10` | 2.5rem (40px) | |
-| `--space-12` | 3rem (48px)   | Large section gaps. |
-| `--space-16` | 4rem (64px)   | Page-level spacing. |
-
-Aliases for clarity (optional): e.g. `--space-xs` = `--space-2`, `--space-sm` = `--space-4`, `--space-md` = `--space-6`, `--space-lg` = `--space-8`, `--space-xl` = `--space-12`.
-
-### 5.2 Breakpoints
-
-**Desktop-first** (per PRD). V1 targets desktop; mobile is out of scope. Define min-width breakpoints so the layout can adapt later:
-
-| Name   | Min width | Use |
-|--------|-----------|-----|
-| sm     | 640px     | Optional future. |
-| md     | 768px     | Optional future. |
-| lg     | 1024px    | Primary layout breakpoint. |
-| xl     | 1280px    | Wide content. |
-| 2xl    | 1536px    | Max content width. |
-
-Content max-width (e.g. for reading): 65–72rem. Grid: 12 columns with consistent gutter (e.g. `--space-6`).
+| Destination | Line 1 | Line 2 | Line 3 | Line 4 |
+|-------------|--------|--------|--------|--------|
+| **Home** | `// RETURNING_TO_ORIGIN` | `C  RESET_NAVIGATION` | `>> DISENGAGE_ARCHIVE` | `** HOME` |
+| **Work** | `// LOADING_ARCHIVE` | `C  ACCESS_GRANTED` | `READING_INDEX...` | `SYS_RDY` |
+| **Signal** | `// TUNING_FREQUENCY` | `C  ESTABLISH_UPLINK` | `RECEIVING_TRANSMISSION...` | `SIGNAL_ACQUIRED` |
+| **System** | `// SYSTEM_DIAGNOSTICS` | `C  QUERY_PARAMETERS` | `LOADING_COLOPHON...` | `DOCS_READY` |
 
 ---
 
-## 6. Component and pattern guidance
+## Side Text Conventions
 
-Components must use **semantic tokens** only. Reference token names, not hex, in implementation.
+### Standard Patterns
 
-### 6.1 Buttons
+| Page | Left Side | Right Side |
+|------|-----------|------------|
+| **Home** | `PORTFOLIO_V1.0.0` | `48.8566° N 2.3522° E` |
+| **Work** | `OUTPUT_ARCHIVE_V2.0` | `{count} ITEMS INDEXED` |
+| **Signal** | `TRANSMISSION_LOG` | `{count} ENTRIES LOGGED` |
+| **System** | `SYS_DOCS_V1.0` | `48.8566° N 2.3522° E` |
+| **Post** | `TRANSMISSION_LOG` | `{date}` |
 
-- **Primary:** Background `--color-accent`, text/icon `--color-on-accent`. Focus ring `--color-accent` or outline.
-- **Secondary:** Outline or background `--color-bg-secondary`; text `--color-on-bg-primary` or `--color-on-bg-secondary`. Border `--color-border`.
-- **Hover (primary):** Optional very subtle Pacific Cyan tint (e.g. overlay or blend) for primary only; otherwise use a slightly darker/lighter Bright Indigo.
-- **Disabled:** Background `--color-surface-muted`, text/icon `--color-on-surface-muted`. No accent.
-
-### 6.2 Links
-
-- Default: color from `--color-on-bg-primary` or `--color-accent` (choose one convention and stick to it).
-- Hover: underline or `--color-accent` if not already. Use on-color tokens; no raw hex.
-
-### 6.3 Form controls
-
-- **Inputs / selects:** Background `--color-bg-primary` or `--color-bg-secondary`, border `--color-border`, text `--color-on-bg-primary`. Placeholder `--color-on-surface-muted`.
-- **Focus:** Border or outline `--color-accent` (visible 2px).
-- **Checkboxes / radios:** Use same surface and on-color tokens; checkmark/indicator on accent or on-accent.
-
-### 6.4 Cards and panels
-
-- Background `--color-bg-secondary` (or primary). Border if needed: `--color-border` or `--color-border-muted`.
-- Card titles: font `--font-heading` (Averia Serif Libre). Text color `--color-on-bg-secondary` (or on-bg-primary).
-
-### 6.5 Modals and overlays
-
-- **Scrim:** Semi-transparent overlay; ensure focus stays visible.
-- **Content surface:** `--color-bg-primary` or `--color-bg-secondary`. All text and icons inside use the matching on-color tokens (`--color-on-bg-primary` / `--color-on-bg-secondary`).
+### Format Guidelines
+- Use UPPERCASE
+- Use underscores for spaces in codes
+- Include version numbers for systems
+- Include item counts where relevant
+- Dates in YYYY.MM.DD format
 
 ---
 
-## 7. Icons and imagery
+## Visual Elements
 
-- **Style:** Prefer outline icons for consistency with a clear, structured look. Solid only when needed for emphasis or recognition.
-- **Sizes:** Use a consistent scale: 16px, 20px, 24px (1rem, 1.25rem, 1.5rem). Token suggestion: `--icon-sm`, `--icon-md`, `--icon-lg`.
-- **Color:** Icons must use the **on-color** token for the surface they sit on (e.g. `--color-on-accent` for icons inside a primary button, `--color-on-bg-primary` for icons in the header). No raw hex for icon color.
+### Corner Brackets
+```tsx
+// Fixed position, decorative only
+<div className="fixed top-8 left-8 w-4 h-4 border-l border-t border-accent/50 pointer-events-none z-40" />
+<div className="fixed top-8 right-8 w-4 h-4 border-r border-t border-accent/50 pointer-events-none z-40" />
+<div className="fixed bottom-8 left-8 w-4 h-4 border-l border-b border-accent/50 pointer-events-none z-40" />
+<div className="fixed bottom-8 right-8 w-4 h-4 border-r border-b border-accent/50 pointer-events-none z-40" />
+```
 
----
+### Content Spacing
+- All content starts at `pt-32` (8rem from top)
+- Horizontal padding: `px-6 md:px-16 lg:px-24`
+- Bottom padding: `pb-16` or `pb-24`
 
-## 8. Motion and feedback
-
-- **Micro interactions:** 150–200ms for state changes (hover, focus, open/close). Easing: `ease-out` or `ease-in-out`.
-- **Page load animations:** 3000–4000ms for entrance sequences. Heavy, deliberate pacing that signals "system initialization." Users should have time to perceive each phase.
-- **Page transitions:** 2000–2500ms for microfiche-style zoom transitions. Cinematic, not rushed.
-- **No decorative motion:** No ambient animation or decorative motion. Use motion only for state change and loading/feedback.
-- **Reduced motion:** Respect `prefers-reduced-motion: reduce` by disabling or shortening non-essential transitions.
-
----
-
-## 9. Implementation notes
-
-- **Token format:** Use CSS custom properties: `--color-*`, `--font-*`, `--space-*`, `--text-*`, `--icon-*`. Frontend theme file(s) (e.g. in `frontend/src/shared/`) are the single source of truth; components consume tokens only.
-- **Theming:** Light theme is default. Dark theme later: same token names, different hex values in a theme switch.
-- **Do not:**
-  - Use Pacific Cyan for text, large areas, or anything other than optional subtle button hover.
-  - Use raw hex (or hardcoded colors) for text or icon color; always use semantic on-color tokens.
-  - Introduce new palette colors without updating this document and the token set.
+### Z-Index Layers
+| Element | Z-Index |
+|---------|---------|
+| Grain/Scanlines | 9999/9998 |
+| Navigation | 50 |
+| Corner Brackets | 40 |
+| Content | 10 |
+| Background effects | 1-2 |
 
 ---
 
-## 10. Summary checklist
+## Typography Standards
 
-Before shipping UI, confirm:
+### Page Titles
+- Font: Averia Serif Libre (heading)
+- Size: `text-display` (3.5rem)
+- Color: `text-on-bg-primary` (parchment)
 
-- [ ] **Logo:** Wordmark and Logo (Black) are used from `frontend/public/logo/` only; approved backgrounds and minimum sizes respected; no stretch, recolor, or effects.
-- [ ] All text and icons use semantic **on-color** tokens (`--color-on-*`); no raw hex for type or icons.
-- [ ] Pacific Cyan is used only for optional, very subtle **button hover** (primary); nowhere else.
-- [ ] Headings and titles use **Averia Serif Libre**; body and UI use **Inter**.
-- [ ] Contrast for all text meets **WCAG 2.1 AA** (4.5:1 normal, 3:1 large).
-- [ ] Buttons, links, form controls, cards, and modals reference the token names in this doc (e.g. `--color-accent`, `--color-on-accent`).
-- [ ] Spacing uses the **spacing scale** tokens; typography uses the **type scale**.
-- [ ] Focus states are visible (accent or high-contrast outline).
-- [ ] Motion is subtle (150–200ms) and respects reduced motion.
+### Section Headers
+- Mono label above: `font-mono text-system text-on-surface-muted tracking-widest`
+- Example: `C  OUTPUT ARCHIVE`, `// SYSTEM DIAGNOSTIC`
+
+### Body Text
+- Font: Inter (body)
+- Size: `text-body` (1rem)
+- Color: `text-on-bg-secondary` (muted parchment)
+- Line height: 1.6
+
+---
+
+## Color Tokens
+
+Always use semantic color tokens, not raw values:
+
+| Element | Token | Value |
+|---------|-------|-------|
+| Background | `bg-bg-primary` | #13161F |
+| Text Primary | `text-on-bg-primary` | #FAF6F0 |
+| Text Secondary | `text-on-bg-secondary` | #E8E4DE |
+| Text Muted | `text-on-surface-muted` | #8A8580 |
+| Accent | `text-accent` / `bg-accent` | #0036D8 |
+| Borders | `border-border-custom` | rgba(250, 246, 240, 0.15) |
+
+---
+
+## Animation Standards
+
+### Entrance Animations
+```tsx
+useEffect(() => {
+  const ctx = gsap.context(() => {
+    gsap.from(headerRef.current, {
+      y: 50,
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power3.out'
+    });
+
+    gsap.from(itemsRef.current?.children || [], {
+      y: 30,
+      opacity: 0,
+      duration: 0.6,
+      stagger: 0.1,
+      delay: 0.3,
+      ease: 'power3.out'
+    });
+  });
+
+  return () => ctx.revert();
+}, []);
+```
+
+### Hover States
+- Duration: 150-300ms
+- Easing: `ease` or `ease-out`
+- Transform: subtle scale (1.02) or color shift
+
+---
+
+## Footer Standards
+
+Every page should have a consistent footer section:
+
+```tsx
+<div className="flex justify-between items-end mt-16 pt-8 border-t border-border-muted">
+  <div className="font-mono text-system text-on-surface-muted">
+    {/* Left info */}
+  </div>
+  <div className="flex items-center gap-4">
+    <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+    <span className="font-mono text-system text-on-surface-muted">
+      {/* Status */}
+    </span>
+  </div>
+  <div className="font-mono text-system text-on-surface-muted">
+    {/* Right info */}
+  </div>
+</div>
+```
+
+### Common Footer Patterns
+| Page | Left | Status | Right |
+|------|------|--------|-------|
+| Work | `TOTAL: 06 ENTRIES` | `INDEXED` | `LAST_UPDATE: 2024.02.17` |
+| Signal | `TOTAL: {n} ENTRIES` | `RECEIVING` | `SYNCED_WITH_SUBSTACK` |
+| System | `STATUS: ONLINE` | `OPERATIONAL` | `REF: SYS.001` |
+
+---
+
+## Content Patterns
+
+### Archive Pages (Work, Signal)
+- Grid or list of items
+- Each item has: type/category, title, description
+- Hover state with accent color
+- "Access" or "Read" indicator
+
+### Detail Pages (Signal/[slug])
+- Back link to parent archive
+- Header with metadata
+- Feature image (optional)
+- Content body
+- Footer with navigation
+
+---
+
+## Adding New Pages
+
+When adding a new page:
+
+1. **Choose the shell**: `PageShell` (client) or `SimplePageShell` (server)
+2. **Set currentPage**: One of `'home' | 'work' | 'signal' | 'system'`
+3. **Add side text**: Follow the naming conventions
+4. **Include corner brackets**: These come with the shell
+5. **Add footer**: Use the standard 3-column footer pattern
+6. **Update transitions**: If needed, add microcopy to `MicroficheTransition.tsx`
+
+### Example New Page
+```tsx
+// app/new/page.tsx
+import { SimplePageShell } from '@/components/dom/PageShell';
+
+export default function NewPage() {
+  return (
+    <SimplePageShell
+      currentPage="work"  // Or whichever is closest
+      leftSideText="NEW_SECTION_V1"
+      rightSideText="STATUS_INFO"
+    >
+      <div className="min-h-screen pt-32 pb-16 px-6 md:px-16 lg:px-24">
+        {/* Content */}
+        
+        {/* Standard footer */}
+        <div className="flex justify-between items-end mt-16 pt-8 border-t border-border-muted">
+          <div className="font-mono text-system text-on-surface-muted">INFO_LEFT</div>
+          <div className="flex items-center gap-4">
+            <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+            <span className="font-mono text-system text-on-surface-muted">STATUS</span>
+          </div>
+          <div className="font-mono text-system text-on-surface-muted">INFO_RIGHT</div>
+        </div>
+      </div>
+    </SimplePageShell>
+  );
+}
+```
+
+---
+
+## Checklist for Page Consistency
+
+Before committing a new page, verify:
+
+- [ ] Uses PageShell or SimplePageShell
+- [ ] Corner navigation present (K, WORK, SIGNAL, SYSTEM)
+- [ ] Current page highlighted in accent color
+- [ ] Corner brackets visible
+- [ ] LivingEffects present (via shell)
+- [ ] Side text appropriate for page
+- [ ] Content starts at `pt-32`
+- [ ] Proper horizontal padding
+- [ ] Footer with status indicator
+- [ ] All links work (especially K to home)
+- [ ] Mobile responsive (nav hidden appropriately)
+
+---
+
+## Anti-Patterns to Avoid
+
+❌ **Don't** use the old Layout component for new pages  
+❌ **Don't** create custom navigation that differs from corner nav  
+❌ **Don't** skip the corner brackets  
+❌ **Don't** use raw color values instead of tokens  
+❌ **Don't** change z-index values without checking the layer stack  
+❌ **Don't** skip the footer status section  
+❌ **Don't** use different entrance animation timing
+
+---
+
+## Questions?
+
+Refer to existing pages as examples:
+- `app/work/page.tsx` - Archive pattern
+- `app/signal/page.tsx` - List pattern  
+- `app/system/page.tsx` - Content pattern
+- `app/signal/[slug]/page.tsx` - Detail pattern

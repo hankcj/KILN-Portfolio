@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { SmoothScroll } from '@/components/dom/SmoothScroll';
+import { CustomCursor } from '@/components/dom/CustomCursor';
+import { AmbientCursor } from '@/components/dom/AmbientCursor';
 
 export const metadata: Metadata = {
   title: 'KILN — Personal Studio',
@@ -17,8 +20,16 @@ export default function RootLayout({
         {/* Static scanlines - global */}
         <div className="scanlines" aria-hidden="true" />
         
-        {/* Content - pages handle their own living effects */}
-        {children}
+        {/* Custom cursor - respects reduced motion */}
+        <CustomCursor />
+        
+        {/* Ambient cursor glow */}
+        <AmbientCursor />
+        
+        {/* Smooth scroll wrapper */}
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );

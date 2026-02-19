@@ -9,7 +9,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { LivingEffects, GlitchText } from '@/components/dom/LivingEffects';
+import { TerminalNav } from '@/components/dom/TerminalNav';
 import { useAppStore } from '@/lib/store';
+import { SceneManager } from '@/components/canvas/SceneManager';
 
 const BOOT_LINES = [
   '// INIT_SEQUENCE',
@@ -93,9 +95,13 @@ export default function HomePage() {
   return (
     <main ref={containerRef} className="min-h-screen relative overflow-hidden">
       <LivingEffects />
+      <TerminalNav />
 
-      {/* Background */}
-      <div className="fixed inset-0 pointer-events-none">
+      {/* WebGL Atmospheric Scene */}
+      <SceneManager />
+
+      {/* CSS Fallback Background - subtle gradient orb */}
+      <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-3xl" />
       </div>
 
@@ -127,58 +133,32 @@ export default function HomePage() {
       {/* Main content */}
       <div className="main-content relative z-10 min-h-screen flex flex-col justify-between px-8 md:px-16 lg:px-24 py-12" style={{ opacity: 0 }}>
         
-        {/* Navigation - scattered in corners */}
-        <nav className="fixed inset-0 z-40 pointer-events-none">
-          <a 
-            href="/"
-            className="nav-link pointer-events-auto absolute top-8 left-8 font-heading text-h4 text-on-bg-primary hover:text-accent transition-colors opacity-0"
-          >
-            K
-          </a>
+        {/* K Logo */}
+        <a 
+          href="/"
+          className="nav-link pointer-events-auto fixed top-8 left-8 z-40 font-heading text-h4 text-on-bg-primary hover:text-accent transition-colors opacity-0"
+        >
+          K
+        </a>
 
-          <a 
-            href="/work"
-            onClick={handleNavigate('work')}
-            className="nav-link pointer-events-auto absolute top-8 right-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors opacity-0"
+        {/* Decorative side text */}
+        <div className="nav-link fixed left-8 top-1/2 -translate-y-1/2 hidden lg:block z-30 pointer-events-none opacity-0">
+          <div 
+            className="font-mono text-system text-on-surface-muted"
+            style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
           >
-            <GlitchText>C  WORK</GlitchText>
-          </a>
-
-          <a 
-            href="/signal"
-            onClick={handleNavigate('signal')}
-            className="nav-link pointer-events-auto absolute bottom-8 left-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors opacity-0"
-          >
-            <GlitchText>C  SIGNAL</GlitchText>
-          </a>
-
-          <a 
-            href="/system"
-            onClick={handleNavigate('system')}
-            className="nav-link pointer-events-auto absolute bottom-8 right-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors opacity-0"
-          >
-            <GlitchText>// SYSTEM</GlitchText>
-          </a>
-
-          {/* Side text */}
-          <div className="nav-link absolute left-8 top-1/2 -translate-y-1/2 hidden lg:block opacity-0">
-            <div 
-              className="font-mono text-system text-on-surface-muted"
-              style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
-            >
-              PORTFOLIO_V1.0.0
-            </div>
+            PORTFOLIO_V1.0.0
           </div>
+        </div>
 
-          <div className="nav-link absolute right-8 top-1/2 -translate-y-1/2 hidden lg:block opacity-0">
-            <div 
-              className="font-mono text-system text-on-surface-muted"
-              style={{ writingMode: 'vertical-rl' }}
-            >
-              48.8566° N 2.3522° E
-            </div>
+        <div className="nav-link fixed right-8 top-1/2 -translate-y-1/2 hidden lg:block z-30 pointer-events-none opacity-0">
+          <div 
+            className="font-mono text-system text-on-surface-muted"
+            style={{ writingMode: 'vertical-rl' }}
+          >
+            48.8566° N 2.3522° E
           </div>
-        </nav>
+        </div>
 
         {/* Main content area */}
         <div className="flex flex-col justify-between h-full">
@@ -186,7 +166,7 @@ export default function HomePage() {
           {/* Top header */}
           <div className="flex justify-between items-start pt-4">
             <div className="font-mono text-system text-on-surface-muted">
-              // BOOT_SEQUENCE <span className="animate-pulse">_</span>
+              {'// BOOT_SEQUENCE'} <span className="animate-pulse">_</span>
             </div>
             <div className="font-mono text-system text-on-surface-muted text-right">
               EST. 2024<br />
@@ -215,7 +195,7 @@ export default function HomePage() {
 
             <div className="flex items-center gap-4 mt-8">
               <span className="font-mono text-system text-on-surface-muted">
-                // LOADING COMPLETE
+                {'// LOADING COMPLETE'}
               </span>
               <div className="h-px bg-border-custom flex-1 max-w-xs" />
             </div>

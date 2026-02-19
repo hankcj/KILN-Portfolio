@@ -151,7 +151,7 @@ function DataStream() {
   if (!mounted) {
     return (
       <div className="fixed bottom-32 right-8 z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block text-right">
-        <div style={{ opacity: 0.3 }}>// RENDER_INIT [OK]</div>
+        <div style={{ opacity: 0.3 }}>{'// RENDER_INIT [OK]'}</div>
         <div style={{ opacity: 0.5 }}>C  LOAD_START [ACTV]</div>
         <div style={{ opacity: 0.7 }}>{'>>'} SYNC_PROC [DONE]</div>
       </div>

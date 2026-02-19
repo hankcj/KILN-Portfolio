@@ -9,11 +9,13 @@
 'use client';
 
 import { Canvas } from '@react-three/fiber';
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useAppStore } from '@/lib/store';
 import { fpsMonitor, getInitialQuality, adaptiveQuality, QualityLevel } from '@/lib/perf';
 import { prefersReducedMotion } from '@/lib/motion';
 import { EntranceScene } from './Scenes/EntranceScene';
+import { GrainEffect } from './Effects/GrainEffect';
+import { WebGLErrorFallback } from '@/components/dom/ErrorFallback';
 
 interface SceneManagerProps {
   children?: React.ReactNode;
@@ -26,6 +28,8 @@ export function SceneManager({ children }: SceneManagerProps) {
     reducedMotion, 
     setReducedMotion 
   } = useAppStore();
+  
+  const [webglError, setWebglError] = useState(false);
 
   // Initialize quality and motion preferences
   useEffect(() => {
@@ -52,9 +56,19 @@ export function SceneManager({ children }: SceneManagerProps) {
     };
   }, [setWebglQuality, setReducedMotion, webglQuality]);
 
-  // Don't render WebGL if reduced motion is preferred
-  if (reducedMotion) {
-    return null;
+  const handleContextLost = useCallback(() => {
+    console.warn('WebGL context lost - disabling 3D effects');
+    setWebglError(true);
+  }, []);
+
+  const handleContextRestored = useCallback(() => {
+    console.log('WebGL context restored');
+    setWebglError(false);
+  }, []);
+
+  // Don't render WebGL if reduced motion is preferred or WebGL failed
+  if (reducedMotion || webglError) {
+    return webglError ? <WebGLErrorFallback reset={() => setWebglError(false)} /> : null;
   }
 
   const dpr = typeof window !== 'undefined' ? getDPR(webglQuality) : 1;
@@ -75,6 +89,10 @@ export function SceneManager({ children }: SceneManagerProps) {
         style={{
           background: 'transparent',
         }}
+        onError={(e) => {
+          console.error('Canvas error:', e);
+          setWebglError(true);
+        }}
       >
         {/* Ambient lighting for dark scene */}
         <ambientLight intensity={0.1} />
@@ -82,6 +100,7 @@ export function SceneManager({ children }: SceneManagerProps) {
         <pointLight position={[-10, -10, -10]} intensity={0.1} color="#0036D8" />
         
         <EntranceScene />
+        <GrainEffect />
         {children}
       </Canvas>
     </div>

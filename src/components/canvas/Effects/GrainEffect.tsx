@@ -44,7 +44,7 @@ export function GrainEffect() {
     () => ({
       uTime: { value: 0 },
       uIntensity: { value: 0.5 },
-      uResolution: { value: [window.innerWidth, window.innerHeight] },
+      uResolution: { value: [typeof window !== 'undefined' ? window.innerWidth : 1920, typeof window !== 'undefined' ? window.innerHeight : 1080] },
     }),
     []
   );

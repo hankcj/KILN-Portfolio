@@ -59,7 +59,7 @@ function Footer() {
     <footer className="border-t border-border-custom py-12 px-6 md:px-8 bg-bg-primary">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-caption text-on-surface-muted font-mono">
-          // SYSIN DD *
+          {'// SYSIN DD *'}
         </p>
         <p className="text-caption text-on-surface-muted">
           © {new Date().getFullYear()} KILN

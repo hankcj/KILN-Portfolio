@@ -59,14 +59,14 @@ interface QualitySettings {
 export const qualityPresets: Record<QualityLevel, QualitySettings> = {
   high: {
     pixelRatio: 2,
-    dpr: Math.min(window?.devicePixelRatio || 2, 2),
+    dpr: typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 2, 2) : 2,
     effectsIntensity: 1,
     shadows: true,
     antialias: true,
   },
   medium: {
     pixelRatio: 1.5,
-    dpr: Math.min(window?.devicePixelRatio || 1.5, 1.5),
+    dpr: typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1.5, 1.5) : 1.5,
     effectsIntensity: 0.6,
     shadows: false,
     antialias: true,

@@ -2,18 +2,16 @@
  * Work Page Content
  * 
  * The work/archive page with output grid.
+ * Uses PageShell for consistent navigation and decorations.
  */
 
 'use client';
 
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { LivingEffects, GlitchText } from '@/components/dom/LivingEffects';
-import { useAppStore } from '@/lib/store';
+import { PageShell } from '@/components/dom/PageShell';
 
 export default function WorkPage() {
-  const { startTransition } = useAppStore();
-  const containerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -35,72 +33,17 @@ export default function WorkPage() {
         delay: 0.3,
         ease: 'power3.out'
       });
-    }, containerRef);
+    });
 
     return () => ctx.revert();
   }, []);
 
-  const handleNavigate = (page: string) => (e: React.MouseEvent) => {
-    e.preventDefault();
-    startTransition(page);
-  };
-
   return (
-    <main ref={containerRef} className="min-h-screen relative overflow-hidden">
-      <LivingEffects />
-
-      {/* Navigation - same scattered style */}
-      <nav className="fixed inset-0 z-50 pointer-events-none">
-        <a 
-          href="/"
-          onClick={handleNavigate('home')}
-          className="pointer-events-auto absolute top-8 left-8 font-heading text-h4 text-on-bg-primary hover:text-accent transition-colors"
-        >
-          K
-        </a>
-
-        <a 
-          href="/work"
-          className="pointer-events-auto absolute top-8 right-8 font-mono text-system text-accent"
-        >
-          C  WORK
-        </a>
-
-        <a 
-          href="/signal"
-          onClick={handleNavigate('signal')}
-          className="pointer-events-auto absolute bottom-8 left-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors"
-        >
-          <GlitchText>C  SIGNAL</GlitchText>
-        </a>
-
-        <a 
-          href="/system"
-          onClick={handleNavigate('system')}
-          className="pointer-events-auto absolute bottom-8 right-8 font-mono text-system text-on-surface-muted hover:text-on-bg-primary transition-colors"
-        >
-          <GlitchText>// SYSTEM</GlitchText>
-        </a>
-
-        <div className="absolute left-8 top-1/2 -translate-y-1/2 hidden lg:block">
-          <div 
-            className="font-mono text-system text-on-surface-muted"
-            style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
-          >
-            OUTPUT_ARCHIVE_V2.0
-          </div>
-        </div>
-
-        <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden lg:block">
-          <div 
-            className="font-mono text-system text-on-surface-muted"
-            style={{ writingMode: 'vertical-rl' }}
-          >
-            6 ITEMS INDEXED
-          </div>
-        </div>
-      </nav>
-
+    <PageShell 
+      currentPage="outputs"
+      leftSideText="OUTPUT_ARCHIVE_V2.0"
+      rightSideText="6 ITEMS INDEXED"
+    >
       {/* Main content */}
       <div className="relative z-10 min-h-screen px-6 md:px-16 lg:px-24 py-32">
         <header ref={headerRef} className="mb-16 md:mb-24">
@@ -113,7 +56,7 @@ export default function WorkPage() {
             </p>
           </div>
           <h1 className="font-heading text-display text-on-bg-primary mb-4">
-            WORK
+            OUTPUTS
           </h1>
           <p className="text-body text-on-bg-tertiary max-w-xl">
             Outputs — not projects. A continuous practice of essays, systems, tools, 
@@ -153,7 +96,7 @@ export default function WorkPage() {
               </div>
               <div className="mt-4 pt-4 border-t border-border-muted">
                 <span className="font-mono text-system text-on-surface-muted group-hover:text-accent transition-colors">
-                  // ACCESS →
+                  {'// ACCESS →'}
                 </span>
               </div>
             </a>
@@ -176,12 +119,6 @@ export default function WorkPage() {
           </div>
         </div>
       </div>
-
-      {/* Corner brackets - slightly different for Work page */}
-      <div className="fixed top-8 left-8 w-4 h-4 border-l border-t border-accent/50 pointer-events-none" />
-      <div className="fixed top-8 right-8 w-4 h-4 border-r border-t border-accent/50 pointer-events-none" />
-      <div className="fixed bottom-8 left-8 w-4 h-4 border-l border-b border-accent/50 pointer-events-none" />
-      <div className="fixed bottom-8 right-8 w-4 h-4 border-r border-b border-accent/50 pointer-events-none" />
-    </main>
+    </PageShell>
   );
 }
