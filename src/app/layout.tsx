@@ -5,8 +5,11 @@ import { CustomCursor } from '@/components/dom/CustomCursor';
 import { AmbientCursor } from '@/components/dom/AmbientCursor';
 
 export const metadata: Metadata = {
-  title: 'KILN — Personal Studio',
+  title: 'KILN Studio',
   description: 'A personal studio and publishing space. Not a portfolio. A continuous practice.',
+  icons: {
+    icon: '/logo/favicon.svg',
+  },
 };
 
 export default function RootLayout({
