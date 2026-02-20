@@ -11,6 +11,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { PageShell } from '@/components/dom/PageShell';
 import { SignalSearch } from '@/components/dom/SignalSearch';
+import { SubscribeForm } from '@/components/dom/SubscribeForm';
 import type { GhostPost } from '@/lib/ghost';
 
 interface SignalPageProps {
@@ -183,6 +184,13 @@ export default function SignalPage({ posts }: SignalPageProps) {
             <span>↗</span>
           </a>
         </div>
+
+        {/* Embedded Subscribe Form (shown when enabled) */}
+        {process.env.NEXT_PUBLIC_ENABLE_EMBEDDED_SUBSCRIBE === 'true' && (
+          <div className="mt-12 max-w-md mx-auto">
+            <SubscribeForm />
+          </div>
+        )}
       </div>
     </PageShell>
   );

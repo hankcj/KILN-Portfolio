@@ -192,7 +192,7 @@ export default function SystemPage() {
             <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
               C  EXTERNAL_SYSTEMS
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border-custom">
+            <div className={`grid grid-cols-1 gap-px bg-border-custom ${process.env.NEXT_PUBLIC_SUBSTACK_URL ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
               <a 
                 href="/rss.xml" 
                 className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
@@ -203,18 +203,20 @@ export default function SystemPage() {
                 </div>
                 <span className="text-on-surface-muted group-hover:text-accent transition-colors">→</span>
               </a>
-              <a 
-                href="https://yourname.substack.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
-              >
-                <div>
-                  <p className="font-mono text-system text-accent mb-1">SUBSTACK</p>
-                  <p className="text-small text-on-bg-tertiary">Syndicated essays</p>
-                </div>
-                <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
-              </a>
+              {process.env.NEXT_PUBLIC_SUBSTACK_URL && (
+                <a 
+                  href={process.env.NEXT_PUBLIC_SUBSTACK_URL}
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
+                >
+                  <div>
+                    <p className="font-mono text-system text-accent mb-1">SUBSTACK</p>
+                    <p className="text-small text-on-bg-tertiary">Syndicated essays</p>
+                  </div>
+                  <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
+                </a>
+              )}
               <a 
                 href="mailto:hello@kiln.studio"
                 className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
