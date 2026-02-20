@@ -194,33 +194,33 @@ export default function SystemPage() {
                 </ul>
               </div>
 
-              {/* Deployment */}
+              {/* Infrastructure */}
               <div className="bg-bg-primary p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
                   <h2 className="font-heading text-h3 text-on-bg-primary">Infrastructure</h2>
                 </div>
                 <ul className="space-y-4 text-small font-mono">
-                  <SpecRow label="HOST" value="Self-Hosted / Edge" />
-                  <SpecRow label="CDN" value="Vercel / Cloudflare" />
-                  <SpecRow label="CMS" value="Ghost (Self-Hosted)" />
+                  <SpecRow label="FRONTEND" value="Vercel (Edge)" />
+                  <SpecRow label="CMS" value="Ghost (AWS EC2)" />
+                  <SpecRow label="EMAIL" value="AWS SES + Listmonk" />
+                  <SpecRow label="PAYMENTS" value="Stripe" />
                   <SpecRow label="DOMAIN" value="kiln.studio" />
-                  <SpecRow label="SSL" value="Let's Encrypt" />
                 </ul>
               </div>
 
-              {/* Performance */}
+              {/* Services */}
               <div className="bg-bg-primary p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-                  <h2 className="font-heading text-h3 text-on-bg-primary">Performance</h2>
+                  <h2 className="font-heading text-h3 text-on-bg-primary">Services</h2>
                 </div>
                 <ul className="space-y-4 text-small font-mono">
-                  <SpecRow label="STRATEGY" value="ISR (60s Revalidate)" />
-                  <SpecRow label="BUNDLE" value="~120KB First Load" />
-                  <SpecRow label="FONTS" value="Google Fonts (Subset)" />
-                  <SpecRow label="IMAGES" value="WebP / Responsive" />
-                  <SpecRow label="ACCESSIBILITY" value="WCAG 2.1 AA" />
+                  <SpecRow label="SSL" value="Let's Encrypt" />
+                  <SpecRow label="CDN" value="Cloudflare" />
+                  <SpecRow label="STORAGE" value="AWS S3" />
+                  <SpecRow label="INTAKE" value="Custom (TBD)" />
+                  <SpecRow label="ANALYTICS" value="None (Intentionally)" />
                 </ul>
               </div>
             </StaggerReveal>
@@ -262,10 +262,10 @@ export default function SystemPage() {
                 version="V2.1.0" 
                 date="2026.02.20" 
                 changes={[
-                  'Brand and voice alignment: updated copy across all pages',
-                  'Services page rewritten as selective collaboration',
-                  'System page restructured: philosophy before implementation',
-                  'Home page: workshop metaphor, updated status'
+                  'Brand alignment: optimization critique, systems-forward voice',
+                  'System documentation: philosophy before implementation',
+                  'Infrastructure: AWS SES, Listmonk, Stripe integration prepared',
+                  'Added social links and external system connections'
                 ]} 
               />
               <ChangelogEntry 

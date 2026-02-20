@@ -37,8 +37,9 @@ const NAV_ITEMS: NavItem[] = [
   { key: '2', label: 'archive', path: '/work', prefix: 'C', description: 'Object store' },
   { key: '3', label: 'signal', path: '/signal', prefix: 'C', description: 'Field notes' },
   { key: '4', label: 'operations', path: '/services', prefix: 'C', description: 'Active processes' },
-  { key: '5', label: 'project', path: '/project', prefix: '>>', description: 'External system', external: true },
-  { key: '6', label: 'system', path: '/system', prefix: '//', description: 'Documentation' },
+  { key: '5', label: 'shop', path: '/shop', prefix: '>>', description: 'Digital products' },
+  { key: '6', label: 'project', path: '/project', prefix: '>>', description: 'External system', external: true },
+  { key: '7', label: 'system', path: '/system', prefix: '//', description: 'Documentation' },
   // Note: intake is hidden from nav but accessible from Operations page
 ];
 
@@ -127,7 +128,7 @@ export function TerminalNav() {
     if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key >= '1' && e.key <= '6') {
+      if (e.key >= '1' && e.key <= '7') {
         // Direct number selection
         const index = parseInt(e.key) - 1;
         if (index < NAV_ITEMS.length) {
@@ -415,7 +416,7 @@ export function TerminalNav() {
                   {/* Help text - stays at bottom */}
                   <div className="mt-8 pt-4 border-t border-border-muted text-on-surface-muted/50 text-[10px] space-y-1">
                     <div>{'// NAVIGATION_CONTROLS'}</div>
-                    <div>[1-6] Select directly | [↑↓] Navigate | [ENTER] Confirm | [ESC] Cancel | [S] Toggle Sound</div>
+                    <div>[1-7] Select directly | [↑↓] Navigate | [ENTER] Confirm | [ESC] Cancel | [S] Toggle Sound</div>
                   </div>
                 </>
               )}

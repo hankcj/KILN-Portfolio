@@ -62,7 +62,7 @@ function generateRSS(posts: Awaited<ReturnType<typeof getPosts>>['posts']): stri
       <pubDate>${pubDate}</pubDate>
       <author>${escapeXml(author)}</author>
       <dc:creator>${escapeXml(author)}</dc:creator>
-      <description>${escapeXml(post.custom_excerpt || post.excerpt)}</description>
+      <description>${escapeXml(post.custom_excerpt || '')}</description>
       ${post.feature_image ? `<enclosure url="${post.feature_image}" type="image/jpeg" />` : ''}
       ${categories}
     </item>`;

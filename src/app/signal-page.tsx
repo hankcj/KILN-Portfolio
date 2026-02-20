@@ -121,9 +121,11 @@ export default function SignalPage({ posts }: SignalPageProps) {
                     <h3 className="font-heading text-h3 text-on-bg-primary group-hover:text-accent transition-colors mb-3">
                       {post.title}
                     </h3>
-                    <p className="text-body text-on-bg-tertiary leading-relaxed max-w-2xl">
-                      {post.custom_excerpt || post.excerpt}
-                    </p>
+                    {post.custom_excerpt && (
+                      <p className="text-body text-on-bg-tertiary leading-relaxed max-w-2xl">
+                        {post.custom_excerpt}
+                      </p>
+                    )}
                     {post.tags && post.tags.length > 0 && (
                       <div className="flex flex-wrap gap-2 mt-4">
                         {post.tags.slice(0, 3).map((tag) => (

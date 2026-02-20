@@ -29,7 +29,6 @@ export function SignalSearch({ posts }: SignalSearchProps) {
     return new Fuse(posts, {
       keys: [
         { name: 'title', weight: 0.5 },
-        { name: 'excerpt', weight: 0.3 },
         { name: 'custom_excerpt', weight: 0.3 },
         { name: 'tags.name', weight: 0.2 },
       ],
@@ -215,8 +214,8 @@ export function SignalSearch({ posts }: SignalSearchProps) {
                     </h4>
                     <p className="text-small text-on-bg-tertiary line-clamp-2">
                       <HighlightedText 
-                        text={result.item.custom_excerpt || result.item.excerpt} 
-                        matches={result.matches?.filter(m => m.key === 'excerpt' || m.key === 'custom_excerpt')[0]?.indices as [number, number][] || []}
+                        text={result.item.custom_excerpt || ''} 
+                        matches={result.matches?.filter(m => m.key === 'custom_excerpt')[0]?.indices as [number, number][] || []}
                       />
                     </p>
                     {result.item.tags && result.item.tags.length > 0 && (
