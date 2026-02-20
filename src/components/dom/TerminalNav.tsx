@@ -33,19 +33,19 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { key: '1', label: 'home', path: '/', prefix: '[K]', description: 'Return to origin' },
-  { key: '2', label: 'outputs', path: '/work', prefix: 'C', description: 'Portfolio archive' },
-  { key: '3', label: 'signal', path: '/signal', prefix: 'C', description: 'Transmission log' },
-  { key: '4', label: 'services', path: '/services', prefix: 'C', description: 'Available for hire' },
+  { key: '1', label: 'origin', path: '/', prefix: '[K]', description: 'System root' },
+  { key: '2', label: 'archive', path: '/work', prefix: 'C', description: 'Object store' },
+  { key: '3', label: 'signal', path: '/signal', prefix: 'C', description: 'Field notes' },
+  { key: '4', label: 'operations', path: '/services', prefix: 'C', description: 'Active processes' },
   { key: '5', label: 'project', path: '/project', prefix: '>>', description: 'External system', external: true },
-  { key: '6', label: 'system', path: '/system', prefix: '//', description: 'Diagnostics & info' },
-  // Note: intake is hidden from nav but accessible from Services page
+  { key: '6', label: 'system', path: '/system', prefix: '//', description: 'Documentation' },
+  // Note: intake is hidden from nav but accessible from Operations page
 ];
 
 const BOOT_SEQUENCE = [
-  '// INIT_NAV_PROTOCOL',
+  '// NAV_PROTOCOL_INIT',
   'C  MOUNT_FILESYSTEM',
-  '>> LOAD_ROUTINES...',
+  '>> LOAD_ROUTINES',
   '** READY',
   '',
   'SELECT_DESTINATION:',

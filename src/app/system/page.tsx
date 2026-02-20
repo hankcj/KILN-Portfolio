@@ -1,8 +1,8 @@
 /**
  * System / Colophon Route
  * 
- * Technical documentation, system diagnostics, and environment context.
- * The system's own source code — exposed.
+ * How this site is built, why it works this way, and what 
+ * that says about building for the web in 2026.
  */
 
 import { SimplePageShell } from '@/components/dom/PageShell';
@@ -10,14 +10,14 @@ import { ScrollReveal, StaggerReveal } from '@/components/dom/ScrollReveal';
 
 export const metadata = {
   title: 'System — KILN',
-  description: 'Technical documentation, system diagnostics, and environment context.',
+  description: 'How this site is built, why it works this way, and what that says about building for the web.',
 };
 
 export default function SystemPage() {
   return (
     <SimplePageShell
       currentPage="system"
-      leftSideText="SYS_DOCS_V1.0"
+      leftSideText="SYS_DOCS_V2.0"
       rightSideText="48.8566° N 2.3522° E"
     >
       <div className="min-h-screen pt-32 pb-24 px-6 md:px-16 lg:px-24">
@@ -28,10 +28,10 @@ export default function SystemPage() {
             <ScrollReveal>
               <div className="flex justify-between items-start mb-4">
                 <p className="font-mono text-system text-on-surface-muted tracking-widest">
-                  {'// SYSTEM DIAGNOSTIC'}
+                  {'// DOCUMENTATION'}
                 </p>
                 <p className="font-mono text-system text-on-surface-muted">
-                  STATUS: ONLINE
+                  STATUS: OPERATIONAL
                 </p>
               </div>
             </ScrollReveal>
@@ -42,17 +42,124 @@ export default function SystemPage() {
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
               <p className="text-body text-on-bg-tertiary max-w-2xl">
-                Technical specifications, environment variables, and operational parameters. 
-                This is the machine that builds the machine.
+                How this site is built, why it works this way, and what 
+                that says about building for the web in 2026.
               </p>
             </ScrollReveal>
           </header>
 
-          {/* System Specs Grid */}
+          {/* Philosophy */}
           <section className="mb-16 md:mb-24">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                C  SYSTEM_SPECIFICATIONS
+                {'// PHILOSOPHY'}
+              </p>
+            </ScrollReveal>
+            <ScrollReveal delay={0.1}>
+              <div className="prose prose-invert max-w-none">
+                <p className="text-body text-on-bg-secondary leading-relaxed mb-6">
+                  Most digital infrastructure is built to extract. Attention, time, data—converted 
+                  to metrics that optimize for engagement, not meaning. The default configuration 
+                  thins attention, flattens taste, and makes it easy to confuse motion with progress.
+                </p>
+                <p className="text-body text-on-bg-secondary leading-relaxed mb-6">
+                  This site runs <span className="text-on-bg-primary">different processes</span>. 
+                  It is built for return visits, not discovery. The assumption is that people 
+                  arrive with intent, and that the interface should preserve what matters rather 
+                  than extract what it can.
+                </p>
+                <p className="text-body text-on-bg-secondary leading-relaxed mb-6">
+                  The dark theme is not a preference—it is a material choice. Dark interfaces 
+                  recede; they allow content to sit forward. The brutalist aesthetic privileges 
+                  structure over decoration because structure is what survives. Motion is treated 
+                  as mass: heavy, damped, deliberate. Nothing moves just to impress.
+                </p>
+                <p className="text-body text-on-bg-secondary leading-relaxed">
+                  The goal is infrastructure that feels <span className="text-on-bg-primary">inhabited</span>, 
+                  not performative. Systems that can be reread, reused, referenced later. 
+                  The archive matters more than the timeline.
+                </p>
+              </div>
+            </ScrollReveal>
+          </section>
+
+          {/* Design Principles */}
+          <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
+            <ScrollReveal>
+              <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
+                C  PRINCIPLES
+              </p>
+            </ScrollReveal>
+            <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border-custom" stagger={0.1}>
+              
+              <div className="bg-bg-primary p-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="font-mono text-system text-accent">01</span>
+                  <div className="h-px bg-border-custom flex-1" />
+                </div>
+                <h3 className="font-heading text-h4 text-on-bg-primary mb-3">The Archive Matters More Than the Timeline</h3>
+                <p className="text-small text-on-bg-tertiary leading-relaxed">
+                  Work is organized for findability and reference, not chronological 
+                  consumption. Essays are categorized by type. Projects include context 
+                  on how they were made. Everything should be useful a year from now.
+                </p>
+              </div>
+
+              <div className="bg-bg-primary p-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="font-mono text-system text-accent">02</span>
+                  <div className="h-px bg-border-custom flex-1" />
+                </div>
+                <h3 className="font-heading text-h4 text-on-bg-primary mb-3">Preserve Friction Where It Creates Depth</h3>
+                <p className="text-small text-on-bg-tertiary leading-relaxed">
+                  The terminal navigation requires learning. Transitions take time. 
+                  These are not bugs—they are <span className="text-on-bg-secondary">intentional resistances</span> 
+                  against the assumption that faster is always better. Speed often optimizes 
+                  for the wrong thing.
+                </p>
+              </div>
+
+              <div className="bg-bg-primary p-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="font-mono text-system text-accent">03</span>
+                  <div className="h-px bg-border-custom flex-1" />
+                </div>
+                <h3 className="font-heading text-h4 text-on-bg-primary mb-3">Systems Over Pages</h3>
+                <p className="text-small text-on-bg-tertiary leading-relaxed">
+                  This is not a collection of pages but a coherent environment. 
+                  Navigation, typography, motion, and color follow consistent rules 
+                  that allow the site to feel like a single object rather than 
+                  stitched-together templates. Internal consistency is a feature.
+                </p>
+              </div>
+
+              <div className="bg-bg-primary p-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="font-mono text-system text-accent">04</span>
+                  <div className="h-px bg-border-custom flex-1" />
+                </div>
+                <h3 className="font-heading text-h4 text-on-bg-primary mb-3">Canonical Home</h3>
+                <p className="text-small text-on-bg-tertiary leading-relaxed">
+                  studiokiln.io is the source of truth. Essays published elsewhere 
+                  resolve here. Products link back. Social platforms are distribution, 
+                  not identity. The archive is the point.
+                </p>
+              </div>
+
+            </StaggerReveal>
+          </section>
+
+          {/* Technical Specifications */}
+          <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
+            <ScrollReveal>
+              <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
+                C  IMPLEMENTATION
+              </p>
+            </ScrollReveal>
+            <ScrollReveal delay={0.1}>
+              <p className="text-body text-on-bg-tertiary mb-8 max-w-2xl">
+                The following specifications exist not to impress but to document. 
+                They are the result of choices made in service of the principles above.
               </p>
             </ScrollReveal>
             <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border-custom" stagger={0.1}>
@@ -61,7 +168,7 @@ export default function SystemPage() {
               <div className="bg-bg-primary p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-                  <h2 className="font-heading text-h3 text-on-bg-primary">Architecture</h2>
+                  <h2 className="font-heading text-h3 text-on-bg-primary">Foundation</h2>
                 </div>
                 <ul className="space-y-4 text-small font-mono">
                   <SpecRow label="FRAMEWORK" value="Next.js 14 (App Router)" />
@@ -91,7 +198,7 @@ export default function SystemPage() {
               <div className="bg-bg-primary p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-                  <h2 className="font-heading text-h3 text-on-bg-primary">Deployment</h2>
+                  <h2 className="font-heading text-h3 text-on-bg-primary">Infrastructure</h2>
                 </div>
                 <ul className="space-y-4 text-small font-mono">
                   <SpecRow label="HOST" value="Self-Hosted / Edge" />
@@ -119,30 +226,26 @@ export default function SystemPage() {
             </StaggerReveal>
           </section>
 
-          {/* Colophon */}
+          {/* Typography */}
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                {'// COLOPHON'}
+                {'// TYPOGRAPHY'}
               </p>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
               <div className="prose prose-invert max-w-none">
-              <p className="text-body text-on-bg-secondary leading-relaxed mb-6">
-                This site was designed and built as a digital environment — a space that rewards 
-                attention and functions as a destination for people who arrive with intent. 
-                It is not optimized for mass discovery or rapid conversion.
-              </p>
-              <p className="text-body text-on-bg-secondary leading-relaxed mb-6">
-                The visual language draws from brutalist design principles and scientific 
-                diagram aesthetics. Motion is treated as mass — heavy, damped, and deliberate. 
-                Every animation serves a purpose; nothing is decorative without function.
-              </p>
-              <p className="text-body text-on-bg-secondary leading-relaxed">
-                Typography pairs <span className="font-heading text-on-bg-primary">Averia Serif Libre</span> — 
-                an imperfect, slightly broken serif that suggests institutional authority with human fallibility — 
-                with <span className="font-body text-on-bg-primary">Inter</span> for system text and UI elements.
-              </p>
+                <p className="text-body text-on-bg-secondary leading-relaxed mb-6">
+                  <span className="font-heading text-on-bg-primary">Averia Serif Libre</span> — 
+                  an imperfect, slightly broken serif that suggests institutional authority 
+                  with human fallibility. It carries the weight of long-form text without 
+                  feeling corporate or trendy.
+                </p>
+                <p className="text-body text-on-bg-secondary leading-relaxed">
+                  <span className="font-body text-on-bg-primary">Inter</span> for system text 
+                  and UI elements. Neutral, legible, designed for screens. The pairing creates 
+                  hierarchy through contrast in texture rather than just size or weight.
+                </p>
               </div>
             </ScrollReveal>
           </section>
@@ -155,6 +258,16 @@ export default function SystemPage() {
               </p>
             </ScrollReveal>
             <StaggerReveal className="space-y-px bg-border-custom" stagger={0.15}>
+              <ChangelogEntry 
+                version="V2.1.0" 
+                date="2026.02.20" 
+                changes={[
+                  'Brand and voice alignment: updated copy across all pages',
+                  'Services page rewritten as selective collaboration',
+                  'System page restructured: philosophy before implementation',
+                  'Home page: workshop metaphor, updated status'
+                ]} 
+              />
               <ChangelogEntry 
                 version="V2.0.0" 
                 date="2024.02.17" 
@@ -187,43 +300,72 @@ export default function SystemPage() {
             </StaggerReveal>
           </section>
 
-          {/* Feeds & Connect */}
+          {/* Connect */}
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-              C  EXTERNAL_SYSTEMS
+              C  CONNECT
             </p>
-            <div className={`grid grid-cols-1 gap-px bg-border-custom ${process.env.NEXT_PUBLIC_SUBSTACK_URL ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-border-custom">
               <a 
                 href="/rss.xml" 
                 className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
               >
                 <div>
-                  <p className="font-mono text-system text-accent mb-1">RSS_FEED</p>
+                  <p className="font-mono text-system text-accent mb-1">RSS</p>
                   <p className="text-small text-on-bg-tertiary">Subscribe to transmissions</p>
                 </div>
                 <span className="text-on-surface-muted group-hover:text-accent transition-colors">→</span>
               </a>
-              {process.env.NEXT_PUBLIC_SUBSTACK_URL && (
-                <a 
-                  href={process.env.NEXT_PUBLIC_SUBSTACK_URL}
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
-                >
-                  <div>
-                    <p className="font-mono text-system text-accent mb-1">SUBSTACK</p>
-                    <p className="text-small text-on-bg-tertiary">Syndicated essays</p>
-                  </div>
-                  <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
-                </a>
-              )}
+              
               <a 
-                href="mailto:hello@kiln.studio"
+                href="https://hankcj.substack.com"
+                target="_blank" 
+                rel="noopener noreferrer"
                 className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
               >
                 <div>
-                  <p className="font-mono text-system text-accent mb-1">INQUIRY</p>
-                  <p className="text-small text-on-bg-tertiary">Direct channel</p>
+                  <p className="font-mono text-system text-accent mb-1">SUBSTACK</p>
+                  <p className="text-small text-on-bg-tertiary">KILN — syndicated essays</p>
+                </div>
+                <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
+              </a>
+              
+              <a 
+                href="https://github.com/hankcj"
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
+              >
+                <div>
+                  <p className="font-mono text-system text-accent mb-1">GITHUB</p>
+                  <p className="text-small text-on-bg-tertiary">Code and open source</p>
+                </div>
+                <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
+              </a>
+              
+              <a 
+                href="https://instagram.com/hankcj"
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
+              >
+                <div>
+                  <p className="font-mono text-system text-accent mb-1">INSTAGRAM</p>
+                  <p className="text-small text-on-bg-tertiary">Process and studio</p>
+                </div>
+                <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
+              </a>
+            </div>
+            
+            {/* Email */}
+            <div className="mt-6">
+              <a 
+                href="mailto:hello@kiln.studio"
+                className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between border border-border-custom"
+              >
+                <div>
+                  <p className="font-mono text-system text-accent mb-1">EMAIL</p>
+                  <p className="text-small text-on-bg-tertiary">Direct inquiries: hello@kiln.studio</p>
                 </div>
                 <span className="text-on-surface-muted group-hover:text-accent transition-colors">→</span>
               </a>
@@ -245,16 +387,16 @@ export default function SystemPage() {
           {/* Footer info */}
           <div className="flex justify-between items-end pt-8 border-t border-border-muted">
             <div className="font-mono text-system text-on-surface-muted">
-              STATUS: ONLINE
+              STATUS: OPERATIONAL
             </div>
             <div className="flex items-center gap-4">
               <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
               <span className="font-mono text-system text-on-surface-muted">
-                OPERATIONAL
+                ARCHIVE_ACTIVE
               </span>
             </div>
             <div className="font-mono text-system text-on-surface-muted">
-              REF: SYS.001
+              REF: SYS.002
             </div>
           </div>
         </div>

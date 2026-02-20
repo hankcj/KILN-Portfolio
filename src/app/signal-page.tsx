@@ -7,11 +7,12 @@
 
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { PageShell } from '@/components/dom/PageShell';
 import { SignalSearch } from '@/components/dom/SignalSearch';
 import { SubscribeForm } from '@/components/dom/SubscribeForm';
+import { Toast } from '@/components/dom/Toast';
 import type { GhostPost } from '@/lib/ghost';
 
 interface SignalPageProps {
@@ -29,6 +30,20 @@ function formatDateCode(dateString: string): string {
 export default function SignalPage({ posts }: SignalPageProps) {
   const headerRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const [toastVisible, setToastVisible] = useState(false);
+
+  const handleRssClick = useCallback(async (e: React.MouseEvent) => {
+    e.preventDefault();
+    const rssUrl = `${window.location.origin}/rss.xml`;
+    
+    try {
+      await navigator.clipboard.writeText(rssUrl);
+      setToastVisible(true);
+    } catch (err) {
+      // Fallback: open the RSS in a new tab if clipboard fails
+      window.open(rssUrl, '_blank');
+    }
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -175,14 +190,17 @@ export default function SignalPage({ posts }: SignalPageProps) {
         </div>
 
         {/* RSS / Subscribe link */}
-        <div className="mt-8 flex justify-center">
-          <a 
-            href="/rss.xml" 
-            className="font-mono text-system text-on-surface-muted hover:text-accent transition-colors inline-flex items-center gap-2"
+        <div className="mt-8 flex flex-col items-center gap-2">
+          <button
+            onClick={handleRssClick}
+            className="font-mono text-system text-on-surface-muted hover:text-accent transition-colors inline-flex items-center gap-2 group"
           >
             <span>{'// SUBSCRIBE_VIA_RSS'}</span>
-            <span>↗</span>
-          </a>
+            <span className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
+          </button>
+          <p className="font-mono text-xs text-on-surface-muted/50">
+            Click to copy feed URL
+          </p>
         </div>
 
         {/* Embedded Subscribe Form (shown when enabled) */}
@@ -192,6 +210,14 @@ export default function SignalPage({ posts }: SignalPageProps) {
           </div>
         )}
       </div>
+
+      {/* Copy confirmation toast */}
+      <Toast 
+        message="RSS URL copied to clipboard"
+        isVisible={toastVisible}
+        onClose={() => setToastVisible(false)}
+        duration={2500}
+      />
     </PageShell>
   );
 }
