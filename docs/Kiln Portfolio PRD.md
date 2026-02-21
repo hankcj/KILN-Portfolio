@@ -77,7 +77,7 @@ WebGL is used for atmosphere and spatial continuity, never for essential content
 	•	Velite or Contentlayer for type-safe content collections
 Content types include essays, works, systems, and notes. Content is queryable and indexable.
 4.5 Utility Services
-	•	Email: Kit (ConvertKit)
+	•	Email: Listmonk (self-hosted); RSS-to-email via listmonk-rss
 	•	Payments: Stripe (direct checkout or hosted checkout)
 	•	Forms: Custom forms using Next.js server actions or API routes
 

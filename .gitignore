@@ -11,6 +11,9 @@ out
 dist
 .velite
 
+# Deploy secrets (per-service .env)
+deploy/**/.env
+
 # Environment (secrets - never commit)
 .env
 .env.local

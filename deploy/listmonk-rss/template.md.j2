@@ -1,0 +1,18 @@
+SIGNAL — latest transmissions.
+
+{% for item in items %}
+---
+
+## [{{ item.title }}]({{ item.link }})
+
+{{ item.summary|safe }}
+
+{% if item.get('media_content') %}
+[Read full post]({{ item.link }})
+{% endif %}
+
+{% endfor %}
+
+---
+
+You received this because you subscribed to KILN Signal. Unsubscribe or manage preferences via the link in the email footer.

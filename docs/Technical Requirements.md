@@ -83,7 +83,7 @@ The differentiator is **Separation of Concerns**: spectacle never blocks utility
 
 * **Styling:** Tailwind CSS (custom tokens and components, no off-the-shelf UI kit)
 * **Payments:** Stripe (prefer direct checkout links or hosted checkout)
-* **Email:** Kit (ConvertKit) API
+* **Email:** Listmonk (self-hosted); RSS-to-email via listmonk-rss
 * **Forms:** Next server actions / API routes with spam protection + rate limiting
 
 ---

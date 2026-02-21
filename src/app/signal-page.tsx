@@ -8,6 +8,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { gsap } from 'gsap';
 import { PageShell } from '@/components/dom/PageShell';
 import { SignalSearch } from '@/components/dom/SignalSearch';
@@ -91,7 +92,18 @@ export default function SignalPage({ posts }: SignalPageProps) {
                 className="block bg-bg-primary p-8 group hover:bg-bg-secondary border border-transparent hover:border-border-custom hover-lift focus-ring"
               >
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-                  <div className="flex-1">
+                  {post.feature_image && (
+                    <div className="w-full max-w-40 md:w-40 shrink-0 aspect-[16/10] relative rounded overflow-hidden border border-border-muted bg-bg-secondary">
+                      <Image
+                        src={post.feature_image}
+                        alt=""
+                        fill
+                        className="object-cover group-hover:opacity-90 transition-opacity"
+                        sizes="(max-width: 768px) 100vw, 10rem"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-4 mb-3">
                       <span className="font-mono text-system text-accent">
                         #{String(posts.length - index).padStart(3, '0')}
@@ -169,12 +181,12 @@ export default function SignalPage({ posts }: SignalPageProps) {
             </span>
           </div>
           <div className="font-mono text-system text-on-surface-muted">
-            SYNCED_WITH_SUBSTACK
+            Email via Listmonk; also on Substack (RSS)
           </div>
         </div>
 
-        {/* RSS / Subscribe link */}
-        <div className="mt-8 flex justify-center">
+        {/* RSS / Subscribe links */}
+        <div className="mt-8 flex flex-wrap justify-center gap-6">
           <a 
             href="/rss.xml" 
             className="font-mono text-system text-on-surface-muted hover:text-accent transition-colors inline-flex items-center gap-2"
@@ -182,6 +194,17 @@ export default function SignalPage({ posts }: SignalPageProps) {
             <span>{'// SUBSCRIBE_VIA_RSS'}</span>
             <span>↗</span>
           </a>
+          {process.env.NEXT_PUBLIC_LISTMONK_SUBSCRIBE_URL && (
+            <a 
+              href={process.env.NEXT_PUBLIC_LISTMONK_SUBSCRIBE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-system text-on-surface-muted hover:text-accent transition-colors inline-flex items-center gap-2"
+            >
+              <span>{'// SUBSCRIBE_VIA_EMAIL'}</span>
+              <span>↗</span>
+            </a>
+          )}
         </div>
       </div>
     </PageShell>

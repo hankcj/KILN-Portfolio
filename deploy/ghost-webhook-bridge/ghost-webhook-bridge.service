@@ -1,0 +1,15 @@
+[Unit]
+Description=Ghost webhook bridge (post.published -> Listmonk)
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/ghost-webhook-bridge
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+RestartSec=5
+EnvironmentFile=/opt/ghost-webhook-bridge/.env
+
+[Install]
+WantedBy=multi-user.target

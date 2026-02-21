@@ -43,6 +43,14 @@ export async function GET() {
   }
 }
 
+function imageTypeFromUrl(url: string): string {
+  const lower = url.toLowerCase();
+  if (lower.includes('.png')) return 'image/png';
+  if (lower.includes('.webp')) return 'image/webp';
+  if (lower.includes('.gif')) return 'image/gif';
+  return 'image/jpeg';
+}
+
 function generateRSS(posts: Awaited<ReturnType<typeof getPosts>>['posts']): string {
   const now = new Date().toUTCString();
   const list = Array.isArray(posts) ? posts : [];
@@ -53,7 +61,18 @@ function generateRSS(posts: Awaited<ReturnType<typeof getPosts>>['posts']): stri
     const categories = (post.tags || [])
       .map((tag) => `<category>${escapeXml(tag.name)}</category>`)
       .join('\n      ');
-    
+    const encType = post.feature_image ? imageTypeFromUrl(post.feature_image) : '';
+    const enclosure = post.feature_image
+      ? `<enclosure url="${escapeXml(post.feature_image)}" type="${encType}" />`
+      : '';
+    const mediaThumb = post.feature_image
+      ? `<media:content url="${escapeXml(post.feature_image)}" type="${encType}" />\n      <media:thumbnail url="${escapeXml(post.feature_image)}" />`
+      : '';
+    const safeHtml = post.html ? post.html.replace(/\]\]>/g, ']]]]><![CDATA[>') : '';
+    const contentEncoded = safeHtml
+      ? `<content:encoded><![CDATA[${safeHtml}]]></content:encoded>`
+      : '';
+
     return `
     <item>
       <title>${escapeXml(post.title)}</title>
@@ -63,7 +82,9 @@ function generateRSS(posts: Awaited<ReturnType<typeof getPosts>>['posts']): stri
       <author>${escapeXml(author)}</author>
       <dc:creator>${escapeXml(author)}</dc:creator>
       <description>${escapeXml(post.custom_excerpt || post.excerpt)}</description>
-      ${post.feature_image ? `<enclosure url="${post.feature_image}" type="image/jpeg" />` : ''}
+      ${enclosure}
+      ${mediaThumb}
+      ${contentEncoded}
       ${categories}
     </item>`;
   }).join('\n');
@@ -72,7 +93,8 @@ function generateRSS(posts: Awaited<ReturnType<typeof getPosts>>['posts']): stri
 <rss version="2.0" 
   xmlns:atom="http://www.w3.org/2005/Atom"
   xmlns:content="http://purl.org/rss/1.0/modules/content/"
-  xmlns:dc="http://purl.org/dc/elements/1.1/">
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>${SITE_TITLE}</title>
     <link>${BASE_URL}/signal</link>

@@ -199,10 +199,24 @@ export default function SystemPage() {
               >
                 <div>
                   <p className="font-mono text-system text-accent mb-1">RSS_FEED</p>
-                  <p className="text-small text-on-bg-tertiary">Subscribe to transmissions</p>
+                  <p className="text-small text-on-bg-tertiary">Feed for readers and syndication</p>
                 </div>
                 <span className="text-on-surface-muted group-hover:text-accent transition-colors">→</span>
               </a>
+              {process.env.NEXT_PUBLIC_LISTMONK_SUBSCRIBE_URL && (
+                <a 
+                  href={process.env.NEXT_PUBLIC_LISTMONK_SUBSCRIBE_URL} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
+                >
+                  <div>
+                    <p className="font-mono text-system text-accent mb-1">SIGNAL_EMAIL</p>
+                    <p className="text-small text-on-bg-tertiary">Subscribe to transmissions</p>
+                  </div>
+                  <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
+                </a>
+              )}
               <a 
                 href="https://yourname.substack.com" 
                 target="_blank" 
@@ -211,7 +225,7 @@ export default function SystemPage() {
               >
                 <div>
                   <p className="font-mono text-system text-accent mb-1">SUBSTACK</p>
-                  <p className="text-small text-on-bg-tertiary">Syndicated essays</p>
+                  <p className="text-small text-on-bg-tertiary">Discovery and reading (RSS)</p>
                 </div>
                 <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
               </a>
