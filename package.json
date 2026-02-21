@@ -11,9 +11,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.995.0",
+    "@aws-sdk/client-ses": "^3.995.0",
+    "@aws-sdk/s3-request-presigner": "^3.995.0",
     "@gsap/react": "^2.1.1",
     "@react-three/drei": "^9.120.0",
     "@react-three/fiber": "^8.17.0",
+    "@stripe/stripe-js": "^8.8.0",
     "@tryghost/content-api": "^1.12.3",
     "fuse.js": "^7.1.0",
     "gsap": "^3.12.5",
@@ -21,6 +25,7 @@
     "next": "^14.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "stripe": "^20.3.1",
     "three": "^0.171.0",
     "zustand": "^5.0.2"
   },

@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: SignalPostPageProps): Promise
   if (!post) {
     return { title: 'Post not found — KILN' };
   }
-  const description = post.custom_excerpt || post.excerpt || undefined;
+  const description = post.custom_excerpt || undefined;
   return {
     title: `${post.title} — KILN`,
     description,
@@ -92,9 +92,9 @@ export default async function SignalPostPage({ params }: SignalPostPageProps) {
               <h1 className="font-heading text-display-md md:text-display text-on-bg-primary mb-6">
                 {post.title}
               </h1>
-              {(post.custom_excerpt || post.excerpt) && (
+              {post.custom_excerpt && (
                 <p className="text-body text-on-bg-tertiary max-w-2xl">
-                  {post.custom_excerpt || post.excerpt}
+                  {post.custom_excerpt}
                 </p>
               )}
               {post.primary_author && (

@@ -24,7 +24,7 @@ import { useAppStore } from '@/lib/store';
 import { ScrollProgress } from './ScrollProgress';
 import { KLogoMinimal } from './KLogo';
 
-export type PageType = 'home' | 'work' | 'outputs' | 'signal' | 'system' | 'services' | 'project';
+export type PageType = 'home' | 'work' | 'outputs' | 'signal' | 'system' | 'services' | 'project' | 'shop';
 
 interface PageShellProps {
   children: React.ReactNode;

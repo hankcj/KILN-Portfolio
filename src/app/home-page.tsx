@@ -14,9 +14,9 @@ import { useAppStore } from '@/lib/store';
 import { SceneManager } from '@/components/canvas/SceneManager';
 
 const BOOT_LINES = [
-  '// INIT_SEQUENCE',
-  'C  LOAD_MODULES',
-  '>> MOUNT_SYSTEMS',
+  '// SYSTEM_INIT',
+  'C  LOAD_KERNEL',
+  '>> MOUNT_FILESYSTEM',
   '** READY',
 ];
 
@@ -147,7 +147,7 @@ export default function HomePage() {
             className="font-mono text-system text-on-surface-muted"
             style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
           >
-            PORTFOLIO_V1.0.0
+            SYSTEM_V2.0
           </div>
         </div>
 
@@ -189,13 +189,13 @@ export default function HomePage() {
 
             <div className="mt-4 md:absolute md:top-20 md:right-0 lg:right-20">
               <p className="font-heading text-h3 md:text-h2 text-on-bg-tertiary leading-tight">
-                personal<br />studio
+                running<br />processes
               </p>
             </div>
 
             <div className="flex items-center gap-4 mt-8">
               <span className="font-mono text-system text-on-surface-muted">
-                {'// LOADING COMPLETE'}
+                {'// KERNEL_LOADED'}
               </span>
               <div className="h-px bg-border-custom flex-1 max-w-xs" />
             </div>
@@ -208,8 +208,9 @@ export default function HomePage() {
                 C  TYPE
               </div>
               <p className="text-small text-on-bg-secondary leading-relaxed">
-                Personal studio & publishing space. Not a portfolio. Not a blog. 
-                A continuous practice of systems, essays, and experiments.
+                Running processes against optimization culture. The default 
+                configuration extracts attention and flattens taste. These 
+                systems are built to preserve what matters.
               </p>
             </div>
 
@@ -218,8 +219,9 @@ export default function HomePage() {
                 C  STATUS
               </div>
               <p className="text-small text-on-bg-secondary leading-relaxed">
-                Currently building systems that think. Writing about the intersection 
-                of technology, design, and human experience.
+                Currently debugging: how to build without optimizing yourself 
+                out of meaning. Signal archive holds field notes on attention, 
+                systems, and what the culture costs.
               </p>
             </div>
           </div>
@@ -236,7 +238,7 @@ export default function HomePage() {
               </span>
             </div>
             <div className="font-mono text-system text-on-surface-muted">
-              LAST_UPDATE: 2024.02.17
+              LAST_UPDATE: 2026.02.20
             </div>
           </div>
         </div>

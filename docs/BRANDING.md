@@ -1,349 +1,446 @@
-# KILN Brand & Layout Standards
+# KILN Brand & Voice Guidelines
 
-## Overview
+## What KILN Is
 
-This document defines the consistent visual and interaction standards across all pages in the KILN site. The goal is to ensure that only **content** changes between pages, while **navigation**, **decorations**, and **system elements** remain consistent.
+KILN is a studio, not a service shop and not a personal blog. It's a controlled environment where ideas are heated until they harden into form, and where that form can become writing, systems, client work, or products.
+
+studiokiln.io functions as a hybrid space:
+
+* A portfolio showing what KILN is capable of
+* A selective studio offering custom work
+* A publishing platform for essays, research, and notes
+* A storefront for digital products and tools
+
+These are not separate brands stitched together. They are different expressions of the same underlying worldview.
+
+If Driftfield is mythic and Persona OS is operational, **KILN is architectural**.
+
+The site should feel less like browsing a company and more like entering a workshop where finished pieces, active experiments, and tools for sale coexist.
 
 ---
 
-## Page Structure Standards
+## Core Thesis
 
-### Required Elements (Every Page)
+Modern systems optimize for speed, scale, and friction removal. Meaning, judgment, craft, and ownership are the casualties.
 
-All pages MUST include:
+KILN is built to push back against that by:
 
-1. **Corner Navigation** - The "scattered corner" navigation system
-   - `K` logo (top-left) - Links to home
-   - `C  WORK` (top-right) - Links to work archive
-   - `C  SIGNAL` (bottom-left) - Links to signal/journal
-   - `// SYSTEM` (bottom-right) - Links to system/colophon
+* Slowing ideas down enough to be understood
+* Preserving friction where it creates depth
+* Treating thinking as a material, not a vibe
 
-2. **Corner Brackets** - Decorative frame elements
-   - 4 corner brackets (top-left, top-right, bottom-left, bottom-right)
-   - Accent color (#0036D8) at 50% opacity
-   - 1px border width, 16px (w-4 h-4) size
+Everything published, designed, or sold through KILN should reinforce that orientation.
 
-3. **Living Effects** - System atmosphere
-   - Film grain overlay (subtle, animated)
-   - Scanlines (very subtle)
-   - System clock (bottom-left, hidden on mobile)
+---
 
-4. **Side Text** (Desktop only, optional but recommended)
-   - Left side: Vertical text, rotated 180deg
-   - Right side: Vertical text
-   - System mono font, muted color
+## Tone
 
-### Page Shell Components
+**Spoken, precise, and calm.**
 
-Use the provided shell components for consistency:
+Not academic, but intellectually serious. Not motivational, not ironic, not performative. The writing should feel like someone thinking out loud who already did the hard reading earlier.
 
-#### For Client Components (with animations)
-```tsx
-import { PageShell } from '@/components/dom/PageShell';
+### Key Tone Traits
 
-export default function MyPage() {
-  return (
-    <PageShell 
-      currentPage="work"        // Current page identifier
-      leftSideText="..."        // Left vertical text
-      rightSideText="..."       // Right vertical text
-    >
-      {/* Your page content */}
-    </PageShell>
-  );
-}
+| Trait | Description | Example |
+|-------|-------------|---------|
+| **Exploratory** | Rather than declarative | "This seems to happen when..." vs "This always happens" |
+| **Confident** | Without bravado | State plainly, no qualifiers needed |
+| **Plain language** | Carrying heavy ideas | Simple sentences, complex concepts |
+| **No hype** | No urgency, no CTAs baked into prose | "Available" not "Don't miss out!" |
+
+**Rule of thumb:** If a sentence feels like it's trying to convince, it's probably wrong. The work should stand on its own weight.
+
+### Tone Checklist
+
+When writing copy, verify:
+- [ ] No exclamation points (unless quoting)
+- [ ] No urgency words ("now", "today", "limited")
+- [ ] No superlatives without evidence ("best", "revolutionary")
+- [ ] Active voice preferred
+- [ ] Concrete over abstract
+- [ ] Short sentences over long
+
+---
+
+## Audience
+
+KILN is for people who feel that something is off but can't quite name it yet.
+
+They are usually:
+
+* Builders, designers, engineers, writers, or founders
+* Burned out on optimization culture
+* Intellectually curious but suspicious of jargon
+* Looking for frameworks, not inspiration
+
+**They don't need to be persuaded. They need language for what they already sense.**
+
+### Audience Implications for Copy
+
+- Assume intelligence, not expertise
+- Define terms when first used
+- Prefer "you might notice" over "you should know"
+- Let them arrive at conclusions
+
+---
+
+## Goals
+
+### Primary Goals
+
+* Establish KILN as a credible studio with a clear point of view
+* Demonstrate capability through artifacts, not claims
+* Build trust by showing thinking, not just outcomes
+
+### Secondary Goals
+
+* Attract a small number of high-alignment client projects
+* Support paid writing and digital products
+* Allow the site itself to function as proof-of-work
+
+**The site should convert through resonance and clarity, not persuasion.**
+
+---
+
+## What KILN Produces
+
+KILN produces **objects**, not content.
+
+Those objects can take multiple forms:
+
+| Type | Description | Examples |
+|------|-------------|----------|
+| **Essays** | Published research and long-form | Systems thinking, design theory |
+| **Notes** | Marginalia or lab records | Work-in-progress, observations |
+| **Frameworks** | Conceptual and technical | Toolkits, methodologies |
+| **Products** | Digital products and tools | Templates, code, resources |
+| **Client Work** | Selective custom projects | Systems, architecture, direction |
+
+**Key principle:** Client work should feel continuous with the publishing and products, not like a separate commercial layer. Everything on the site should look like it came from the same hand.
+
+**Quality test:** If something can't be reread, reused, or referenced later, it doesn't belong here.
+
+---
+
+## Brand Personality
+
+### KILN Is
+
+* Quietly intense
+* Structured but not rigid
+* Patient
+* Selective
+
+### KILN Is Not
+
+* Trend-aware
+* Fast
+* Friendly in a customer-service way
+* Trying to be everywhere
+
+**It should feel like a place that chose restraint on purpose.**
+
+---
+
+## Visual Direction
+
+The visual system should reinforce **weight, time, and process**.
+
+### Guiding Principles
+
+* Interfaces that feel **architectural**, not decorative
+* Motion that suggests **mass and inertia**
+* Typography that privileges **readability and texture** over novelty
+* **Space used generously**
+
+### The Museum/Archive Metaphor
+
+The site should feel closer to a **museum or archive** than a publication platform, with clear layers between:
+
+1. **Finished work** (the gallery — polished, complete)
+2. **Active experiments** (the lab — in-progress, raw)
+3. **Raw material** (the archive — reference, foundational)
+
+### Visual Hierarchy
+
+| Element | Treatment |
+|---------|-----------|
+| Primary content | Generous whitespace, clear boundaries |
+| Secondary content | Muted, accessible but not competing |
+| Navigation | Systematic, consistent, unobtrusive |
+| Decorative | Minimal, purposeful (corner brackets, grain) |
+
+---
+
+## Relationship to Platforms
+
+**Platforms are distribution, not identity.**
+
+studiokiln.io is the **canonical home**. Substack, social platforms, and marketplaces are satellites that point back to it.
+
+Work published elsewhere should always resolve into the KILN archive in its intended form, without compromises made for feeds, algorithms, or growth mechanics.
+
+**The archive matters more than the timeline.**
+
+---
+
+## Long-Term Direction
+
+Over time, KILN should evolve into:
+
+* A reference studio for people thinking seriously about work, tools, and modern systems
+* A place where publishing, products, and client work reinforce each other
+* A body of work that reads as internally consistent across years
+
+**If someone encounters the site through any single entry point — a client case, an essay, or a product — they should immediately understand the larger system it belongs to.**
+
+---
+
+## Language Guidelines
+
+### Preferred Terms
+
+| Use | Avoid | Why |
+|-----|-------|-----|
+| Objects | Content | Things with weight vs ephemeral |
+| Studio | Agency | Craft vs service |
+| Systems | Solutions | Interconnected vs transactional |
+| Available | For sale | Present vs pushy |
+| Notes | Blog posts | Thinking raw vs packaged |
+| Archive | Feed | Permanent vs temporal |
+| Selective | Exclusive | Intentional vs elitist |
+| Work | Portfolio | Process vs presentation |
+
+### Prohibited Words/Phrases
+
+- ❌ "Revolutionary" / "Game-changing" / "Cutting-edge"
+- ❌ "Unlock" / "Unleash" / "Supercharge"
+- ❌ "AI-powered" (unless actually relevant)
+- ❌ "Seamless" / "Frictionless" (we preserve friction)
+- ❌ "Boost" / "Optimize" / "Maximize"
+- ❌ "Join the community" / "Be part of"
+- ❌ "Don't miss out" / "Limited time"
+- ❌ Emoji in headlines or CTAs
+
+### Preferred Constructions
+
+- ✅ "This is" vs "We are" (studio as entity, not collective)
+- ✅ "Available" vs "Buy now"
+- ✅ "Questions" vs "FAQ" (less corporate)
+- ✅ "Process" vs "Methodology" (less academic)
+
+---
+
+## Internal Rule of Thumb
+
+When in doubt, choose:
+
+| Over | Choose |
+|------|--------|
+| Cleverness | **Clarity** |
+| Reach | **Depth** |
+| Aesthetics | **Structure** |
+| Description | **Demonstration** |
+| Momentum | **Longevity** |
+
+**KILN is allowed to move slowly. That slowness is part of the signal.**
+
+---
+
+## Page-Specific Copy Standards
+
+### Home Page (`/`)
+
+**Purpose:** Establish the workshop metaphor immediately
+
+**Current Issues:**
+- "Personal studio" is too modest
+- "Systems that think" is vague
+- Boot sequence is generic
+
+**Target Copy Approach:**
+- Lead with what KILN is (studio + archive + store)
+- Use the kiln metaphor explicitly
+- Show, don't tell the philosophy
+
+**Example Direction:**
+```
+KILN
+A studio for heating ideas until they harden.
+
+C  TYPE
+Objects, systems, and frameworks for people 
+who build. Published, sold, and made to order.
+
+C  STATUS
+Currently working on [specific thing]. 
+Archive contains [n] objects. Store has [n] tools.
 ```
 
-#### For Server Components
-```tsx
-import { SimplePageShell } from '@/components/dom/PageShell';
+### Work Page (`/work`)
 
-export default async function MyServerPage() {
-  return (
-    <SimplePageShell
-      currentPage="signal"
-      leftSideText="..."
-      rightSideText="..."
-    >
-      {/* Your page content */}
-    </SimplePageShell>
-  );
-}
+**Purpose:** Show the output of the studio — finished objects
+
+**Current Issues:**
+- Placeholder outputs with generic names
+- No actual work displayed
+- "Outputs" terminology not explained
+
+**Target Copy Approach:**
+- Intro text that explains what "objects" means
+- Case studies that show process, not just outcome
+- Clear categorization (Client Work, Products, Experiments)
+
+**Example Direction:**
+```
+OBJECT ARCHIVE
+
+Finished work, available tools, and select client projects.
+Each object includes context on how it was made and why.
+
+---
+[Object cards with actual titles, not "Output 001"]
+```
+
+### Signal Page (`/signal`)
+
+**Purpose:** Publishing platform — thinking in public
+
+**Current Issues:**
+- "Transmission log" is good but could be sharper
+- "Syndicated to Substack" is operational, not conceptual
+
+**Target Copy Approach:**
+- Emphasize the archive nature
+- Distinguish essays from notes
+- Make the Substack relationship clear but secondary
+
+**Example Direction:**
+```
+SIGNAL
+
+Essays, notes, and research published from the studio.
+Longer pieces are archived here first, then syndicated.
+
+View: ESSAYS | NOTES | ALL
+```
+
+### System Page (`/system`)
+
+**Purpose:** Documentation, colophon, operational transparency
+
+**Current Issues:**
+- Too focused on technical specs
+- Missing the "why" behind the site
+- Changelog is outdated
+
+**Target Copy Approach:**
+- Lead with philosophy, not technology
+- Explain design decisions as choices
+- Keep technical specs but frame them as implementation
+
+**Example Direction:**
+```
+SYSTEM
+
+How this site is built, why it works this way, and what 
+that says about building for the web in 2025.
+
+[Philosophy section first]
+[Technical specifications second]
+[Changelog last — as actual history, not marketing]
+```
+
+### Services Page (`/services`)
+
+**Purpose:** Selective client work offering
+
+**Current Issues:**
+- Reads like a standard agency services page
+- "System Audit" / "Embedded" / "Direction" is jargon-y
+- Too much process description
+
+**Target Copy Approach:**
+- Frame as collaboration, not service delivery
+- Be specific about what KILN actually does well
+- Make selectivity clear but not elitist
+
+**Example Direction:**
+```
+AVAILABLE WORK
+
+KILN takes on a small number of projects each year.
+Current focus: [specific type of work]
+
+What this studio does well:
+- Design systems with conceptual integrity
+- Digital environments that reward attention
+- Tools that outlast their initial use case
+
+[Then: Process, Selection criteria, Contact]
+```
+
+### Store Page (`/shop` or `/store`)
+
+**Purpose:** Digital products and tools for sale
+
+**Current Status:** Does not exist
+
+**Target Copy Approach:**
+- Products as objects with utility
+- Clear pricing without discount psychology
+- Documentation as part of the product
+
+**Example Direction:**
+```
+TOOLS
+
+Digital products built in the studio, available for use.
+Each includes documentation on how and why it was made.
+
+[Product grid]
+
+All purchases include future updates. 
+Questions: [contact link]
 ```
 
 ---
 
-## Navigation Behavior
+## Implementation Priority
 
-### Active State
-- The current page's nav item is highlighted in **accent color** (#0036D8)
-- No hover effect on active item
-- Other items show GlitchText effect on hover
+### Phase 1: Foundation (Critical)
+1. Update home page copy to establish workshop metaphor
+2. Rewrite Services page to be less agency-like
+3. Fix System page changelog and philosophy section
+4. Remove all placeholder "Output 001" copy
 
-### Home Navigation
-- The `K` logo in top-left always returns to home
-- On home page, the K is highlighted in accent color
-- On other pages, K is parchment white with hover accent
+### Phase 2: Content (High)
+5. Populate Work page with actual case studies
+6. Write 2-3 flagship essays for Signal
+7. Create store page structure
+8. Add social links to System page
 
-### Transitions
-- All navigation uses the App Store's `startTransition()` for consistent page transitions
-- The transition microcopy changes based on destination (see below)
-
----
-
-## Transition Microcopy
-
-Each destination has specific loading text:
-
-| Destination | Line 1 | Line 2 | Line 3 | Line 4 |
-|-------------|--------|--------|--------|--------|
-| **Home** | `// RETURNING_TO_ORIGIN` | `C  RESET_NAVIGATION` | `>> DISENGAGE_ARCHIVE` | `** HOME` |
-| **Work** | `// LOADING_ARCHIVE` | `C  ACCESS_GRANTED` | `READING_INDEX...` | `SYS_RDY` |
-| **Signal** | `// TUNING_FREQUENCY` | `C  ESTABLISH_UPLINK` | `RECEIVING_TRANSMISSION...` | `SIGNAL_ACQUIRED` |
-| **System** | `// SYSTEM_DIAGNOSTICS` | `C  QUERY_PARAMETERS` | `LOADING_COLOPHON...` | `DOCS_READY` |
+### Phase 3: Polish (Medium)
+9. Audit all copy against tone guidelines
+10. Add notes/marginalia section to Signal
+11. Create product listings for store
+12. Write extended colophon explaining design decisions
 
 ---
 
-## Side Text Conventions
+## Questions for Implementation
 
-### Standard Patterns
+When updating any page, ask:
 
-| Page | Left Side | Right Side |
-|------|-----------|------------|
-| **Home** | `PORTFOLIO_V1.0.0` | `48.8566° N 2.3522° E` |
-| **Work** | `OUTPUT_ARCHIVE_V2.0` | `{count} ITEMS INDEXED` |
-| **Signal** | `TRANSMISSION_LOG` | `{count} ENTRIES LOGGED` |
-| **System** | `SYS_DOCS_V1.0` | `48.8566° N 2.3522° E` |
-| **Post** | `TRANSMISSION_LOG` | `{date}` |
+1. Does this sound like a person thinking or a company selling?
+2. Is the language plain enough to be clear, specific enough to matter?
+3. Would this make sense in 5 years?
+4. Does it assume the reader's intelligence?
+5. Is there anything here that couldn't be reread?
 
-### Format Guidelines
-- Use UPPERCASE
-- Use underscores for spaces in codes
-- Include version numbers for systems
-- Include item counts where relevant
-- Dates in YYYY.MM.DD format
+If any answer is wrong, revise.
 
 ---
 
-## Visual Elements
-
-### Corner Brackets
-```tsx
-// Fixed position, decorative only
-<div className="fixed top-8 left-8 w-4 h-4 border-l border-t border-accent/50 pointer-events-none z-40" />
-<div className="fixed top-8 right-8 w-4 h-4 border-r border-t border-accent/50 pointer-events-none z-40" />
-<div className="fixed bottom-8 left-8 w-4 h-4 border-l border-b border-accent/50 pointer-events-none z-40" />
-<div className="fixed bottom-8 right-8 w-4 h-4 border-r border-b border-accent/50 pointer-events-none z-40" />
-```
-
-### Content Spacing
-- All content starts at `pt-32` (8rem from top)
-- Horizontal padding: `px-6 md:px-16 lg:px-24`
-- Bottom padding: `pb-16` or `pb-24`
-
-### Z-Index Layers
-| Element | Z-Index |
-|---------|---------|
-| Grain/Scanlines | 9999/9998 |
-| Navigation | 50 |
-| Corner Brackets | 40 |
-| Content | 10 |
-| Background effects | 1-2 |
-
----
-
-## Typography Standards
-
-### Page Titles
-- Font: Averia Serif Libre (heading)
-- Size: `text-display` (3.5rem)
-- Color: `text-on-bg-primary` (parchment)
-
-### Section Headers
-- Mono label above: `font-mono text-system text-on-surface-muted tracking-widest`
-- Example: `C  OUTPUT ARCHIVE`, `// SYSTEM DIAGNOSTIC`
-
-### Body Text
-- Font: Inter (body)
-- Size: `text-body` (1rem)
-- Color: `text-on-bg-secondary` (muted parchment)
-- Line height: 1.6
-
----
-
-## Color Tokens
-
-Always use semantic color tokens, not raw values:
-
-| Element | Token | Value |
-|---------|-------|-------|
-| Background | `bg-bg-primary` | #13161F |
-| Text Primary | `text-on-bg-primary` | #FAF6F0 |
-| Text Secondary | `text-on-bg-secondary` | #E8E4DE |
-| Text Muted | `text-on-surface-muted` | #8A8580 |
-| Accent | `text-accent` / `bg-accent` | #0036D8 |
-| Borders | `border-border-custom` | rgba(250, 246, 240, 0.15) |
-
----
-
-## Animation Standards
-
-### Entrance Animations
-```tsx
-useEffect(() => {
-  const ctx = gsap.context(() => {
-    gsap.from(headerRef.current, {
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power3.out'
-    });
-
-    gsap.from(itemsRef.current?.children || [], {
-      y: 30,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.1,
-      delay: 0.3,
-      ease: 'power3.out'
-    });
-  });
-
-  return () => ctx.revert();
-}, []);
-```
-
-### Hover States
-- Duration: 150-300ms
-- Easing: `ease` or `ease-out`
-- Transform: subtle scale (1.02) or color shift
-
----
-
-## Footer Standards
-
-Every page should have a consistent footer section:
-
-```tsx
-<div className="flex justify-between items-end mt-16 pt-8 border-t border-border-muted">
-  <div className="font-mono text-system text-on-surface-muted">
-    {/* Left info */}
-  </div>
-  <div className="flex items-center gap-4">
-    <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-    <span className="font-mono text-system text-on-surface-muted">
-      {/* Status */}
-    </span>
-  </div>
-  <div className="font-mono text-system text-on-surface-muted">
-    {/* Right info */}
-  </div>
-</div>
-```
-
-### Common Footer Patterns
-| Page | Left | Status | Right |
-|------|------|--------|-------|
-| Work | `TOTAL: 06 ENTRIES` | `INDEXED` | `LAST_UPDATE: 2024.02.17` |
-| Signal | `TOTAL: {n} ENTRIES` | `RECEIVING` | `SYNCED_WITH_SUBSTACK` |
-| System | `STATUS: ONLINE` | `OPERATIONAL` | `REF: SYS.001` |
-
----
-
-## Content Patterns
-
-### Archive Pages (Work, Signal)
-- Grid or list of items
-- Each item has: type/category, title, description
-- Hover state with accent color
-- "Access" or "Read" indicator
-
-### Detail Pages (Signal/[slug])
-- Back link to parent archive
-- Header with metadata
-- Feature image (optional)
-- Content body
-- Footer with navigation
-
----
-
-## Adding New Pages
-
-When adding a new page:
-
-1. **Choose the shell**: `PageShell` (client) or `SimplePageShell` (server)
-2. **Set currentPage**: One of `'home' | 'work' | 'signal' | 'system'`
-3. **Add side text**: Follow the naming conventions
-4. **Include corner brackets**: These come with the shell
-5. **Add footer**: Use the standard 3-column footer pattern
-6. **Update transitions**: If needed, add microcopy to `MicroficheTransition.tsx`
-
-### Example New Page
-```tsx
-// app/new/page.tsx
-import { SimplePageShell } from '@/components/dom/PageShell';
-
-export default function NewPage() {
-  return (
-    <SimplePageShell
-      currentPage="work"  // Or whichever is closest
-      leftSideText="NEW_SECTION_V1"
-      rightSideText="STATUS_INFO"
-    >
-      <div className="min-h-screen pt-32 pb-16 px-6 md:px-16 lg:px-24">
-        {/* Content */}
-        
-        {/* Standard footer */}
-        <div className="flex justify-between items-end mt-16 pt-8 border-t border-border-muted">
-          <div className="font-mono text-system text-on-surface-muted">INFO_LEFT</div>
-          <div className="flex items-center gap-4">
-            <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-            <span className="font-mono text-system text-on-surface-muted">STATUS</span>
-          </div>
-          <div className="font-mono text-system text-on-surface-muted">INFO_RIGHT</div>
-        </div>
-      </div>
-    </SimplePageShell>
-  );
-}
-```
-
----
-
-## Checklist for Page Consistency
-
-Before committing a new page, verify:
-
-- [ ] Uses PageShell or SimplePageShell
-- [ ] Corner navigation present (K, WORK, SIGNAL, SYSTEM)
-- [ ] Current page highlighted in accent color
-- [ ] Corner brackets visible
-- [ ] LivingEffects present (via shell)
-- [ ] Side text appropriate for page
-- [ ] Content starts at `pt-32`
-- [ ] Proper horizontal padding
-- [ ] Footer with status indicator
-- [ ] All links work (especially K to home)
-- [ ] Mobile responsive (nav hidden appropriately)
-
----
-
-## Anti-Patterns to Avoid
-
-❌ **Don't** use the old Layout component for new pages  
-❌ **Don't** create custom navigation that differs from corner nav  
-❌ **Don't** skip the corner brackets  
-❌ **Don't** use raw color values instead of tokens  
-❌ **Don't** change z-index values without checking the layer stack  
-❌ **Don't** skip the footer status section  
-❌ **Don't** use different entrance animation timing
-
----
-
-## Questions?
-
-Refer to existing pages as examples:
-- `app/work/page.tsx` - Archive pattern
-- `app/signal/page.tsx` - List pattern  
-- `app/system/page.tsx` - Content pattern
-- `app/signal/[slug]/page.tsx` - Detail pattern
+*Last updated: 2026.02.20*
+*Version: 2.0*
