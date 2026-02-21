@@ -1,8 +1,8 @@
 /**
  * Available Work Route
  * 
- * Selective system audits and builds. Not a service menu — 
- * a statement of what this studio debugs and ships.
+ * Selective services. Not a service menu —
+ * a statement of what this studio builds and fixes.
  */
 
 import { SimplePageShell } from '@/components/dom/PageShell';
@@ -10,15 +10,15 @@ import { ScrollReveal, StaggerReveal } from '@/components/dom/ScrollReveal';
 
 export const metadata = {
   title: 'Available — KILN',
-  description: 'Selective system audits and builds. Infrastructure for attention, tools that compound.',
+  description: 'Limited bandwidth for projects that need to hold up under real traffic, real budgets, and real attention.',
 };
 
 export default function ServicesPage() {
   return (
     <SimplePageShell
       currentPage="services"
-      leftSideText="AVAILABLE_Q2_2026"
-      rightSideText="SELECTIVE_WORK"
+      leftSideText="SELECTIVE_WORK"
+      rightSideText="LIMITED_INQUIRIES"
     >
       <div className="min-h-screen pt-32 pb-24 px-6 md:px-16 lg:px-24">
         <div className="max-w-5xl mx-auto">
@@ -31,150 +31,185 @@ export default function ServicesPage() {
                   {'// CURRENT_STATUS'}
                 </p>
                 <p className="font-mono text-system text-accent">
-                  ACCEPTING_INQUIRIES
+                  ACCEPTING: LIMITED INQUIRIES
                 </p>
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
               <h1 className="font-heading text-display text-on-bg-primary mb-4">
-                AVAILABLE WORK
+                SELECTIVE WORK
               </h1>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
-              <p className="text-body text-on-bg-tertiary max-w-2xl">
-                Limited bandwidth for systems that need to outlast the next quarter. 
-                Current focus: infrastructure for attention, tools that compound, 
-                environments that don&apos;t extract.
+              <p className="text-body text-on-bg-tertiary max-w-2xl leading-relaxed">
+                Limited bandwidth for projects that need to hold up under real traffic, 
+                real budgets, and real attention.
+              </p>
+            </ScrollReveal>
+            <ScrollReveal delay={0.3}>
+              <p className="text-body text-on-bg-tertiary max-w-2xl mt-3 leading-relaxed">
+                If you need a clean story, a site that converts, or paid social that stops 
+                bleeding, this is the lane.
               </p>
             </ScrollReveal>
           </header>
 
-          {/* What Gets Built */}
+          {/* Services */}
           <section className="mb-16 md:mb-24">
             <ScrollReveal>
-              <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                C  SYSTEM_TYPES
-              </p>
+              <div className="flex items-center gap-4 mb-8">
+                <p className="font-mono text-system text-on-surface-muted tracking-widest">
+                  {'// WHAT I DO'}
+                </p>
+                <div className="h-px bg-border-custom flex-1" />
+                <p className="font-mono text-system text-on-surface-muted tracking-widest">
+                  SYSTEM_TYPES
+                </p>
+              </div>
             </ScrollReveal>
             <StaggerReveal className="space-y-px bg-border-custom" stagger={0.15}>
               
-              <SystemBlock
+              <ServiceCard
                 code="SYS.001"
-                title="Design Systems"
-                description="Component architectures that don't collapse under their own complexity."
-                details={[
-                  'Token systems with conceptual integrity',
-                  'Documentation teams actually use',
-                  'Onboarding as system design',
-                  'Built to survive personnel changes'
+                title="Website Design + Build"
+                description="Websites and landing pages that look intentional and earn their keep."
+                deliverables={[
+                  'Structure + page architecture (what exists, what gets cut)',
+                  'Copy refresh or full rewrite (positioning, page copy, CTAs)',
+                  'Design direction (type, layout, motion, visual system)',
+                  'Build in code or in a CMS workflow (depending on scope)',
+                  'Analytics basics: events, UTMs, conversion points',
+                ]}
+                bestFor={[
+                  'Portfolios that need to sell services',
+                  'Small brands that need a site that behaves like a funnel',
+                  '"We have a website" situations where it\'s not doing anything',
                 ]}
               />
               
-              <SystemBlock
+              <ServiceCard
                 code="SYS.002"
-                title="Digital Environments"
-                description="Interfaces that reward attention instead of extracting it."
-                details={[
-                  'Motion with mass and purpose',
-                  'Typography as structural element',
-                  'Performance as design constraint',
-                  'Dark patterns explicitly excluded'
+                title="Copywriting + Messaging"
+                description="Language that makes the offer obvious, without turning you into a marketing robot."
+                deliverables={[
+                  'Positioning pass: what you do, who it\'s for, why you win',
+                  'Homepage + services + landing page copy',
+                  'Offer pages for digital products',
+                  'Email sequences (welcome, launch, follow-up)',
+                  'Ad copy and hooks that match your brand voice',
+                ]}
+                bestFor={[
+                  '"People don\'t get what I do"',
+                  '"I\'m getting traffic but not conversions"',
+                  '"My work is good but my words are vague"',
                 ]}
               />
               
-              <SystemBlock
+              <ServiceCard
                 code="SYS.003"
-                title="Internal Infrastructure"
-                description="Workflows and tools that make teams more effective without adding overhead."
-                details={[
-                  "Publishing pipelines that don't bottleneck",
-                  'Design-to-code workflows',
-                  'Documentation systems',
-                  'Custom tools when off-the-shelf optimizes for the wrong thing'
+                title="Meta Ads (Facebook + Instagram)"
+                description="Campaign structure, creative direction, and ongoing optimization. Not set-and-forget."
+                deliverables={[
+                  'Account + campaign audit (what\'s working, what\'s lying)',
+                  'Funnel mapping: ad → landing → conversion event',
+                  'Campaign rebuild (structure, audiences, testing plan)',
+                  'Creative testing system (angles, formats, variations)',
+                  'Weekly iteration + reporting in plain language',
+                ]}
+                notes={[
+                  'If your tracking is messy (third-party booking engines, weak pixels), we set up a cleaner measurement plan instead of pretending it\'s fine.',
+                ]}
+              />
+              
+              <ServiceCard
+                code="SYS.004"
+                title="Creative Direction"
+                description="A coherent aesthetic that stays coherent when you ship weekly, not once a year."
+                deliverables={[
+                  'Visual direction: references, rules, do-not-cross lines',
+                  'Content system: pillars, formats, repeatable templates',
+                  'Creative guidance for shoots, edits, layouts, motion',
+                  'Brand kit: type, spacing, components, usage rules',
+                  '"Make it feel like this" translated into a system',
+                ]}
+                bestFor={[
+                  'Founders who can build, but can\'t keep the look consistent',
+                  'Brands that are "almost" distinct, but not quite memorable yet',
                 ]}
               />
               
             </StaggerReveal>
           </section>
 
-          {/* How We Work Together */}
+          {/* Approach */}
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
-              <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                {'// APPROACH'}
+              <p className="font-mono text-system text-on-surface-muted mb-8 tracking-widest">
+                {'// ENGAGEMENT_MODES'}
               </p>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
+              <h2 className="font-heading text-h2 text-on-bg-primary mb-10">APPROACH</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
                   <h3 className="font-heading text-h4 text-on-bg-primary mb-3">Audit First</h3>
                   <p className="text-small text-on-bg-tertiary leading-relaxed">
-                    Two weeks to understand the system before touching it. Most problems 
-                    are diagnosed wrong. The audit produces clarity—whether we work 
-                    together after or not.
+                    Short diagnostic to see what&apos;s actually broken before we touch anything.
                   </p>
                 </div>
                 <div>
-                  <h3 className="font-heading text-h4 text-on-bg-primary mb-3">Embed or Direct</h3>
+                  <h3 className="font-heading text-h4 text-on-bg-primary mb-3">Build or Fix</h3>
                   <p className="text-small text-on-bg-tertiary leading-relaxed">
-                    Deep collaboration building alongside your team, or high-level 
-                    direction reviewing architecture. Both require trust and a shared 
-                    understanding of what good looks like.
+                    We either build the system from scratch, or remove friction from 
+                    what&apos;s already there.
                   </p>
                 </div>
                 <div>
                   <h3 className="font-heading text-h4 text-on-bg-primary mb-3">Ship the Rationale</h3>
                   <p className="text-small text-on-bg-tertiary leading-relaxed">
-                    Every system ships with written documentation—not just how it works, 
-                    but why it was built this way. The thinking has to survive the handoff.
+                    You get documentation and decisions, so it survives future edits 
+                    and future people.
                   </p>
                 </div>
               </div>
             </ScrollReveal>
           </section>
 
-          {/* When It Works */}
+          {/* Selection Criteria */}
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                {'// SELECTION_CRITERIA'}
+                {'// GOOD_FIT'}
               </p>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
               <div className="bg-bg-secondary p-8 border border-border-muted">
+                <h2 className="font-heading text-h3 text-on-bg-primary mb-6">SELECTION_CRITERIA</h2>
                 <p className="text-body text-on-bg-secondary leading-relaxed mb-6">
-                  The most productive collaborations share a few characteristics:
+                  The best work happens when:
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-3 text-small text-on-bg-secondary">
-                      <span className="text-accent mt-0.5">{'>'}</span>
-                      <span>The problem is worth sitting with before solving</span>
-                    </li>
-                    <li className="flex items-start gap-3 text-small text-on-bg-secondary">
-                      <span className="text-accent mt-0.5">{'>'}</span>
-                      <span>Technical leadership understands the tradeoffs</span>
-                    </li>
-                    <li className="flex items-start gap-3 text-small text-on-bg-secondary">
-                      <span className="text-accent mt-0.5">{'>'}</span>
-                      <span>Timelines respect the difficulty of good work</span>
-                    </li>
-                  </ul>
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-3 text-small text-on-bg-secondary">
-                      <span className="text-accent mt-0.5">{'>'}</span>
-                      <span>Budget matches scope (no optimistic estimates)</span>
-                    </li>
-                    <li className="flex items-start gap-3 text-small text-on-bg-secondary">
-                      <span className="text-accent mt-0.5">{'>'}</span>
-                      <span>Default configurations can be questioned</span>
-                    </li>
-                    <li className="flex items-start gap-3 text-small text-on-bg-secondary">
-                      <span className="text-accent mt-0.5">{'>'}</span>
-                      <span>The system needs to outlast the current team</span>
-                    </li>
-                  </ul>
-                </div>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-3 text-small text-on-bg-secondary">
+                    <span className="text-accent mt-0.5">{'>'}</span>
+                    <span>You want clarity more than novelty</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-small text-on-bg-secondary">
+                    <span className="text-accent mt-0.5">{'>'}</span>
+                    <span>You can make decisions without ten layers of approval</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-small text-on-bg-secondary">
+                    <span className="text-accent mt-0.5">{'>'}</span>
+                    <span>You care about long-term maintainability, not quick hacks</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-small text-on-bg-secondary">
+                    <span className="text-accent mt-0.5">{'>'}</span>
+                    <span>You&apos;re willing to change the page, not just &ldquo;tweak the copy&rdquo;</span>
+                  </li>
+                  <li className="flex items-start gap-3 text-small text-on-bg-secondary">
+                    <span className="text-accent mt-0.5">{'>'}</span>
+                    <span>Budget matches scope, and scope stays honest</span>
+                  </li>
+                </ul>
               </div>
             </ScrollReveal>
           </section>
@@ -183,26 +218,31 @@ export default function ServicesPage() {
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                C  ACTIVE_PROCESSES
+                {'// CURRENT_FOCUS'}
               </p>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
               <div className="border border-border-muted p-8">
+                <h2 className="font-heading text-h3 text-on-bg-primary mb-6">ACTIVE_PROCESSES</h2>
                 <p className="text-body text-on-bg-secondary leading-relaxed mb-4">
-                  For Q2 2026, particularly interested in:
+                  Right now I&apos;m prioritizing:
                 </p>
                 <ul className="space-y-2 text-small text-on-bg-tertiary">
                   <li className="flex items-start gap-3">
                     <span className="text-accent">{'>'}</span>
-                    <span>Design systems for teams who care about conceptual integrity</span>
+                    <span>Website + services pages that need a full positioning pass</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-accent">{'>'}</span>
-                    <span>Publishing infrastructure that slows content down instead of speeding it up</span>
+                    <span>Meta ads for bookings, lead gen, and product funnels</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-accent">{'>'}</span>
-                    <span>Tools that help people think more clearly (not faster)</span>
+                    <span>Copy systems that scale across site, ads, and email</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-accent">{'>'}</span>
+                    <span>Creative direction for brands that ship consistently</span>
                   </li>
                 </ul>
               </div>
@@ -212,16 +252,45 @@ export default function ServicesPage() {
           {/* CTA */}
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 p-8 bg-bg-secondary border border-border-muted">
-                <div>
-                  <p className="font-mono text-system text-accent mb-2">INITIATE_INQUIRY</p>
-                  <p className="text-body text-on-bg-secondary">
-                    Describe the system. What&apos;s broken? What&apos;s extracting more than it gives?
+              <div className="p-8 md:p-10 bg-bg-secondary border border-border-muted">
+                <p className="font-mono text-system text-accent mb-2">
+                  {'// INITIATE_INQUIRY'}
+                </p>
+                <h2 className="font-heading text-h2 text-on-bg-primary mb-4">
+                  START_CONVERSATION
+                </h2>
+                <p className="text-body text-on-bg-secondary leading-relaxed mb-6 max-w-2xl">
+                  Describe the system. What are you selling, what&apos;s not working, and 
+                  where does attention leak out of the funnel?
+                </p>
+
+                <div className="mb-8">
+                  <p className="font-mono text-system text-on-surface-muted mb-3">
+                    HELPFUL CONTEXT (IF YOU HAVE IT)
                   </p>
+                  <ul className="space-y-2 text-small text-on-bg-tertiary">
+                    <li className="flex items-start gap-3">
+                      <span className="text-accent">{'>'}</span>
+                      <span>Link to the site</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-accent">{'>'}</span>
+                      <span>What &ldquo;conversion&rdquo; means for you (bookings, leads, sales)</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-accent">{'>'}</span>
+                      <span>Current ad spend + what platform</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-accent">{'>'}</span>
+                      <span>The one sentence version of the offer</span>
+                    </li>
+                  </ul>
                 </div>
+
                 <a 
                   href="/intake"
-                  className="inline-flex items-center gap-3 px-6 py-3 bg-accent text-on-accent font-mono text-system hover:bg-accent-hover transition-colors shrink-0"
+                  className="inline-flex items-center gap-3 px-6 py-3 bg-accent text-on-accent font-mono text-system hover:bg-accent-hover transition-colors"
                 >
                   <span>START_CONVERSATION</span>
                   <span>→</span>
@@ -238,7 +307,7 @@ export default function ServicesPage() {
             <div className="flex items-center gap-4">
               <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
               <span className="font-mono text-system text-on-surface-muted">
-                ACCEPTING_INQUIRIES
+                LIMITED_INQUIRIES
               </span>
             </div>
             <div className="font-mono text-system text-on-surface-muted">
@@ -251,42 +320,79 @@ export default function ServicesPage() {
   );
 }
 
-// System block component
-function SystemBlock({ 
+function ServiceCard({ 
   code, 
   title, 
   description, 
-  details
+  deliverables,
+  bestFor,
+  notes,
 }: { 
   code: string;
   title: string;
   description: string;
-  details: string[];
+  deliverables: string[];
+  bestFor?: string[];
+  notes?: string[];
 }) {
   return (
     <div className="bg-bg-primary p-8 md:p-10 hover-lift focus-ring">
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-        <div className="flex-1">
-          <div className="flex items-center gap-4 mb-4">
-            <span className="font-mono text-system text-accent">{code}</span>
-            <div className="h-px bg-border-custom flex-1 max-w-[100px]" />
-          </div>
-          <h2 className="font-heading text-h2 text-on-bg-primary mb-4">{title}</h2>
-          <p className="text-body text-on-bg-tertiary max-w-2xl leading-relaxed">
-            {description}
+      <div className="mb-4">
+        <span className="font-mono text-system text-accent">{code}</span>
+        <div className="h-px bg-border-custom mt-3 mb-6 max-w-[80px]" />
+      </div>
+
+      <h2 className="font-heading text-h2 text-on-bg-primary mb-3">{title}</h2>
+      <p className="text-body text-on-bg-tertiary max-w-2xl leading-relaxed mb-8">
+        {description}
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <p className="font-mono text-system text-on-surface-muted mb-3">
+            DELIVERABLES (TYPICAL)
           </p>
-        </div>
-        <div className="md:w-64 shrink-0">
-          <p className="font-mono text-system text-on-surface-muted mb-3">SPECIFICATIONS</p>
           <ul className="space-y-2">
-            {details.map((detail, i) => (
-              <li key={i} className="text-small text-on-bg-secondary font-mono flex items-start gap-2">
-                <span className="text-accent">{'>'}</span>
-                <span>{detail}</span>
+            {deliverables.map((item, i) => (
+              <li key={i} className="text-small text-on-bg-secondary flex items-start gap-2">
+                <span className="text-accent shrink-0">{'>'}</span>
+                <span>{item}</span>
               </li>
             ))}
           </ul>
         </div>
+
+        {bestFor && bestFor.length > 0 && (
+          <div>
+            <p className="font-mono text-system text-on-surface-muted mb-3">
+              BEST FOR
+            </p>
+            <ul className="space-y-2">
+              {bestFor.map((item, i) => (
+                <li key={i} className="text-small text-on-bg-secondary flex items-start gap-2">
+                  <span className="text-accent shrink-0">{'>'}</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {notes && notes.length > 0 && (
+          <div>
+            <p className="font-mono text-system text-on-surface-muted mb-3">
+              NOTES
+            </p>
+            <ul className="space-y-2">
+              {notes.map((item, i) => (
+                <li key={i} className="text-small text-on-bg-tertiary flex items-start gap-2">
+                  <span className="text-accent shrink-0">{'>'}</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

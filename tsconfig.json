@@ -30,6 +30,9 @@
       ],
       "@/lib/*": [
         "./src/lib/*"
+      ],
+      "#content": [
+        "./.velite"
       ]
     }
   },
@@ -38,7 +41,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "dist/types/**/*.ts"
+    "dist/types/**/*.ts",
+    ".velite/**/*.ts"
   ],
   "exclude": [
     "node_modules"

@@ -1,8 +1,14 @@
+const isDev = process.argv.indexOf('dev') !== -1
+const isBuild = process.argv.indexOf('build') !== -1
+if (!process.env.VELITE_STARTED && (isDev || isBuild)) {
+  process.env.VELITE_STARTED = '1'
+  const { build } = await import('velite')
+  await build({ watch: isDev, clean: !isDev })
+}
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+export default {
   reactStrictMode: true,
-  // Static export only when explicitly requested (for production builds)
-  // Use: EXPORT=true npm run build
   output: process.env.EXPORT === 'true' ? 'export' : undefined,
   distDir: process.env.EXPORT === 'true' ? 'dist' : '.next',
   images: {
@@ -23,5 +29,3 @@ const nextConfig = {
     return config;
   },
 };
-
-module.exports = nextConfig;

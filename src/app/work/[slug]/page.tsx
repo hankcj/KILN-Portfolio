@@ -1,11 +1,8 @@
-/**
- * Work Detail Route
- * 
- * Individual output page.
- */
-
+import { notFound } from 'next/navigation';
+import { works } from '#content';
 import { SimplePageShell } from '@/components/dom/PageShell';
 import { WorkBackLink, WorkDetailNav } from './WorkDetailClient';
+import { MDXContent } from '@/components/dom/MDXContent';
 import { Metadata } from 'next';
 
 interface WorkDetailPageProps {
@@ -14,77 +11,95 @@ interface WorkDetailPageProps {
   }>;
 }
 
-// Generate static paths for static export
 export function generateStaticParams() {
-  // Return sample slugs for static generation
-  // In production, this would fetch from CMS
-  return [
-    { slug: 'project-alpha' },
-    { slug: 'project-beta' },
-    { slug: 'project-gamma' },
-  ];
+  return works.map(work => ({ slug: work.slug }));
 }
 
 export async function generateMetadata({ params }: WorkDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  
+  const work = works.find(w => w.slug === slug);
+
+  if (!work) {
+    return { title: 'Output not found — KILN' };
+  }
+
   return {
-    title: `${slug} — KILN`,
-    description: 'Output detail',
+    title: `${work.title} — KILN`,
+    description: work.description,
   };
 }
 
 export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
   const { slug } = await params;
+  const work = works.find(w => w.slug === slug);
+
+  if (!work) {
+    notFound();
+  }
+
+  const sortedWorks = works
+    .filter(w => w.status !== 'Archived')
+    .sort((a, b) => b.date.localeCompare(a.date));
+  const currentIndex = sortedWorks.findIndex(w => w.slug === slug);
+  const prevWork = currentIndex > 0 ? sortedWorks[currentIndex - 1] : undefined;
+  const nextWork = currentIndex < sortedWorks.length - 1 ? sortedWorks[currentIndex + 1] : undefined;
 
   return (
     <SimplePageShell
       currentPage="outputs"
       leftSideText="OUTPUT_DETAIL"
-      rightSideText={slug.toUpperCase()}
+      rightSideText={work.title.toUpperCase().slice(0, 20)}
     >
       <div className="min-h-screen pt-32 pb-24 px-6 md:px-16 lg:px-24">
         <div className="max-w-4xl mx-auto">
-          {/* Back link */}
           <WorkBackLink />
 
-          {/* Header */}
-          <header className="mb-12 pb-8 border-b border-border-muted">
-            <div className="flex items-center gap-4 mb-6">
-              <span className="font-mono text-system text-accent">
-                OUTPUT
-              </span>
-              <span className="font-mono text-system text-on-surface-muted">
-                {slug.toUpperCase()}
-              </span>
-            </div>
-            
-            <h1 className="font-heading text-display-md md:text-display text-on-bg-primary mb-6">
-              {slug}
-            </h1>
-            
-            <p className="text-body text-on-bg-tertiary max-w-2xl">
-              Output detail content will be rendered here.
-            </p>
-          </header>
+          <article>
+            <header className="mb-12 pb-8 border-b border-border-muted">
+              <div className="flex flex-wrap items-center gap-4 mb-6">
+                <span className="font-mono text-system text-accent">
+                  {work.type.toUpperCase()}
+                </span>
+                <span className="font-mono text-system text-on-surface-muted">
+                  {work.status.toUpperCase()}
+                </span>
+                <span className="font-mono text-system text-on-surface-muted">
+                  {work.date}
+                </span>
+              </div>
 
-          {/* Placeholder content */}
-          <div className="space-y-8">
-            <div className="aspect-video bg-bg-secondary border border-border-muted flex items-center justify-center">
-              <span className="font-mono text-system text-on-surface-muted">
-                [OUTPUT_PREVIEW]
-              </span>
-            </div>
-            
-            <div className="prose prose-invert max-w-none">
-              <p className="text-body text-on-bg-secondary leading-relaxed">
-                Full output description and details will be rendered here.
-              </p>
-            </div>
-          </div>
+              <h1 className="font-heading text-display-md md:text-display text-on-bg-primary mb-6">
+                {work.title}
+              </h1>
 
-          {/* Footer */}
-          <WorkDetailNav />
+              {work.description && (
+                <p className="text-body text-on-bg-tertiary max-w-2xl">
+                  {work.description}
+                </p>
+              )}
+            </header>
+
+            {work.coverImage && (
+              <figure className="mb-12 relative w-full aspect-video border border-border-muted overflow-hidden">
+                <img
+                  src={work.coverImage}
+                  alt={work.title}
+                  className="w-full h-full object-cover"
+                />
+              </figure>
+            )}
+
+            <div className="mdx-content font-body text-on-bg-secondary leading-relaxed">
+              <MDXContent code={work.body} />
+            </div>
+          </article>
+
+          <footer className="mt-16 pt-8">
+            <WorkDetailNav
+              prevSlug={prevWork?.slug}
+              nextSlug={nextWork?.slug}
+            />
+          </footer>
         </div>
       </div>
     </SimplePageShell>
