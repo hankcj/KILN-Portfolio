@@ -203,7 +203,7 @@ export default function SystemPage() {
                 <ul className="space-y-4 text-small font-mono">
                   <SpecRow label="FRONTEND" value="Vercel (Edge)" />
                   <SpecRow label="CMS" value="Ghost (AWS EC2)" />
-                  <SpecRow label="EMAIL" value="AWS SES + Listmonk" />
+                  <SpecRow label="EMAIL" value="AWS SES + Mautic" />
                   <SpecRow label="PAYMENTS" value="Stripe" />
                   <SpecRow label="DOMAIN" value="kiln.studio" />
                 </ul>
@@ -264,7 +264,7 @@ export default function SystemPage() {
                 changes={[
                   'Brand alignment: optimization critique, systems-forward voice',
                   'System documentation: philosophy before implementation',
-                  'Infrastructure: AWS SES, Listmonk, Stripe integration prepared',
+                  'Infrastructure: AWS SES, Mautic, Stripe integration prepared',
                   'Added social links and external system connections'
                 ]} 
               />
@@ -316,9 +316,9 @@ export default function SystemPage() {
                 </div>
                 <span className="text-on-surface-muted group-hover:text-accent transition-colors">→</span>
               </a>
-              {process.env.NEXT_PUBLIC_LISTMONK_SUBSCRIBE_URL && (
+              {process.env.NEXT_PUBLIC_MAUTIC_FORM_URL && (
                 <a 
-                  href={process.env.NEXT_PUBLIC_LISTMONK_SUBSCRIBE_URL} 
+                  href={process.env.NEXT_PUBLIC_MAUTIC_FORM_URL} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"

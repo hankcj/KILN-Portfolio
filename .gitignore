@@ -12,8 +12,12 @@ dist
 .velite
 public/static
 
-# Deploy secrets (per-service .env)
+# Deploy secrets (per-service .env and Mautic runtime)
 deploy/**/.env
+deploy/**/.mautic_env
+deploy/**/mautic/config/
+deploy/**/mautic/logs/
+deploy/**/mautic/media/
 
 # Environment (secrets - never commit)
 .env

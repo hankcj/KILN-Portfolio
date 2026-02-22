@@ -1,0 +1,10 @@
+{
+  "name": "kiln/theme-kiln",
+  "description": "KILN Studio dark brutalist theme for Mautic",
+  "type": "mautic-theme",
+  "keywords": ["mautic", "theme", "kiln", "brutalist", "dark"],
+  "extra": {
+    "install-directory-name": "kiln"
+  },
+  "minimum-stability": "dev"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "KILN",
+  "author": "KILN Studio",
+  "authorUrl": "https://studiokiln.io",
+  "builder": ["grapesjsbuilder"],
+  "features": ["email", "form", "page"]
+}

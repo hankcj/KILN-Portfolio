@@ -1,0 +1,35 @@
+{% extends "@themes/"~template~"/html/base.html.twig" %}
+
+{% block content %}
+<div style="min-height:100vh; background-color:#13161F; display:table; width:100%;">
+    <div style="display:table-cell; vertical-align:middle; padding:48px 24px;">
+        <div style="max-width:500px; margin:0 auto; text-align:center;">
+            <!-- Logo -->
+            <h1 style="font-family:'Averia Serif Libre',Georgia,'Times New Roman',serif; font-size:32px; color:#FAF6F0; margin:0 0 32px 0; letter-spacing:-0.02em; font-weight:700;">KILN</h1>
+
+            <!-- Divider -->
+            <div style="height:1px; background-color:rgba(250,246,240,0.15); margin:0 0 32px 0;"></div>
+
+            <!-- System Message -->
+            <div style="font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:16px; line-height:1.6; color:#E8E4DE; margin:0 0 24px 0;">
+                {{ message|raw }}
+            </div>
+
+            {% if content is defined %}
+            <div style="font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:14px; line-height:1.6; color:#C4BEB4; margin:24px 0 0 0; text-align:left;">
+                {{ content|raw }}
+            </div>
+            {% endif %}
+
+            <!-- Divider -->
+            <div style="height:1px; background-color:rgba(250,246,240,0.08); margin:32px 0;"></div>
+
+            <!-- Footer -->
+            <p style="font-family:'SF Mono',Monaco,Inconsolata,'Fira Code','Courier New',monospace; font-size:11px; color:#8A8580; text-transform:uppercase; letter-spacing:0.1em; margin:0 0 8px 0;">KILN</p>
+            <p style="font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13px; color:#5A554F; margin:0;">
+                <a href="https://studiokiln.io" style="color:#0036D8; text-decoration:none;">studiokiln.io</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

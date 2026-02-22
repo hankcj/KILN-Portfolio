@@ -1,0 +1,95 @@
+# Mautic on EC2 for https://mautic.studiokiln.io
+# Nginx on host proxies to 127.0.0.1:8080.
+# Usage: docker compose up -d
+
+x-mautic-volumes:
+  &mautic-volumes
+  - ./mautic/config:/var/www/html/config:z
+  - ./mautic/logs:/var/www/html/var/logs:z
+  - ./mautic/media/files:/var/www/html/docroot/media/files:z
+  - ./mautic/media/images:/var/www/html/docroot/media/images:z
+  - ./themes/kiln:/var/www/html/docroot/themes/kiln:ro
+
+services:
+  db:
+    image: mysql:lts
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql-tuning.cnf:/etc/mysql/conf.d/zz-tuning.cnf:ro
+    mem_limit: 384m
+    healthcheck:
+      test: mysqladmin --user=$$MYSQL_USER --password=$$MYSQL_PASSWORD ping
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - default
+
+  mautic_web:
+    image: mautic/mautic:latest
+    restart: unless-stopped
+    links:
+      - db:mysql
+    ports:
+      - "127.0.0.1:8080:80"
+    volumes: *mautic-volumes
+    env_file:
+      - .mautic_env
+    mem_limit: 384m
+    healthcheck:
+      test: curl -f http://localhost || exit 1
+      start_period: 30s
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - default
+
+  mautic_cron:
+    image: mautic/mautic:latest
+    restart: unless-stopped
+    links:
+      - db:mysql
+    volumes: *mautic-volumes
+    environment:
+      DOCKER_MAUTIC_ROLE: mautic_cron
+    env_file:
+      - .mautic_env
+    depends_on:
+      mautic_web:
+        condition: service_healthy
+    networks:
+      - default
+
+  mautic_worker:
+    image: mautic/mautic:latest
+    restart: unless-stopped
+    links:
+      - db:mysql
+    volumes: *mautic-volumes
+    environment:
+      DOCKER_MAUTIC_ROLE: mautic_worker
+    env_file:
+      - .mautic_env
+    depends_on:
+      mautic_web:
+        condition: service_healthy
+    networks:
+      - default
+
+volumes:
+  mysql-data:
+
+networks:
+  default:
+    name: mautic-docker

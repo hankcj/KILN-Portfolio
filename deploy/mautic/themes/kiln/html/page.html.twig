@@ -1,0 +1,48 @@
+{% extends "@themes/"~template~"/html/base.html.twig" %}
+
+{% block content %}
+<div style="min-height:100vh; background-color:#13161F; padding:0;">
+    <!-- Header -->
+    <div style="max-width:600px; margin:0 auto; padding:48px 24px 0 24px;">
+        <h1 style="font-family:'Averia Serif Libre',Georgia,'Times New Roman',serif; font-size:32px; color:#FAF6F0; margin:0 0 8px 0; letter-spacing:-0.02em; font-weight:700;">KILN</h1>
+        <span style="font-family:'SF Mono',Monaco,Inconsolata,'Fira Code','Courier New',monospace; font-size:11px; color:#0036D8; text-transform:uppercase; letter-spacing:0.1em;">// {pagetitle}</span>
+        <div style="height:1px; background-color:rgba(250,246,240,0.15); margin-top:24px;"></div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div data-section-wrapper="1" style="max-width:600px; margin:0 auto;">
+        <div data-section="1" style="padding:32px 24px;">
+            <div data-slot-container="1" style="min-height:30px;">
+                <div data-slot="text">
+                    <h2 style="font-family:'Averia Serif Libre',Georgia,'Times New Roman',serif; font-size:24px; color:#FAF6F0; margin:0 0 16px 0; font-weight:700;">{pagetitle}</h2>
+                    <p style="font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:16px; line-height:1.6; color:#E8E4DE; margin:0 0 16px 0;">
+                        Page content goes here. Edit this section in the Mautic page builder.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secondary Content Area -->
+    <div data-section-wrapper="1" style="max-width:600px; margin:0 auto;">
+        <div data-section="1" style="padding:0 24px 32px 24px;">
+            <div data-slot-container="1" style="min-height:30px;">
+                <div data-slot="text">
+                    <p style="font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:16px; line-height:1.6; color:#C4BEB4; margin:0;">
+                        Additional content section. Use this for forms, CTAs, or supplementary information.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="max-width:600px; margin:0 auto; padding:0 24px 48px 24px;">
+        <div style="height:1px; background-color:rgba(250,246,240,0.08); margin-bottom:32px;"></div>
+        <p style="font-family:'SF Mono',Monaco,Inconsolata,'Fira Code','Courier New',monospace; font-size:11px; color:#8A8580; text-transform:uppercase; letter-spacing:0.1em; margin:0 0 8px 0;">KILN</p>
+        <p style="font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13px; color:#5A554F; margin:0;">
+            <a href="https://studiokiln.io" style="color:#0036D8; text-decoration:none;">studiokiln.io</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

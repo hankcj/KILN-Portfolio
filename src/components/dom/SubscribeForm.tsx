@@ -1,7 +1,8 @@
 /**
  * Subscribe Form Component
- * 
- * Embedded email subscription form that submits to Listmonk.
+ *
+ * Embedded email subscription form that creates Ghost members
+ * via the /api/subscribe server route.
  * Matches the site's brutalist design language.
  */
 
@@ -21,17 +22,8 @@ export function SubscribeForm({ className = '' }: SubscribeFormProps) {
   const [status, setStatus] = useState<SubmitState>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const subscribeUrl = process.env.NEXT_PUBLIC_LISTMONK_SUBSCRIBE_URL;
-  const listIds = process.env.NEXT_PUBLIC_LISTMONK_LIST_IDS;
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!subscribeUrl) {
-      setStatus('error');
-      setErrorMessage('Subscription service not configured');
-      return;
-    }
 
     if (!email || !email.includes('@')) {
       setStatus('error');
@@ -42,40 +34,27 @@ export function SubscribeForm({ className = '' }: SubscribeFormProps) {
     setStatus('loading');
 
     try {
-      // Build form data for Listmonk
-      const formData = new FormData();
-      formData.append('email', email);
-      if (name) formData.append('name', name);
-      
-      // Add list IDs if specified
-      if (listIds) {
-        listIds.split(',').forEach(id => {
-          formData.append('l', id.trim());
-        });
-      }
-
-      // Submit to Listmonk
-      const response = await fetch(subscribeUrl, {
+      const res = await fetch('/api/subscribe', {
         method: 'POST',
-        body: formData,
-        mode: 'no-cors', // Listmonk doesn't send CORS headers typically
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name: name || undefined }),
       });
 
-      // Since no-cors doesn't give us response details, we assume success
-      // Listmonk will handle duplicate subscriptions gracefully
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'Subscription failed');
+      }
+
       setStatus('success');
       setEmail('');
       setName('');
-    } catch (error) {
+    } catch (err) {
       setStatus('error');
-      setErrorMessage('Something went wrong. Please try again.');
+      setErrorMessage(
+        err instanceof Error ? err.message : 'Something went wrong. Please try again.'
+      );
     }
   };
-
-  // Don't render if no subscription URL is configured
-  if (!subscribeUrl) {
-    return null;
-  }
 
   return (
     <div className={`bg-bg-primary border border-border-custom p-6 ${className}`}>
@@ -93,8 +72,8 @@ export function SubscribeForm({ className = '' }: SubscribeFormProps) {
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Email Field */}
         <div>
-          <label 
-            htmlFor="subscribe-email" 
+          <label
+            htmlFor="subscribe-email"
             className="block font-mono text-system text-on-surface-muted mb-2"
           >
             EMAIL_ADDRESS <span className="text-accent">*</span>
@@ -109,7 +88,7 @@ export function SubscribeForm({ className = '' }: SubscribeFormProps) {
             }}
             placeholder="you@example.com"
             disabled={status === 'loading'}
-            className="w-full bg-bg-secondary border border-border-custom px-4 py-3 
+            className="w-full bg-bg-secondary border border-border-custom px-4 py-3
                        font-mono text-small text-on-bg-primary
                        placeholder:text-on-surface-muted/50
                        focus:outline-none focus:border-accent
@@ -120,8 +99,8 @@ export function SubscribeForm({ className = '' }: SubscribeFormProps) {
 
         {/* Name Field (Optional) */}
         <div>
-          <label 
-            htmlFor="subscribe-name" 
+          <label
+            htmlFor="subscribe-name"
             className="block font-mono text-system text-on-surface-muted mb-2"
           >
             NAME <span className="text-on-surface-muted/50">(optional)</span>
@@ -133,7 +112,7 @@ export function SubscribeForm({ className = '' }: SubscribeFormProps) {
             onChange={(e) => setName(e.target.value)}
             placeholder="Your name"
             disabled={status === 'loading'}
-            className="w-full bg-bg-secondary border border-border-custom px-4 py-3 
+            className="w-full bg-bg-secondary border border-border-custom px-4 py-3
                        font-mono text-small text-on-bg-primary
                        placeholder:text-on-surface-muted/50
                        focus:outline-none focus:border-accent
@@ -146,7 +125,7 @@ export function SubscribeForm({ className = '' }: SubscribeFormProps) {
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="w-full bg-bg-secondary border border-border-custom 
+          className="w-full bg-bg-secondary border border-border-custom
                      px-6 py-4 mt-2
                      font-mono text-system text-on-bg-primary
                      hover:bg-bg-tertiary hover:border-accent

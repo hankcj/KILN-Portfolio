@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% if page is defined %}
+        <title>{pagetitle}</title>
+        <meta name="description" content="{pagemetadescription}">
+        {% endif %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!--[if !mso]><!-->
+        <style type="text/css">
+            @font-face {
+                font-family: 'Averia Serif Libre';
+                src: url('{{ getAssetUrl('themes/'~template~'/assets/averia-serif-libre-regular.woff2', null, null, true) }}') format('woff2');
+                font-weight: 400;
+                font-style: normal;
+                font-display: swap;
+            }
+            @font-face {
+                font-family: 'Averia Serif Libre';
+                src: url('{{ getAssetUrl('themes/'~template~'/assets/averia-serif-libre-bold.woff2', null, null, true) }}') format('woff2');
+                font-weight: 700;
+                font-style: normal;
+                font-display: swap;
+            }
+            @font-face {
+                font-family: 'Inter';
+                src: url('{{ getAssetUrl('themes/'~template~'/assets/inter-regular.woff2', null, null, true) }}') format('woff2');
+                font-weight: 400;
+                font-style: normal;
+                font-display: swap;
+            }
+            @font-face {
+                font-family: 'Inter';
+                src: url('{{ getAssetUrl('themes/'~template~'/assets/inter-medium.woff2', null, null, true) }}') format('woff2');
+                font-weight: 500;
+                font-style: normal;
+                font-display: swap;
+            }
+        </style>
+        <!--<![endif]-->
+        <style type="text/css">
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #13161F;
+                color: #FAF6F0;
+                font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                font-size: 16px;
+                line-height: 1.6;
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                -webkit-font-smoothing: antialiased;
+            }
+            a { color: #0036D8; text-decoration: none; }
+            a:hover { color: #002BB8; }
+            img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+        </style>
+        {{ outputHeadDeclarations() }}
+    </head>
+    <body style="margin:0; padding:0; background-color:#13161F; color:#FAF6F0;">
+        {{ outputScripts('bodyOpen') }}
+        {% block content %}{% endblock %}
+        {{ outputScripts('bodyClose') }}
+    </body>
+</html>
