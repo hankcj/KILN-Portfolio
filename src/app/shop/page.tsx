@@ -11,9 +11,21 @@ import { Metadata } from 'next';
 
 export const revalidate = 60; // Revalidate every 60 seconds
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://studiokiln.io';
+
 export const metadata: Metadata = {
   title: 'Tools — KILN',
   description: 'Digital products built in the studio. Each includes documentation on how it was made and why.',
+  openGraph: {
+    title: 'Tools — KILN',
+    description: 'Digital products built in the studio. Each includes documentation on how it was made and why.',
+    url: `${SITE_URL}/shop`,
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Tools — KILN',
+    description: 'Digital products built in the studio. Each includes documentation on how it was made and why.',
+  },
 };
 
 // Format includes list from metadata

@@ -4,9 +4,21 @@ import { OutputsList } from '@/components/dom/OutputsList';
 import { ScrollReveal } from '@/components/dom/ScrollReveal';
 import { Metadata } from 'next';
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://studiokiln.io';
+
 export const metadata: Metadata = {
   title: 'Outputs — KILN',
   description: 'A continuous practice of essays, systems, tools, and experiments.',
+  openGraph: {
+    title: 'Outputs — KILN',
+    description: 'A continuous practice of essays, systems, tools, and experiments.',
+    url: `${SITE_URL}/work`,
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Outputs — KILN',
+    description: 'A continuous practice of essays, systems, tools, and experiments.',
+  },
 };
 
 export default function WorkPage() {

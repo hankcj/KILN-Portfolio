@@ -8,9 +8,21 @@
 import { SimplePageShell } from '@/components/dom/PageShell';
 import { ScrollReveal, StaggerReveal } from '@/components/dom/ScrollReveal';
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://studiokiln.io';
+
 export const metadata = {
   title: 'System — KILN',
   description: 'How this site is built, why it works this way, and what that says about building for the web.',
+  openGraph: {
+    title: 'System — KILN',
+    description: 'How this site is built, why it works this way, and what that says about building for the web.',
+    url: `${SITE_URL}/system`,
+  },
+  twitter: {
+    card: 'summary',
+    title: 'System — KILN',
+    description: 'How this site is built, why it works this way, and what that says about building for the web.',
+  },
 };
 
 export default function SystemPage() {
@@ -87,7 +99,7 @@ export default function SystemPage() {
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                C  PRINCIPLES
+                // PRINCIPLES
               </p>
             </ScrollReveal>
             <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border-custom" stagger={0.1}>
@@ -153,7 +165,7 @@ export default function SystemPage() {
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                C  IMPLEMENTATION
+                // IMPLEMENTATION
               </p>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
@@ -254,7 +266,7 @@ export default function SystemPage() {
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                C  CHANGELOG
+                // CHANGELOG
               </p>
             </ScrollReveal>
             <StaggerReveal className="space-y-px bg-border-custom" stagger={0.15}>
@@ -303,7 +315,7 @@ export default function SystemPage() {
           {/* Connect */}
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-              C  CONNECT
+              // CONNECT
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-border-custom">
               <a 
@@ -331,18 +343,20 @@ export default function SystemPage() {
                 </a>
               )}
               
-              <a 
-                href="https://hankcj.substack.com"
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
-              >
-                <div>
-                  <p className="font-mono text-system text-accent mb-1">SUBSTACK</p>
-                  <p className="text-small text-on-bg-tertiary">Discovery and reading (RSS)</p>
-                </div>
-                <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
-              </a>
+              {process.env.NEXT_PUBLIC_SUBSTACK_URL && (
+                <a 
+                  href={process.env.NEXT_PUBLIC_SUBSTACK_URL}
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
+                >
+                  <div>
+                    <p className="font-mono text-system text-accent mb-1">SUBSTACK</p>
+                    <p className="text-small text-on-bg-tertiary">Discovery and reading (RSS)</p>
+                  </div>
+                  <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
+                </a>
+              )}
               
               <a 
                 href="https://github.com/hankcj"

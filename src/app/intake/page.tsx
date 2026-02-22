@@ -61,7 +61,7 @@ export default function IntakePage() {
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
   // Entrance animation
@@ -83,12 +83,28 @@ export default function IntakePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    setSubmitError(null);
+
+    try {
+      const res = await fetch('/api/intake', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'Submission failed');
+      }
+
+      setIsSubmitted(true);
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error ? err.message : 'Something went wrong. Please try again.',
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (field: keyof FormData, value: string) => {
@@ -358,6 +374,17 @@ export default function IntakePage() {
                   )}
                 </button>
               </div>
+
+              {submitError && (
+                <div className="mt-6 p-4 bg-red-500/10 border border-red-500/30">
+                  <p className="font-mono text-system text-red-400">
+                    {'>'} TRANSMISSION_FAILED
+                  </p>
+                  <p className="text-small text-on-bg-secondary mt-1">
+                    {submitError}
+                  </p>
+                </div>
+              )}
             </section>
           </form>
         </div>

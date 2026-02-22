@@ -154,7 +154,7 @@ export function SubscribeForm({ className = '' }: SubscribeFormProps) {
             {'>'} SUBSCRIPTION INITIATED
           </p>
           <p className="text-small text-on-bg-secondary mt-1">
-            Check your email to confirm your subscription.
+            You're on the list. A welcome email is on its way.
           </p>
         </div>
       )}

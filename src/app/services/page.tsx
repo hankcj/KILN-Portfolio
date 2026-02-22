@@ -8,9 +8,21 @@
 import { SimplePageShell } from '@/components/dom/PageShell';
 import { ScrollReveal, StaggerReveal } from '@/components/dom/ScrollReveal';
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://studiokiln.io';
+
 export const metadata = {
   title: 'Available — KILN',
   description: 'Limited bandwidth for projects that need to hold up under real traffic, real budgets, and real attention.',
+  openGraph: {
+    title: 'Available — KILN',
+    description: 'Limited bandwidth for projects that need to hold up under real traffic, real budgets, and real attention.',
+    url: `${SITE_URL}/services`,
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Available — KILN',
+    description: 'Limited bandwidth for projects that need to hold up under real traffic, real budgets, and real attention.',
+  },
 };
 
 export default function ServicesPage() {

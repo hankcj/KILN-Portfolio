@@ -7,7 +7,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
-import { sendPurchaseConfirmationEmail } from '@/lib/email';
+import { sendPurchaseConfirmationEmail, sendPurchaseWithoutDownloadAlert } from '@/lib/email';
 import { generateDownloadLink, generateDownloadLinkFromMetadata } from '@/lib/downloads';
 import { headers } from 'next/headers';
 
@@ -92,7 +92,17 @@ export async function POST(request: NextRequest) {
 
       if (!downloadResult) {
         console.error('Failed to generate download link for:', productCode);
-        // TODO: Send alert to admin - purchase without download
+        try {
+          await sendPurchaseWithoutDownloadAlert({
+            sessionId: session.id,
+            productCode,
+            productName: activeProduct.name,
+            customerEmail,
+            customerName: customerName || undefined,
+          });
+        } catch (alertError) {
+          console.error('Failed to send purchase-without-download alert:', alertError);
+        }
         return NextResponse.json({ received: true });
       }
 

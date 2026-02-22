@@ -125,8 +125,8 @@ export default function NotFoundPage() {
           {/* Bottom hint */}
           <p className="mt-12 font-mono text-caption text-on-surface-muted">
             If you believe this is a system error, please report to{' '}
-            <a href="mailto:hello@kiln.studio" className="text-accent hover:text-on-bg-primary transition-colors">
-              system@kiln.studio
+            <a href="mailto:hankcj18@gmail.com" className="text-accent hover:text-on-bg-primary transition-colors">
+              hankcj18@gmail.com
             </a>
           </p>
         </div>

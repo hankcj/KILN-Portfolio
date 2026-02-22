@@ -13,7 +13,6 @@ import { useAppStore } from '@/lib/store';
 import { MicroficheTransition } from './MicroficheTransition';
 import { PageShell } from './PageShell';
 import HomePage from '@/app/home-page';
-import WorkPage from '@/app/work-page';
 import SignalPage from '@/app/signal-page';
 
 export function PageRouter() {
@@ -216,8 +215,6 @@ function getPageComponent(page: string) {
   switch (page) {
     case 'home':
       return <HomePage />;
-    case 'work':
-      return <WorkPage />;
     case 'signal':
       // Signal page requires server data fetching, so we show a placeholder
       // In production, the actual route at /signal handles data fetching

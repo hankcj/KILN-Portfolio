@@ -34,11 +34,11 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { key: '1', label: 'origin', path: '/', prefix: '[K]', description: 'System root' },
-  { key: '2', label: 'archive', path: '/work', prefix: 'C', description: 'Object store' },
+  { key: '2', label: 'Outputs', path: '/work', prefix: 'C', description: 'Object store' },
   { key: '3', label: 'signal', path: '/signal', prefix: 'C', description: 'Field notes' },
   { key: '4', label: 'operations', path: '/services', prefix: 'C', description: 'Active processes' },
   { key: '5', label: 'shop', path: '/shop', prefix: '>>', description: 'Digital products' },
-  { key: '6', label: 'project', path: '/project', prefix: '>>', description: 'External system', external: true },
+  { key: '6', label: 'project', path: '/project', prefix: '>>', description: 'Second brain' },
   { key: '7', label: 'system', path: '/system', prefix: '//', description: 'Documentation' },
   // Note: intake is hidden from nav but accessible from Operations page
 ];

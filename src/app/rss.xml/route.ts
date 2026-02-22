@@ -104,7 +104,7 @@ function generateRSS(posts: Awaited<ReturnType<typeof getPosts>>['posts']): stri
     <generator>KILN RSS Generator</generator>
     <atom:link href="${BASE_URL}/rss.xml" rel="self" type="application/rss+xml" />
     <image>
-      <url>${BASE_URL}/favicon.ico</url>
+      <url>${BASE_URL}/logo/favicon.svg</url>
       <title>${SITE_TITLE}</title>
       <link>${BASE_URL}/signal</link>
     </image>
