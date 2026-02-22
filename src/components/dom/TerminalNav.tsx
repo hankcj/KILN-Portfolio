@@ -34,7 +34,7 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { key: '1', label: 'origin', path: '/', prefix: '[K]', description: 'System root' },
-  { key: '2', label: 'Outputs', path: '/work', prefix: 'C', description: 'Object store' },
+  { key: '2', label: 'outputs', path: '/work', prefix: 'C', description: 'Object store' },
   { key: '3', label: 'signal', path: '/signal', prefix: 'C', description: 'Field notes' },
   { key: '4', label: 'operations', path: '/services', prefix: 'C', description: 'Active processes' },
   { key: '5', label: 'shop', path: '/shop', prefix: '>>', description: 'Digital products' },
