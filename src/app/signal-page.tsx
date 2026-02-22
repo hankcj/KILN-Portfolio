@@ -215,17 +215,7 @@ export default function SignalPage({ posts }: SignalPageProps) {
           <p className="font-mono text-xs text-on-surface-muted/50">
             Click to copy feed URL
           </p>
-          {process.env.NEXT_PUBLIC_MAUTIC_FORM_URL && (
-            <a
-              href={process.env.NEXT_PUBLIC_MAUTIC_FORM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-mono text-system text-on-surface-muted hover:text-accent transition-colors inline-flex items-center gap-2"
-            >
-              <span>{'// SUBSCRIBE_VIA_EMAIL'}</span>
-              <span>↗</span>
-            </a>
-          )}
+          
         </div>
 
         {/* Embedded Subscribe Form (shown when enabled) */}

@@ -8,6 +8,9 @@
 const MAUTIC_BASE_URL = process.env.MAUTIC_BASE_URL || '';
 const MAUTIC_API_USER = process.env.MAUTIC_API_USER || '';
 const MAUTIC_API_PASSWORD = process.env.MAUTIC_API_PASSWORD || '';
+const MAUTIC_SUBSCRIBER_SEGMENT_ID = process.env.MAUTIC_SUBSCRIBER_SEGMENT_ID
+  ? parseInt(process.env.MAUTIC_SUBSCRIBER_SEGMENT_ID, 10)
+  : 0;
 
 const isConfigured = MAUTIC_BASE_URL && MAUTIC_API_USER && MAUTIC_API_PASSWORD;
 
@@ -53,6 +56,17 @@ export async function createContact(
 
     const data = await res.json();
     const contactId = data?.contact?.id;
+
+    if (contactId && MAUTIC_SUBSCRIBER_SEGMENT_ID) {
+      try {
+        await fetch(
+          `${MAUTIC_BASE_URL}/api/segments/${MAUTIC_SUBSCRIBER_SEGMENT_ID}/contact/${contactId}/add`,
+          { method: 'POST', headers: { Authorization: authHeader() } }
+        );
+      } catch (segErr) {
+        console.error('Failed to add contact to segment:', segErr);
+      }
+    }
 
     return { success: true, contactId };
   } catch (err: unknown) {
