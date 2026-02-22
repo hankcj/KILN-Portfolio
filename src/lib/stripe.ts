@@ -54,7 +54,10 @@ export async function getProducts(): Promise<Product[]> {
     });
 
     return prices.data
-      .filter((price) => price.product && typeof price.product !== 'string')
+      .filter((price) => {
+        const product = price.product;
+        return product && typeof product !== 'string' && (product as Stripe.Product).active !== false;
+      })
       .map((price) => {
         const product = price.product as Stripe.Product;
         return {
@@ -95,6 +98,9 @@ export async function getProduct(priceId: string): Promise<Product | null> {
     }
 
     const product = price.product as Stripe.Product;
+    if (product.active === false) {
+      return null;
+    }
 
     return {
       id: price.id,
