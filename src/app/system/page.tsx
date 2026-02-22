@@ -99,7 +99,7 @@ export default function SystemPage() {
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                // PRINCIPLES
+                {'// PRINCIPLES'}
               </p>
             </ScrollReveal>
             <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border-custom" stagger={0.1}>
@@ -165,7 +165,7 @@ export default function SystemPage() {
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                // IMPLEMENTATION
+                {'// IMPLEMENTATION'}
               </p>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
@@ -266,7 +266,7 @@ export default function SystemPage() {
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                // CHANGELOG
+                {'// CHANGELOG'}
               </p>
             </ScrollReveal>
             <StaggerReveal className="space-y-px bg-border-custom" stagger={0.15}>
@@ -315,7 +315,7 @@ export default function SystemPage() {
           {/* Connect */}
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-              // CONNECT
+              {'// CONNECT'}
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-border-custom">
               <a 

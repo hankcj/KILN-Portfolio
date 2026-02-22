@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { works } from '#content';
 import { SimplePageShell } from '@/components/dom/PageShell';
@@ -81,10 +82,11 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
 
             {work.coverImage && (
               <figure className="mb-12 relative w-full aspect-video border border-border-muted overflow-hidden">
-                <img
+                <Image
                   src={work.coverImage}
                   alt={work.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
               </figure>
             )}

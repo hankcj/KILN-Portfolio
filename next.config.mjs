@@ -19,6 +19,11 @@ export default {
         hostname: 'ghost.studiokiln.io',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'files.stripe.com',
+        pathname: '/**',
+      },
     ],
   },
   webpack: (config) => {

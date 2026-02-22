@@ -4,6 +4,7 @@
  * Individual product page with Stripe Checkout integration.
  */
 
+import Image from 'next/image';
 import { SimplePageShell } from '@/components/dom/PageShell';
 import { ScrollReveal } from '@/components/dom/ScrollReveal';
 import { getProduct, formatPrice } from '@/lib/stripe';
@@ -113,11 +114,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Left: Image or placeholder */}
             <ScrollReveal delay={0.4} className="md:col-span-2">
               {product.images.length > 0 ? (
-                <div className="aspect-video bg-bg-secondary border border-border-muted overflow-hidden">
-                  <img
+                <div className="aspect-video bg-bg-secondary border border-border-muted overflow-hidden relative">
+                  <Image
                     src={product.images[0]}
                     alt={product.name}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                 </div>
               ) : (
