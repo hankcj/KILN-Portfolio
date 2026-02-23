@@ -9,7 +9,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { verifyGhostSignature } from '@/lib/ghost-signature';
-import { getEmail, createEmail, sendEmail } from '@/lib/mautic';
+import { getEmail, createEmail } from '@/lib/mautic';
 
 const GHOST_WEBHOOK_SECRET = process.env.GHOST_WEBHOOK_SECRET || '';
 const TEMPLATE_ID = parseInt(process.env.MAUTIC_SIGNAL_TEMPLATE_ID || '0', 10);
@@ -156,16 +156,10 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // --- Queue the email for segment delivery ---
-
-  const sendResult = await sendEmail(createResult.emailId);
-  if (!sendResult.success) {
-    console.error('Failed to send email:', sendResult.error);
-    return NextResponse.json(
-      { error: 'Email created but failed to queue send' },
-      { status: 500 }
-    );
-  }
+  // Segment/list emails are sent by Mautic's mautic:broadcasts:send cron,
+  // not via the API send endpoint (which only works for template emails).
+  // The email is created with isPublished: true and publishUp set, so the
+  // cron will pick it up and deliver to the segment automatically.
 
   console.log('Ghost webhook processed:', {
     postTitle: title,

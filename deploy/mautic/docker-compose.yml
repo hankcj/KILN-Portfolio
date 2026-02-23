@@ -9,6 +9,7 @@ x-mautic-volumes:
   - ./mautic/media/files:/var/www/html/docroot/media/files:z
   - ./mautic/media/images:/var/www/html/docroot/media/images:z
   - ./themes/kiln:/var/www/html/docroot/themes/kiln:ro
+  - mautic-cache:/var/www/html/var/cache
 
 services:
   db:
@@ -89,6 +90,7 @@ services:
 
 volumes:
   mysql-data:
+  mautic-cache:
 
 networks:
   default:
