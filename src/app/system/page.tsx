@@ -217,7 +217,8 @@ export default function SystemPage() {
                   <SpecRow label="CMS" value="Ghost (AWS EC2)" />
                   <SpecRow label="EMAIL" value="AWS SES + Mautic" />
                   <SpecRow label="PAYMENTS" value="Stripe" />
-                  <SpecRow label="DOMAIN" value="kiln.studio" />
+                  <SpecRow label="DOMAIN" value="studiokiln.io" />
+                  <SpecRow label="HOSTING" value="Hostinger" />
                 </ul>
               </div>
 
