@@ -127,12 +127,12 @@ export async function POST(request: NextRequest) {
     .replace('%%SIGNAL_URL%%', escapeHtml(postUrl));
 
   // --- Compute optional send delay ---
-
+  // Mautic expects ISO 8601 with explicit offset (+00:00), not trailing Z
   let publishUp: string | undefined;
   if (DELAY_SEND_MINS > 0) {
     const d = new Date();
     d.setMinutes(d.getMinutes() + DELAY_SEND_MINS);
-    publishUp = d.toISOString().replace(/\.\d{3}Z$/, 'Z');
+    publishUp = d.toISOString().replace(/\.\d{3}Z$/, '+00:00');
   }
 
   // --- Create cloned email in Mautic ---
