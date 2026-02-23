@@ -16,6 +16,34 @@ const TEMPLATE_ID = parseInt(process.env.MAUTIC_SIGNAL_TEMPLATE_ID || '0', 10);
 const DELAY_SEND_MINS = parseInt(process.env.DELAY_SEND_MINS || '0', 10);
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://kiln.studio').replace(/\/$/, '');
 
+/**
+ * GET: Verification endpoint. Call this to check config and Mautic connectivity
+ * without publishing a post. No secrets are returned.
+ */
+export async function GET() {
+  const checks: Record<string, string | number | boolean> = {
+    ghostWebhookSecret: !!GHOST_WEBHOOK_SECRET,
+    mauticBaseUrl: !!process.env.MAUTIC_BASE_URL,
+    mauticApiUser: !!process.env.MAUTIC_API_USER,
+    mauticApiPassword: !!process.env.MAUTIC_API_PASSWORD,
+    mauticSignalTemplateId: TEMPLATE_ID,
+    delaySendMins: DELAY_SEND_MINS,
+    webhookUrl: `${SITE_URL}/api/webhooks/ghost`,
+  };
+
+  let templateReach = 'not_checked';
+  if (checks.mauticBaseUrl && checks.mauticApiUser && checks.mauticApiPassword && TEMPLATE_ID > 0) {
+    const result = await getEmail(TEMPLATE_ID);
+    templateReach = result.success ? 'ok' : (result.error || 'failed');
+  }
+
+  return Response.json({
+    ok: true,
+    message: 'Ghost → Mautic webhook verification. POST to webhookUrl when a post is published.',
+    checks: { ...checks, mauticTemplateReach: templateReach },
+  });
+}
+
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, '&amp;')
