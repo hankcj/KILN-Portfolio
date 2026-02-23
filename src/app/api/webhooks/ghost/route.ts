@@ -127,12 +127,13 @@ export async function POST(request: NextRequest) {
     .replace('%%SIGNAL_URL%%', escapeHtml(postUrl));
 
   // --- Compute optional send delay ---
-  // Mautic expects ISO 8601 with explicit offset (+00:00), not trailing Z
+  // Mautic/Symfony expects Y-m-d H:i:s (UTC) for publishUp
   let publishUp: string | undefined;
   if (DELAY_SEND_MINS > 0) {
     const d = new Date();
     d.setMinutes(d.getMinutes() + DELAY_SEND_MINS);
-    publishUp = d.toISOString().replace(/\.\d{3}Z$/, '+00:00');
+    const pad = (n: number) => String(n).padStart(2, '0');
+    publishUp = `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())}`;
   }
 
   // --- Create cloned email in Mautic ---
