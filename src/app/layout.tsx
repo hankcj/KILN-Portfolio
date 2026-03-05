@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Averia_Serif_Libre, Inter } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 import { SmoothScroll } from '@/components/dom/SmoothScroll';
 import { CustomCursor } from '@/components/dom/CustomCursor';
@@ -65,6 +66,7 @@ export default function RootLayout({
         <SmoothScroll>
           {children}
         </SmoothScroll>
+        <Analytics />
       </body>
     </html>
   );
