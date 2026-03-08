@@ -32,7 +32,7 @@ export default function WorkPage() {
       leftSideText="OUTPUT_ARCHIVE_V2.0"
       rightSideText={`${published.length} ITEMS INDEXED`}
     >
-      <div className="min-h-screen pt-32 pb-16 px-6 md:px-8">
+      <div className="min-h-screen pt-32 pb-[var(--frame-content-bottom-clearance)] px-6 md:px-8">
         <div className="max-w-7xl mx-auto">
           <header className="mb-16 md:mb-24">
             <ScrollReveal>

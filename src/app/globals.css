@@ -67,7 +67,22 @@
   --space-12: 3rem;
   --space-16: 4rem;
 
+  /* Shared frame geometry */
+  --frame-inset-x: 2rem;
+  --frame-inset-top: 2rem;
+  --frame-inset-bottom: calc(2rem + env(safe-area-inset-bottom));
+  --frame-diagnostics-offset: 6rem;
+  --frame-content-bottom-clearance: calc(9rem + env(safe-area-inset-bottom));
+
   /* Grain handled by LivingEffects component */
+}
+
+@media (max-width: 768px) {
+  :root {
+    --frame-inset-x: 1.5rem;
+    --frame-inset-top: 1.5rem;
+    --frame-inset-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  }
 }
 
 @layer base {

@@ -76,7 +76,7 @@ export default function SignalPage({ posts }: SignalPageProps) {
       rightSideText={`${posts.length.toString().padStart(2, '0')} ENTRIES LOGGED`}
     >
       {/* Main content */}
-      <div className="relative z-10 min-h-screen px-6 md:px-16 lg:px-24 py-32">
+      <div className="relative z-10 min-h-screen px-6 md:px-16 lg:px-24 pt-32 pb-[var(--frame-content-bottom-clearance)]">
         <header ref={headerRef} className="mb-16 md:mb-24">
           <div className="flex justify-between items-start mb-4">
             <p className="font-mono text-system text-on-surface-muted tracking-widest">

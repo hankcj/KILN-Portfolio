@@ -32,7 +32,7 @@ export default function SystemPage() {
       leftSideText="SYS_DOCS_V2.0"
       rightSideText="48.8566° N 2.3522° E"
     >
-      <div className="min-h-screen pt-32 pb-24 px-6 md:px-16 lg:px-24">
+      <div className="min-h-screen pt-32 pb-[var(--frame-content-bottom-clearance)] px-6 md:px-16 lg:px-24">
         <div className="max-w-5xl mx-auto">
           
           {/* Header */}
@@ -379,8 +379,47 @@ export default function SystemPage() {
                 className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
               >
                 <div>
-                  <p className="font-mono text-system text-accent mb-1">INSTAGRAM</p>
-                  <p className="text-small text-on-bg-tertiary">Process and studio</p>
+                  <p className="font-mono text-system text-accent mb-1">INSTAGRAM_STUDIO</p>
+                  <p className="text-small text-on-bg-tertiary">Studio process and artifacts</p>
+                </div>
+                <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
+              </a>
+
+              <a 
+                href="https://instagram.com/sabl_live"
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
+              >
+                <div>
+                  <p className="font-mono text-system text-accent mb-1">INSTAGRAM_STREAM</p>
+                  <p className="text-small text-on-bg-tertiary">Clips and live moments</p>
+                </div>
+                <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
+              </a>
+
+              <a 
+                href="https://x.com/sabl_live"
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
+              >
+                <div>
+                  <p className="font-mono text-system text-accent mb-1">X_STREAM</p>
+                  <p className="text-small text-on-bg-tertiary">Live updates and commentary</p>
+                </div>
+                <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
+              </a>
+
+              <a 
+                href="https://twitch.tv/sabllive"
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
+              >
+                <div>
+                  <p className="font-mono text-system text-accent mb-1">TWITCH_LIVE</p>
+                  <p className="text-small text-on-bg-tertiary">Streams, sessions, and VODs</p>
                 </div>
                 <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
               </a>

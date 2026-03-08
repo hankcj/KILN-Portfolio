@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { LivingEffects, GlitchText } from '@/components/dom/LivingEffects';
 import { TerminalNav } from '@/components/dom/TerminalNav';
+import { GlobalSocialRail } from '@/components/dom/PageShell';
 import { useAppStore } from '@/lib/store';
 import { SceneManager } from '@/components/canvas/SceneManager';
 
@@ -131,7 +132,7 @@ export default function HomePage() {
       </div>
 
       {/* Main content */}
-      <div className="main-content relative z-10 min-h-screen flex flex-col justify-between px-8 md:px-16 lg:px-24 py-12" style={{ opacity: 0 }}>
+      <div className="main-content relative z-10 min-h-screen flex flex-col justify-between px-8 md:px-16 lg:px-24 pt-12 pb-[var(--frame-content-bottom-clearance)]" style={{ opacity: 0 }}>
         
         {/* K Logo */}
         <a 
@@ -243,6 +244,8 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      <GlobalSocialRail />
     </main>
   );
 }

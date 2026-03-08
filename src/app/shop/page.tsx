@@ -43,7 +43,7 @@ export default async function ShopPage() {
       leftSideText="PRODUCT_ARCHIVE_V1.0"
       rightSideText={`${products.length.toString().padStart(2, '0')} ITEMS_AVAILABLE`}
     >
-      <div className="min-h-screen pt-32 pb-24 px-6 md:px-16 lg:px-24">
+      <div className="min-h-screen pt-32 pb-[var(--frame-content-bottom-clearance)] px-6 md:px-16 lg:px-24">
         <div className="max-w-7xl mx-auto">
           
           {/* Header */}

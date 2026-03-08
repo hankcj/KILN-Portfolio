@@ -45,6 +45,19 @@ interface PageShellProps {
   animateEntrance?: boolean;
 }
 
+interface SocialRailLink {
+  label: string;
+  href: string;
+}
+
+const SOCIAL_RAIL_LINKS: SocialRailLink[] = [
+  { label: 'GITHUB', href: 'https://github.com/hankcj' },
+  { label: 'INSTAGRAM_STUDIO', href: 'https://instagram.com/hankcj' },
+  { label: 'INSTAGRAM_STREAM', href: 'https://instagram.com/sabl_live' },
+  { label: 'X_STREAM', href: 'https://x.com/sabl_live' },
+  { label: 'TWITCH_LIVE', href: 'https://twitch.tv/sabllive' },
+];
+
 export function PageShell({ 
   children, 
   currentPage, 
@@ -241,6 +254,8 @@ export function PageShell({
         {children}
       </div>
 
+      <GlobalSocialRail />
+
       {/* Corner brackets - consistent decorative element */}
       <CornerBrackets />
     </main>
@@ -319,11 +334,41 @@ function CornerBrackets() {
 
   return (
     <>
-      <div ref={topLeftRef} className="fixed top-8 left-8 w-4 h-4 border-l border-t border-accent/50 pointer-events-none z-30 transition-colors" />
-      <div ref={topRightRef} className="fixed top-8 right-8 w-4 h-4 border-r border-t border-accent/50 pointer-events-none z-30 transition-colors" />
-      <div ref={bottomLeftRef} className="fixed bottom-8 left-8 w-4 h-4 border-l border-b border-accent/50 pointer-events-none z-30 transition-colors" />
-      <div ref={bottomRightRef} className="fixed bottom-8 right-8 w-4 h-4 border-r border-b border-accent/50 pointer-events-none z-30 transition-colors" />
+      <div
+        ref={topLeftRef}
+        className="fixed w-4 h-4 border-l border-t border-accent/50 pointer-events-none z-30 transition-colors"
+        style={{ top: 'var(--frame-inset-top)', left: 'var(--frame-inset-x)' }}
+      />
+      <div
+        ref={topRightRef}
+        className="fixed w-4 h-4 border-r border-t border-accent/50 pointer-events-none z-30 transition-colors"
+        style={{ top: 'var(--frame-inset-top)', right: 'var(--frame-inset-x)' }}
+      />
+      <div
+        ref={bottomLeftRef}
+        className="fixed w-4 h-4 border-l border-b border-accent/50 pointer-events-none z-30 transition-colors"
+        style={{ bottom: 'var(--frame-inset-bottom)', left: 'var(--frame-inset-x)' }}
+      />
+      <div
+        ref={bottomRightRef}
+        className="fixed w-4 h-4 border-r border-b border-accent/50 pointer-events-none z-30 transition-colors"
+        style={{ bottom: 'var(--frame-inset-bottom)', right: 'var(--frame-inset-x)' }}
+      />
+      <BottomCenterMarker />
     </>
+  );
+}
+
+function BottomCenterMarker() {
+  return (
+    <div
+      className="fixed left-1/2 -translate-x-1/2 pointer-events-none z-30 w-24 h-4"
+      style={{ bottom: 'var(--frame-inset-bottom)' }}
+      aria-hidden="true"
+    >
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-accent/40" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-accent/60" />
+    </div>
   );
 }
 
@@ -521,8 +566,39 @@ export function SimplePageShell({
       >
         {children}
       </div>
+      <GlobalSocialRail />
       <CornerBracketsSimple />
     </>
+  );
+}
+
+export function GlobalSocialRail() {
+  return (
+    <div
+      className="fixed left-1/2 -translate-x-1/2 z-[35] w-[min(94vw,80rem)] pointer-events-none"
+      style={{ bottom: 'calc(var(--frame-inset-bottom) + 1.25rem)' }}
+      aria-hidden="false"
+    >
+      <div className="pointer-events-auto border-t border-border-muted bg-bg-primary/70 backdrop-blur-sm px-3 py-2 overflow-x-auto">
+        <div className="flex items-center justify-center gap-2 md:gap-3 whitespace-nowrap min-w-max font-mono text-[10px] text-on-surface-muted tracking-widest">
+          {SOCIAL_RAIL_LINKS.map((link, index) => (
+            <div key={link.label} className="flex items-center gap-2 md:gap-3">
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-accent transition-colors"
+              >
+                {link.label}
+              </a>
+              {index < SOCIAL_RAIL_LINKS.length - 1 && (
+                <span className="text-on-surface-muted/50">•</span>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -591,10 +667,27 @@ function CornerBracketsSimple() {
 
   return (
     <>
-      <div ref={topLeftRef} className="fixed top-8 left-8 w-4 h-4 border-l border-t border-accent/50 pointer-events-none z-30 transition-colors" />
-      <div ref={topRightRef} className="fixed top-8 right-8 w-4 h-4 border-r border-t border-accent/50 pointer-events-none z-30 transition-colors" />
-      <div ref={bottomLeftRef} className="fixed bottom-8 left-8 w-4 h-4 border-l border-b border-accent/50 pointer-events-none z-30 transition-colors" />
-      <div ref={bottomRightRef} className="fixed bottom-8 right-8 w-4 h-4 border-r border-b border-accent/50 pointer-events-none z-30 transition-colors" />
+      <div
+        ref={topLeftRef}
+        className="fixed w-4 h-4 border-l border-t border-accent/50 pointer-events-none z-30 transition-colors"
+        style={{ top: 'var(--frame-inset-top)', left: 'var(--frame-inset-x)' }}
+      />
+      <div
+        ref={topRightRef}
+        className="fixed w-4 h-4 border-r border-t border-accent/50 pointer-events-none z-30 transition-colors"
+        style={{ top: 'var(--frame-inset-top)', right: 'var(--frame-inset-x)' }}
+      />
+      <div
+        ref={bottomLeftRef}
+        className="fixed w-4 h-4 border-l border-b border-accent/50 pointer-events-none z-30 transition-colors"
+        style={{ bottom: 'var(--frame-inset-bottom)', left: 'var(--frame-inset-x)' }}
+      />
+      <div
+        ref={bottomRightRef}
+        className="fixed w-4 h-4 border-r border-b border-accent/50 pointer-events-none z-30 transition-colors"
+        style={{ bottom: 'var(--frame-inset-bottom)', right: 'var(--frame-inset-x)' }}
+      />
+      <BottomCenterMarker />
     </>
   );
 }
