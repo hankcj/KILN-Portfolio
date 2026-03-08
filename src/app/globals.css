@@ -71,7 +71,8 @@
   --frame-inset-x: 2rem;
   --frame-inset-top: 2rem;
   --frame-inset-bottom: calc(2rem + env(safe-area-inset-bottom));
-  --frame-diagnostics-offset: 6rem;
+  --frame-diagnostics-offset: 2rem;
+  --frame-diagnostics-x: calc(var(--frame-inset-x) + 1rem);
   --frame-content-bottom-clearance: calc(9rem + env(safe-area-inset-bottom));
 
   /* Grain handled by LivingEffects component */

@@ -379,7 +379,7 @@ export default function SystemPage() {
                 className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
               >
                 <div>
-                  <p className="font-mono text-system text-accent mb-1">INSTAGRAM_STUDIO</p>
+                  <p className="font-mono text-system text-accent mb-1">INSTAGRAM (STUDIO)</p>
                   <p className="text-small text-on-bg-tertiary">Studio process and artifacts</p>
                 </div>
                 <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
@@ -392,7 +392,7 @@ export default function SystemPage() {
                 className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
               >
                 <div>
-                  <p className="font-mono text-system text-accent mb-1">INSTAGRAM_STREAM</p>
+                  <p className="font-mono text-system text-accent mb-1">INSTAGRAM (LIVE)</p>
                   <p className="text-small text-on-bg-tertiary">Clips and live moments</p>
                 </div>
                 <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
@@ -405,7 +405,7 @@ export default function SystemPage() {
                 className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
               >
                 <div>
-                  <p className="font-mono text-system text-accent mb-1">X_STREAM</p>
+                  <p className="font-mono text-system text-accent mb-1">X (LIVE)</p>
                   <p className="text-small text-on-bg-tertiary">Live updates and commentary</p>
                 </div>
                 <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>
@@ -418,7 +418,7 @@ export default function SystemPage() {
                 className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
               >
                 <div>
-                  <p className="font-mono text-system text-accent mb-1">TWITCH_LIVE</p>
+                  <p className="font-mono text-system text-accent mb-1">TWITCH</p>
                   <p className="text-small text-on-bg-tertiary">Streams, sessions, and VODs</p>
                 </div>
                 <span className="text-on-surface-muted group-hover:text-accent transition-colors">↗</span>

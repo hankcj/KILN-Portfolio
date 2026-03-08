@@ -51,11 +51,11 @@ interface SocialRailLink {
 }
 
 const SOCIAL_RAIL_LINKS: SocialRailLink[] = [
-  { label: 'GITHUB', href: 'https://github.com/hankcj' },
-  { label: 'INSTAGRAM_STUDIO', href: 'https://instagram.com/hankcj' },
-  { label: 'INSTAGRAM_STREAM', href: 'https://instagram.com/sabl_live' },
-  { label: 'X_STREAM', href: 'https://x.com/sabl_live' },
-  { label: 'TWITCH_LIVE', href: 'https://twitch.tv/sabllive' },
+  { label: 'GitHub', href: 'https://github.com/hankcj' },
+  { label: 'Instagram Studio', href: 'https://instagram.com/hankcj' },
+  { label: 'Instagram Live', href: 'https://instagram.com/sabl_live' },
+  { label: 'X Live', href: 'https://x.com/sabl_live' },
+  { label: 'Twitch', href: 'https://twitch.tv/sabllive' },
 ];
 
 export function PageShell({ 

@@ -95,7 +95,7 @@ function SystemClock() {
       <div
         className="fixed z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block"
         style={{
-          left: 'var(--frame-inset-x)',
+          left: 'var(--frame-diagnostics-x)',
           bottom: 'calc(var(--frame-inset-bottom) + var(--frame-diagnostics-offset))',
         }}
       >
@@ -110,7 +110,7 @@ function SystemClock() {
     <div
       className="fixed z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block"
       style={{
-        left: 'var(--frame-inset-x)',
+        left: 'var(--frame-diagnostics-x)',
         bottom: 'calc(var(--frame-inset-bottom) + var(--frame-diagnostics-offset))',
       }}
     >
@@ -165,7 +165,7 @@ function DataStream() {
       <div
         className="fixed z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block text-right"
         style={{
-          right: 'var(--frame-inset-x)',
+          right: 'var(--frame-diagnostics-x)',
           bottom: 'calc(var(--frame-inset-bottom) + var(--frame-diagnostics-offset))',
         }}
       >
@@ -180,7 +180,7 @@ function DataStream() {
     <div
       className="fixed z-40 font-mono text-system text-on-surface-muted/50 pointer-events-none hidden lg:block text-right"
       style={{
-        right: 'var(--frame-inset-x)',
+        right: 'var(--frame-diagnostics-x)',
         bottom: 'calc(var(--frame-inset-bottom) + var(--frame-diagnostics-offset))',
       }}
     >
