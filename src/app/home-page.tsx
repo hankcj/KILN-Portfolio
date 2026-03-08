@@ -132,7 +132,7 @@ export default function HomePage() {
       </div>
 
       {/* Main content */}
-      <div className="main-content relative z-10 min-h-screen flex flex-col justify-between px-8 md:px-16 lg:px-24 pt-12 pb-[var(--frame-content-bottom-clearance)]" style={{ opacity: 0 }}>
+      <div className="main-content relative z-10 min-h-screen flex flex-col justify-between px-8 md:px-16 lg:px-24 pt-12 pb-[var(--frame-content-bottom-clearance-home)]" style={{ opacity: 0 }}>
         
         {/* K Logo */}
         <a 
