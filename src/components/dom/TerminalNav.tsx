@@ -32,7 +32,8 @@ interface NavItem {
   external?: boolean;
 }
 
-const NAV_ITEMS: NavItem[] = [
+/** In-site destinations (keyboard 1–7) */
+const SITE_NAV_ITEMS: NavItem[] = [
   { key: '1', label: 'origin', path: '/', prefix: '[K]', description: 'System root' },
   { key: '2', label: 'outputs', path: '/work', prefix: 'C', description: 'Object store' },
   { key: '3', label: 'signal', path: '/signal', prefix: 'C', description: 'Field notes' },
@@ -40,8 +41,19 @@ const NAV_ITEMS: NavItem[] = [
   { key: '5', label: 'shop', path: '/shop', prefix: '>>', description: 'Digital products' },
   { key: '6', label: 'project', path: '/project', prefix: '>>', description: 'Second brain' },
   { key: '7', label: 'system', path: '/system', prefix: '//', description: 'Documentation' },
-  // Note: intake is hidden from nav but accessible from Operations page
 ];
+
+/** Client portal (external); keyboard [8] */
+const CLIENT_PORTAL_ITEM: NavItem = {
+  key: '8',
+  label: 'portal',
+  path: 'https://kiln.bloom.io/login',
+  prefix: '>>',
+  description: 'Client login — existing projects',
+  external: true,
+};
+
+const ALL_NAV_ITEMS: NavItem[] = [...SITE_NAV_ITEMS, CLIENT_PORTAL_ITEM];
 
 const BOOT_SEQUENCE = [
   '// NAV_PROTOCOL_INIT',
@@ -128,21 +140,18 @@ export function TerminalNav() {
     if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key >= '1' && e.key <= '7') {
-        // Direct number selection
-        const index = parseInt(e.key) - 1;
-        if (index < NAV_ITEMS.length) {
-          navigateTo(NAV_ITEMS[index]);
-        }
+      if (/^[1-8]$/.test(e.key)) {
+        const index = parseInt(e.key, 10) - 1;
+        navigateTo(ALL_NAV_ITEMS[index]);
       } else if (e.key === 'ArrowDown') {
         e.preventDefault();
-        setSelectedIndex(prev => (prev + 1) % NAV_ITEMS.length);
+        setSelectedIndex(prev => (prev + 1) % ALL_NAV_ITEMS.length);
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
-        setSelectedIndex(prev => (prev - 1 + NAV_ITEMS.length) % NAV_ITEMS.length);
+        setSelectedIndex(prev => (prev - 1 + ALL_NAV_ITEMS.length) % ALL_NAV_ITEMS.length);
       } else if (e.key === 'Enter') {
         e.preventDefault();
-        navigateTo(NAV_ITEMS[selectedIndex]);
+        navigateTo(ALL_NAV_ITEMS[selectedIndex]);
       } else if (e.key === 'Escape') {
         e.preventDefault();
         closeNav();
@@ -192,7 +201,7 @@ export function TerminalNav() {
     if (typeof window === 'undefined') return;
     
     const path = window.location.pathname;
-    const currentIndex = NAV_ITEMS.findIndex(item => {
+    const currentIndex = SITE_NAV_ITEMS.findIndex(item => {
       if (item.path === '/') return path === '/';
       return path.startsWith(item.path);
     });
@@ -362,9 +371,10 @@ export function TerminalNav() {
               {showNavItems && (
                 <>
                   <div ref={navItemsRef} className="mt-8 space-y-2">
-                    {NAV_ITEMS.map((item, index) => (
+                    {SITE_NAV_ITEMS.map((item, index) => (
                       <button
                         key={item.key}
+                        type="button"
                         onClick={() => navigateTo(item)}
                         onMouseEnter={() => {
                           setSelectedIndex(index);
@@ -386,11 +396,48 @@ export function TerminalNav() {
                         <span className="text-on-surface-muted/50 hidden sm:block">
                           {item.description}
                         </span>
-                        {item.external && (
-                          <span className="text-on-surface-muted">↗</span>
-                        )}
                       </button>
                     ))}
+
+                    <div
+                      className="pt-6 mt-4 border-t border-border-custom"
+                      role="separator"
+                      aria-hidden="true"
+                    >
+                      <p className="font-mono text-system text-on-surface-muted tracking-widest px-4 pb-2">
+                        {'// CLIENT_ACCESS'}
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      key={CLIENT_PORTAL_ITEM.key}
+                      onClick={() => navigateTo(CLIENT_PORTAL_ITEM)}
+                      onMouseEnter={() => {
+                        setSelectedIndex(SITE_NAV_ITEMS.length);
+                        playHover();
+                      }}
+                      aria-label="Client portal login, opens in new tab"
+                      className={`nav-item w-full text-left py-3 px-4 flex items-center gap-4 transition-all duration-150 opacity-0 ${
+                        selectedIndex === SITE_NAV_ITEMS.length
+                          ? 'bg-accent/10 border-l-2 border-accent'
+                          : 'hover:bg-bg-secondary border-l-2 border-transparent'
+                      }`}
+                    >
+                      <span className="text-on-surface-muted w-6">{CLIENT_PORTAL_ITEM.key}</span>
+                      <span className={selectedIndex === SITE_NAV_ITEMS.length ? 'text-accent' : 'text-on-surface-muted'}>
+                        {CLIENT_PORTAL_ITEM.prefix}
+                      </span>
+                      <span className={`flex-1 ${selectedIndex === SITE_NAV_ITEMS.length ? 'text-on-bg-primary' : 'text-on-bg-secondary'}`}>
+                        {CLIENT_PORTAL_ITEM.label}
+                      </span>
+                      <span className="text-on-surface-muted/50 hidden sm:block">
+                        {CLIENT_PORTAL_ITEM.description}
+                      </span>
+                      <span className="text-on-surface-muted" aria-hidden>
+                        ↗
+                      </span>
+                    </button>
                   </div>
 
                   {/* Bottom section - fixed height container so nav items don't shift */}
@@ -416,7 +463,7 @@ export function TerminalNav() {
                   {/* Help text - stays at bottom */}
                   <div className="mt-8 pt-4 border-t border-border-muted text-on-surface-muted/50 text-[10px] space-y-1">
                     <div>{'// NAVIGATION_CONTROLS'}</div>
-                    <div>[1-7] Select directly | [↑↓] Navigate | [ENTER] Confirm | [ESC] Cancel | [S] Toggle Sound</div>
+                    <div>[1-8] Select directly | [↑↓] Navigate | [ENTER] Confirm | [ESC] Cancel | [S] Toggle Sound</div>
                   </div>
                 </>
               )}
