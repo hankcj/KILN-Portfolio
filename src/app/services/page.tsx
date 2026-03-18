@@ -85,6 +85,7 @@ export default function ServicesPage() {
                 code="SYS.001"
                 title="Website Design + Build"
                 description="Websites and landing pages that look intentional and earn their keep."
+                pricing={{ range: '$3,500 — $8,000', note: 'PROJECT_BASED' }}
                 deliverables={[
                   'Structure + page architecture (what exists, what gets cut)',
                   'Copy refresh or full rewrite (positioning, page copy, CTAs)',
@@ -103,6 +104,7 @@ export default function ServicesPage() {
                 code="SYS.002"
                 title="Copywriting + Messaging"
                 description="Language that makes the offer obvious, without turning you into a marketing robot."
+                pricing={{ range: '$750 — $3,000', note: 'SCOPED_BY_DELIVERABLE' }}
                 deliverables={[
                   'Positioning pass: what you do, who it\'s for, why you win',
                   'Homepage + services + landing page copy',
@@ -121,6 +123,7 @@ export default function ServicesPage() {
                 code="SYS.003"
                 title="Meta Ads (Facebook + Instagram)"
                 description="Campaign structure, creative direction, and ongoing optimization. Not set-and-forget."
+                pricing={{ range: '$1,500 setup + $1,000/mo', note: 'FLAT_SETUP + RETAINER' }}
                 deliverables={[
                   'Account + campaign audit (what\'s working, what\'s lying)',
                   'Funnel mapping: ad → landing → conversion event',
@@ -137,6 +140,7 @@ export default function ServicesPage() {
                 code="SYS.004"
                 title="Creative Direction"
                 description="A coherent aesthetic that stays coherent when you ship weekly, not once a year."
+                pricing={{ range: '$1,500 — $4,000', note: 'PROJECT_BASED' }}
                 deliverables={[
                   'Visual direction: references, rules, do-not-cross lines',
                   'Content system: pillars, formats, repeatable templates',
@@ -314,7 +318,7 @@ export default function ServicesPage() {
           {/* Footer info */}
           <div className="flex justify-between items-end pt-8 border-t border-border-muted">
             <div className="font-mono text-system text-on-surface-muted">
-              RATE: PROJECT_BASED
+              RATE: SCOPED_PER_PROJECT
             </div>
             <div className="flex items-center gap-4">
               <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
@@ -339,6 +343,7 @@ function ServiceCard({
   deliverables,
   bestFor,
   notes,
+  pricing,
 }: { 
   code: string;
   title: string;
@@ -346,11 +351,20 @@ function ServiceCard({
   deliverables: string[];
   bestFor?: string[];
   notes?: string[];
+  pricing?: { range: string; note: string };
 }) {
   return (
     <div className="bg-bg-primary p-8 md:p-10 hover-lift focus-ring">
       <div className="mb-4">
-        <span className="font-mono text-system text-accent">{code}</span>
+        <div className="flex items-start justify-between gap-6">
+          <span className="font-mono text-system text-accent">{code}</span>
+          {pricing && (
+            <div className="text-right">
+              <span className="font-heading text-h4 text-on-bg-primary block">{pricing.range}</span>
+              <span className="font-mono text-system text-on-surface-muted">{pricing.note}</span>
+            </div>
+          )}
+        </div>
         <div className="h-px bg-border-custom mt-3 mb-6 max-w-[80px]" />
       </div>
 
