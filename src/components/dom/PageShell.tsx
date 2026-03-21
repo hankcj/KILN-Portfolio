@@ -572,7 +572,11 @@ export function SimplePageShell({
   );
 }
 
-export function GlobalSocialRail() {
+export function GlobalSocialRail({ show = true }: { show?: boolean } = {}) {
+  if (!show) {
+    return null;
+  }
+
   return (
     <div
       className="fixed left-1/2 -translate-x-1/2 z-[35] w-[min(94vw,80rem)] pointer-events-none"

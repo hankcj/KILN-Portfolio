@@ -95,16 +95,11 @@ export default function HomePage() {
 
   return (
     <main ref={containerRef} className="min-h-screen relative overflow-hidden">
-      <LivingEffects />
+      <LivingEffects variant="quiet" />
       <TerminalNav />
 
       {/* WebGL Atmospheric Scene */}
       <SceneManager />
-
-      {/* CSS Fallback Background - subtle gradient orb */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-3xl" />
-      </div>
 
       {/* Boot animation overlay - typewriter effect */}
       <div 
@@ -142,33 +137,11 @@ export default function HomePage() {
           K
         </a>
 
-        {/* Decorative side text */}
-        <div className="nav-link fixed left-8 top-1/2 -translate-y-1/2 hidden lg:block z-30 pointer-events-none opacity-0">
-          <div 
-            className="font-mono text-system text-on-surface-muted"
-            style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
-          >
-            SYSTEM_V2.0
-          </div>
-        </div>
-
-        <div className="nav-link fixed right-8 top-1/2 -translate-y-1/2 hidden lg:block z-30 pointer-events-none opacity-0">
-          <div 
-            className="font-mono text-system text-on-surface-muted"
-            style={{ writingMode: 'vertical-rl' }}
-          >
-            48.8566° N 2.3522° E
-          </div>
-        </div>
-
         {/* Main content area */}
         <div className="flex flex-col justify-between h-full">
           
           {/* Top header */}
-          <div className="flex justify-between items-start pt-4">
-            <div className="font-mono text-system text-on-surface-muted">
-              {'// BOOT_SEQUENCE'} <span className="animate-pulse">_</span>
-            </div>
+          <div className="flex justify-end items-start pt-4">
             <div className="font-mono text-system text-on-surface-muted text-right">
               EST. 2024<br />
               STATUS: ONLINE
@@ -194,16 +167,10 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="flex items-center gap-4 mt-8">
-              <span className="font-mono text-system text-on-surface-muted">
-                {'// KERNEL_LOADED'}
-              </span>
-              <div className="h-px bg-border-custom flex-1 max-w-xs" />
-            </div>
           </div>
 
-          {/* Bottom - Two column info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 mt-auto max-w-4xl pb-4">
+          {/* Bottom - Core context */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-auto max-w-5xl pb-4">
             <div className="space-y-2">
               <div className="font-mono text-system text-on-surface-muted mb-2">
                 C  TYPE
@@ -225,43 +192,34 @@ export default function HomePage() {
                 systems, and what the culture costs.
               </p>
             </div>
-          </div>
 
-          <div className="mt-8 max-w-4xl border-t border-border-muted pt-6">
-            <p className="font-mono text-system text-on-surface-muted mb-3 tracking-widest">
-              C  STUDIO_CHANNEL
-            </p>
-            <p className="text-small text-on-bg-tertiary leading-relaxed mb-3">
-              Limited inquiries. If you need a site, funnel, or copy system built - start with context, not a pitch deck.
-            </p>
-            <a
-              href="/intake"
-              className="font-mono text-system text-on-surface-muted hover:text-accent transition-colors inline-flex items-center gap-2"
-            >
-              <span>OPEN_PROJECT_INTAKE</span>
-              <span>→</span>
-            </a>
+            <div className="space-y-2">
+              <div className="font-mono text-system text-on-surface-muted mb-2">
+                C  STUDIO_CHANNEL
+              </div>
+              <p className="text-small text-on-bg-secondary leading-relaxed">
+                Limited inquiries. If you need a site, funnel, or copy system built - start with context, not a pitch deck.
+              </p>
+              <a
+                href="/intake"
+                className="font-mono text-system text-on-surface-muted hover:text-accent transition-colors inline-flex items-center gap-2"
+              >
+                <span>OPEN_PROJECT_INTAKE</span>
+                <span>→</span>
+              </a>
+            </div>
           </div>
 
           {/* Footer */}
-          <div className="flex justify-between items-end mt-12 pt-8 border-t border-border-muted">
-            <div className="font-mono text-system text-on-surface-muted">
-              REF: 001-A
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-              <span className="font-mono text-system text-on-surface-muted">
-                LIVE
-              </span>
-            </div>
-            <div className="font-mono text-system text-on-surface-muted">
-              LAST_UPDATE: 2026.02.20
-            </div>
+          <div className="mt-10 pt-6 border-t border-border-muted">
+            <p className="font-mono text-system text-on-surface-muted text-center">
+              REF: 001-A · LIVE · LAST_UPDATE: 2026.02.20
+            </p>
           </div>
         </div>
       </div>
 
-      <GlobalSocialRail />
+      <GlobalSocialRail show={false} />
     </main>
   );
 }

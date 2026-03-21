@@ -102,7 +102,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
                 {'// NEXT_ACTION'}
               </p>
               <p className="text-small text-on-bg-tertiary leading-relaxed mb-3 max-w-2xl">
-                If this output maps to something you need shipped, send a short inquiry - scope, link, and what "done" looks like.
+                If this output maps to something you need shipped, send a short inquiry - scope, link, and what &quot;done&quot; looks like.
               </p>
               <a
                 href="/intake"

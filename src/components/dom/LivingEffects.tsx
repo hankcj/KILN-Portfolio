@@ -10,19 +10,27 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 
-export function LivingEffects() {
+type LivingEffectsVariant = 'full' | 'quiet';
+
+interface LivingEffectsProps {
+  variant?: LivingEffectsVariant;
+}
+
+export function LivingEffects({ variant = 'full' }: LivingEffectsProps) {
+  const isQuiet = variant === 'quiet';
+
   return (
     <>
-      <AnimatedGrain />
-      <SystemClock />
-      <DataStream />
-      <AmbientFloat />
+      <AnimatedGrain quiet={isQuiet} />
+      {!isQuiet && <SystemClock />}
+      {!isQuiet && <DataStream />}
+      {!isQuiet && <AmbientFloat />}
     </>
   );
 }
 
 // Animated grain that breathes and shifts
-function AnimatedGrain() {
+function AnimatedGrain({ quiet = false }: { quiet?: boolean }) {
   const grainRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,17 +40,17 @@ function AnimatedGrain() {
     const tl = gsap.timeline({ repeat: -1 });
     
     tl.to(grainRef.current, {
-      opacity: 0.03,
+      opacity: quiet ? 0.015 : 0.03,
       duration: 3,
       ease: 'sine.inOut'
     })
     .to(grainRef.current, {
-      opacity: 0.06,
+      opacity: quiet ? 0.03 : 0.06,
       duration: 4,
       ease: 'sine.inOut'
     })
     .to(grainRef.current, {
-      opacity: 0.04,
+      opacity: quiet ? 0.02 : 0.04,
       duration: 2,
       ease: 'sine.inOut'
     });
@@ -50,7 +58,7 @@ function AnimatedGrain() {
     return () => {
       tl.kill();
     };
-  }, []);
+  }, [quiet]);
 
   return (
     <div 
@@ -58,7 +66,7 @@ function AnimatedGrain() {
       className="fixed inset-0 pointer-events-none z-[9999]"
       style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        opacity: 0.04,
+        opacity: quiet ? 0.02 : 0.04,
       }}
     />
   );
