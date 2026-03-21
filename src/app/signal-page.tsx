@@ -187,6 +187,22 @@ export default function SignalPage({ posts }: SignalPageProps) {
           </div>
         )}
 
+        <section className="mt-12 border-t border-border-muted pt-6">
+          <p className="font-mono text-system text-on-surface-muted mb-3 tracking-widest">
+            {'// BEYOND_THE_LOG'}
+          </p>
+          <p className="text-small text-on-bg-tertiary leading-relaxed mb-3 max-w-3xl">
+            Reading is one channel. If an essay should turn into a build, say so directly - limited bandwidth, clear inquiries first.
+          </p>
+          <a
+            href="/intake"
+            className="font-mono text-system text-on-surface-muted hover:text-accent transition-colors inline-flex items-center gap-2"
+          >
+            <span>PROJECT_INTAKE</span>
+            <span>→</span>
+          </a>
+        </section>
+
         {/* Bottom info */}
         <div className="flex justify-between items-end mt-16 pt-8 border-t border-border-muted">
           <div className="font-mono text-system text-on-surface-muted">

@@ -227,6 +227,22 @@ export default function HomePage() {
             </div>
           </div>
 
+          <div className="mt-8 max-w-4xl border-t border-border-muted pt-6">
+            <p className="font-mono text-system text-on-surface-muted mb-3 tracking-widest">
+              C  STUDIO_CHANNEL
+            </p>
+            <p className="text-small text-on-bg-tertiary leading-relaxed mb-3">
+              Limited inquiries. If you need a site, funnel, or copy system built - start with context, not a pitch deck.
+            </p>
+            <a
+              href="/intake"
+              className="font-mono text-system text-on-surface-muted hover:text-accent transition-colors inline-flex items-center gap-2"
+            >
+              <span>OPEN_PROJECT_INTAKE</span>
+              <span>→</span>
+            </a>
+          </div>
+
           {/* Footer */}
           <div className="flex justify-between items-end mt-12 pt-8 border-t border-border-muted">
             <div className="font-mono text-system text-on-surface-muted">

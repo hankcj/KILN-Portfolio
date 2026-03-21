@@ -32,20 +32,21 @@ interface NavItem {
   external?: boolean;
 }
 
-/** In-site destinations (keyboard 1–7) */
+/** In-site destinations (keyboard 1-8) */
 const SITE_NAV_ITEMS: NavItem[] = [
   { key: '1', label: 'origin', path: '/', prefix: '[K]', description: 'System root' },
   { key: '2', label: 'outputs', path: '/work', prefix: 'C', description: 'Object store' },
   { key: '3', label: 'signal', path: '/signal', prefix: 'C', description: 'Field notes' },
   { key: '4', label: 'operations', path: '/services', prefix: 'C', description: 'Active processes' },
-  { key: '5', label: 'shop', path: '/shop', prefix: '>>', description: 'Digital products' },
-  { key: '6', label: 'project', path: '/project', prefix: '>>', description: 'Second brain' },
-  { key: '7', label: 'system', path: '/system', prefix: '//', description: 'Documentation' },
+  { key: '5', label: 'inquiry', path: '/intake', prefix: '>>', description: 'Project intake - new studio work' },
+  { key: '6', label: 'shop', path: '/shop', prefix: '>>', description: 'Digital products' },
+  { key: '7', label: 'project', path: '/project', prefix: '>>', description: 'Second brain' },
+  { key: '8', label: 'system', path: '/system', prefix: '//', description: 'Documentation' },
 ];
 
-/** Client portal (external); keyboard [8] */
+/** Client portal (external); keyboard [9] */
 const CLIENT_PORTAL_ITEM: NavItem = {
-  key: '8',
+  key: '9',
   label: 'portal',
   path: 'https://kiln.bloom.io/login',
   prefix: '>>',
@@ -140,7 +141,7 @@ export function TerminalNav() {
     if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (/^[1-8]$/.test(e.key)) {
+      if (/^[1-9]$/.test(e.key)) {
         const index = parseInt(e.key, 10) - 1;
         navigateTo(ALL_NAV_ITEMS[index]);
       } else if (e.key === 'ArrowDown') {
@@ -463,7 +464,7 @@ export function TerminalNav() {
                   {/* Help text - stays at bottom */}
                   <div className="mt-8 pt-4 border-t border-border-muted text-on-surface-muted/50 text-[10px] space-y-1">
                     <div>{'// NAVIGATION_CONTROLS'}</div>
-                    <div>[1-8] Select directly | [↑↓] Navigate | [ENTER] Confirm | [ESC] Cancel | [S] Toggle Sound</div>
+                    <div>[1-9] Select directly | [↑↓] Navigate | [ENTER] Confirm | [ESC] Cancel | [S] Toggle Sound</div>
                   </div>
                 </>
               )}

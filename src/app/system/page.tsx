@@ -232,7 +232,7 @@ export default function SystemPage() {
                   <SpecRow label="SSL" value="Let's Encrypt" />
                   <SpecRow label="CDN" value="Cloudflare" />
                   <SpecRow label="STORAGE" value="AWS S3" />
-                  <SpecRow label="INTAKE" value="Custom (TBD)" />
+                  <SpecRow label="INTAKE" value="Bloom (embedded)" />
                   <SpecRow label="ANALYTICS" value="None (Intentionally)" />
                 </ul>
               </div>
@@ -326,6 +326,16 @@ export default function SystemPage() {
                 <div>
                   <p className="font-mono text-system text-accent mb-1">RSS_FEED</p>
                   <p className="text-small text-on-bg-tertiary">Feed for readers and syndication</p>
+                </div>
+                <span className="text-on-surface-muted group-hover:text-accent transition-colors">→</span>
+              </a>
+              <a
+                href="/intake"
+                className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
+              >
+                <div>
+                  <p className="font-mono text-system text-accent mb-1">PROJECT_INTAKE</p>
+                  <p className="text-small text-on-bg-tertiary">Structured inquiries for studio work (sites, ads, copy systems)</p>
                 </div>
                 <span className="text-on-surface-muted group-hover:text-accent transition-colors">→</span>
               </a>

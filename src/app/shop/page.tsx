@@ -92,6 +92,22 @@ export default async function ShopPage() {
             </div>
           )}
 
+          <section className="mt-12 border-t border-border-muted pt-6">
+            <p className="font-mono text-system text-on-surface-muted mb-3 tracking-widest">
+              {'// CUSTOM_ENGAGEMENTS'}
+            </p>
+            <p className="text-small text-on-bg-tertiary leading-relaxed mb-3 max-w-3xl">
+              Tools are self-serve. For something bespoke - site, landing system, or paid social - use the intake form.
+            </p>
+            <a
+              href="/intake"
+              className="font-mono text-system text-on-surface-muted hover:text-accent transition-colors inline-flex items-center gap-2"
+            >
+              <span>INQUIRE</span>
+              <span>→</span>
+            </a>
+          </section>
+
           {/* Bottom info */}
           <div className="flex justify-between items-end mt-16 pt-8 border-t border-border-muted">
             <div className="font-mono text-system text-on-surface-muted">

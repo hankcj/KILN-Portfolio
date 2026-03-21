@@ -97,6 +97,21 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
           </article>
 
           <footer className="mt-16 pt-8">
+            <div className="mb-10 border border-border-muted bg-bg-secondary p-6">
+              <p className="font-mono text-system text-on-surface-muted mb-3 tracking-widest">
+                {'// NEXT_ACTION'}
+              </p>
+              <p className="text-small text-on-bg-tertiary leading-relaxed mb-3 max-w-2xl">
+                If this output maps to something you need shipped, send a short inquiry - scope, link, and what "done" looks like.
+              </p>
+              <a
+                href="/intake"
+                className="font-mono text-system text-on-surface-muted hover:text-accent transition-colors inline-flex items-center gap-2"
+              >
+                <span>START_INTAKE</span>
+                <span>→</span>
+              </a>
+            </div>
             <WorkDetailNav
               prevSlug={prevWork?.slug}
               nextSlug={nextWork?.slug}

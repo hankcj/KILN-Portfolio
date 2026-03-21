@@ -328,7 +328,7 @@ export default function ProjectPage() {
               </p>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border-custom">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border-custom">
                 <a
                   href="/work"
                   className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
@@ -356,6 +356,23 @@ export default function ProjectPage() {
                     </p>
                     <p className="text-small text-on-bg-tertiary">
                       Essays on systems, design, and technology
+                    </p>
+                  </div>
+                  <span className="text-on-surface-muted group-hover:text-accent transition-colors">
+                    →
+                  </span>
+                </a>
+
+                <a
+                  href="/intake"
+                  className="bg-bg-primary p-6 group hover:bg-bg-secondary transition-colors flex items-center justify-between"
+                >
+                  <div>
+                    <p className="font-mono text-system text-accent mb-1">
+                      CUSTOM_WORK
+                    </p>
+                    <p className="text-small text-on-bg-tertiary">
+                      Not the product - commissioned studio work (positioning, site, funnel, ads).
                     </p>
                   </div>
                   <span className="text-on-surface-muted group-hover:text-accent transition-colors">
