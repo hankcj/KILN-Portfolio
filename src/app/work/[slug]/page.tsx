@@ -47,8 +47,8 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
 
   return (
     <SimplePageShell
-      currentPage="outputs"
-      leftSideText="OUTPUT_DETAIL"
+      currentPage="work"
+      leftSideText="WORK_DETAIL"
       rightSideText={work.title.toUpperCase().slice(0, 20)}
     >
       <div className="min-h-screen pt-32 pb-24 px-6 md:px-16 lg:px-24">

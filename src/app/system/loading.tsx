@@ -9,7 +9,7 @@ import { SimplePageShell } from '@/components/dom/PageShell';
 export default function SystemLoading() {
   return (
     <SimplePageShell
-      currentPage="system"
+      currentPage="about"
       leftSideText="LOADING..."
       rightSideText="SYS_INIT"
     >

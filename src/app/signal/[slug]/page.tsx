@@ -9,6 +9,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Metadata } from 'next';
 import { SimplePageShell } from '@/components/dom/PageShell';
+import { formatDateCode } from '@/lib/date';
 import { getPostBySlug, getPosts } from '@/lib/ghost';
 
 export const revalidate = 60;
@@ -41,13 +42,7 @@ export async function generateMetadata({ params }: SignalPostPageProps): Promise
   };
 }
 
-function formatDateCode(dateString: string): string {
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}.${month}.${day}`;
-}
+
 
 export default async function SignalPostPage({ params }: SignalPostPageProps) {
   const { slug } = await params;
@@ -59,8 +54,8 @@ export default async function SignalPostPage({ params }: SignalPostPageProps) {
 
   return (
     <SimplePageShell
-      currentPage="signal"
-      leftSideText="TRANSMISSION"
+      currentPage="journal"
+      leftSideText="JOURNAL_ENTRY"
       rightSideText={post.title.toUpperCase().slice(0, 20)}
     >
       <div className="min-h-screen pt-32 pb-24 px-6 md:px-16 lg:px-24">

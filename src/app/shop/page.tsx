@@ -39,8 +39,8 @@ export default async function ShopPage() {
 
   return (
     <SimplePageShell
-      currentPage="shop"
-      leftSideText="PRODUCT_ARCHIVE_V1.0"
+      currentPage="tools"
+      leftSideText="TOOLS_V1.0"
       rightSideText={`${products.length.toString().padStart(2, '0')} ITEMS_AVAILABLE`}
     >
       <div className="min-h-screen pt-32 pb-[var(--frame-content-bottom-clearance)] px-6 md:px-16 lg:px-24">
@@ -92,18 +92,19 @@ export default async function ShopPage() {
             </div>
           )}
 
+          {/* CTA: Custom work */}
           <section className="mt-12 border-t border-border-muted pt-6">
             <p className="font-mono text-system text-on-surface-muted mb-3 tracking-widest">
-              {'// CUSTOM_ENGAGEMENTS'}
+              {"// CUSTOM_ENGAGEMENTS"}
             </p>
             <p className="text-small text-on-bg-tertiary leading-relaxed mb-3 max-w-3xl">
-              Tools are self-serve. For something bespoke - site, landing system, or paid social - use the intake form.
+              Tools are self-serve. For something bespoke — site, landing system, or paid social — start a project.
             </p>
             <a
               href="/intake"
               className="font-mono text-system text-on-surface-muted hover:text-accent transition-colors inline-flex items-center gap-2"
             >
-              <span>INQUIRE</span>
+              <span>START_PROJECT</span>
               <span>→</span>
             </a>
           </section>
@@ -116,11 +117,11 @@ export default async function ShopPage() {
             <div className="flex items-center gap-4">
               <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
               <span className="font-mono text-system text-on-surface-muted">
-                STRIPE_CONNECTED
+                STATUS: ACTIVE
               </span>
             </div>
             <div className="font-mono text-system text-on-surface-muted">
-              UPDATED_LIVE
+              REF: TOOLS.001
             </div>
           </div>
         </div>

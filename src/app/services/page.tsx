@@ -11,16 +11,16 @@ import { ScrollReveal, StaggerReveal } from '@/components/dom/ScrollReveal';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://studiokiln.io';
 
 export const metadata = {
-  title: 'Available — KILN',
+  title: 'Services — KILN',
   description: 'Limited bandwidth for projects that need to hold up under real traffic, real budgets, and real attention.',
   openGraph: {
-    title: 'Available — KILN',
+    title: 'Services — KILN',
     description: 'Limited bandwidth for projects that need to hold up under real traffic, real budgets, and real attention.',
     url: `${SITE_URL}/services`,
   },
   twitter: {
     card: 'summary',
-    title: 'Available — KILN',
+    title: 'Services — KILN',
     description: 'Limited bandwidth for projects that need to hold up under real traffic, real budgets, and real attention.',
   },
 };
@@ -29,8 +29,8 @@ export default function ServicesPage() {
   return (
     <SimplePageShell
       currentPage="services"
-      leftSideText="SELECTIVE_WORK"
-      rightSideText="LIMITED_INQUIRIES"
+      leftSideText="SERVICES_V1.0"
+      rightSideText="LIMITED_AVAILABILITY"
     >
       <div className="min-h-screen pt-32 pb-[var(--frame-content-bottom-clearance)] px-6 md:px-16 lg:px-24">
         <div className="max-w-5xl mx-auto">
@@ -49,7 +49,7 @@ export default function ServicesPage() {
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
               <h1 className="font-heading text-display text-on-bg-primary mb-4">
-                SELECTIVE WORK
+                SERVICES
               </h1>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
@@ -71,7 +71,7 @@ export default function ServicesPage() {
             <ScrollReveal>
               <div className="flex items-center gap-4 mb-8">
                 <p className="font-mono text-system text-on-surface-muted tracking-widest">
-                  {'// WHAT I DO'}
+                  {"// AVAILABLE_SERVICES"}
                 </p>
                 <div className="h-px bg-border-custom flex-1" />
                 <p className="font-mono text-system text-on-surface-muted tracking-widest">
@@ -161,7 +161,7 @@ export default function ServicesPage() {
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-8 tracking-widest">
-                {'// ENGAGEMENT_MODES'}
+                {"// ENGAGEMENT_MODES"}
               </p>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
@@ -195,7 +195,7 @@ export default function ServicesPage() {
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                {'// GOOD_FIT'}
+                {"// SELECTION_CRITERIA"}
               </p>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
@@ -234,7 +234,7 @@ export default function ServicesPage() {
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                {'// CURRENT_FOCUS'}
+                {"// CURRENT_FOCUS"}
               </p>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
@@ -270,10 +270,10 @@ export default function ServicesPage() {
             <ScrollReveal>
               <div className="p-8 md:p-10 bg-bg-secondary border border-border-muted">
                 <p className="font-mono text-system text-accent mb-2">
-                  {'// INITIATE_INQUIRY'}
+                  {"// START_CONVERSATION"}
                 </p>
                 <h2 className="font-heading text-h2 text-on-bg-primary mb-4">
-                  START_CONVERSATION
+                  INITIATE_PROJECT
                 </h2>
                 <p className="text-body text-on-bg-secondary leading-relaxed mb-6 max-w-2xl">
                   Describe the system. What are you selling, what&apos;s not working, and 
@@ -323,11 +323,11 @@ export default function ServicesPage() {
             <div className="flex items-center gap-4">
               <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
               <span className="font-mono text-system text-on-surface-muted">
-                LIMITED_INQUIRIES
+                STATUS: LIMITED
               </span>
             </div>
             <div className="font-mono text-system text-on-surface-muted">
-              TZ: EST
+              REF: SRV.001
             </div>
           </div>
         </div>

@@ -22,7 +22,7 @@ export default function WorkError({
 
   return (
     <SimplePageShell
-      currentPage="outputs"
+      currentPage="work"
       leftSideText="ARCHIVE_ERROR"
       rightSideText="RECOVERY_MODE"
     >
@@ -37,7 +37,7 @@ export default function WorkError({
             </div>
             
             <h1 className="font-heading text-display text-on-bg-primary mb-4">
-              Failed to Load Outputs
+              Failed to Load Work
             </h1>
             
             <p className="text-body text-on-bg-secondary mb-6">

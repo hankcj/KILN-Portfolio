@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function CancelPage() {
   return (
     <SimplePageShell
-      currentPage="shop"
+      currentPage="tools"
       leftSideText="TRANSACTION_CANCELLED"
       rightSideText="NO_CHARGE"
     >
@@ -42,7 +42,7 @@ export default function CancelPage() {
           <ScrollReveal delay={0.2}>
             <div className="bg-bg-secondary border border-border-muted p-8 mb-8">
               <p className="font-mono text-system text-accent mb-4">
-                {'// STATUS'}
+                {"// STATUS"}
               </p>
               <ul className="space-y-3 text-small text-on-bg-secondary">
                 <li className="flex items-start gap-3">
@@ -68,7 +68,7 @@ export default function CancelPage() {
                 href="/shop"
                 className="inline-flex items-center justify-center gap-3 px-6 py-3 bg-accent text-on-accent font-mono text-system hover:bg-accent-hover transition-colors"
               >
-                <span>RETURN_TO_SHOP</span>
+                <span>RETURN_TO_TOOLS</span>
                 <span>→</span>
               </a>
               <a 

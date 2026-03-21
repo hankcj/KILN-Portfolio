@@ -14,19 +14,14 @@ import { PageShell } from '@/components/dom/PageShell';
 import { SignalSearch } from '@/components/dom/SignalSearch';
 import { SubscribeForm } from '@/components/dom/SubscribeForm';
 import { Toast } from '@/components/dom/Toast';
+import { formatDateCode } from '@/lib/date';
 import type { GhostPost } from '@/lib/ghost';
 
 interface SignalPageProps {
   posts: GhostPost[];
 }
 
-function formatDateCode(dateString: string): string {
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}.${month}.${day}`;
-}
+
 
 export default function SignalPage({ posts }: SignalPageProps) {
   const headerRef = useRef<HTMLElement>(null);
@@ -71,26 +66,26 @@ export default function SignalPage({ posts }: SignalPageProps) {
 
   return (
     <PageShell 
-      currentPage="signal"
-      leftSideText="TRANSMISSION_LOG"
-      rightSideText={`${posts.length.toString().padStart(2, '0')} ENTRIES LOGGED`}
+      currentPage="journal"
+      leftSideText="JOURNAL_V1.0"
+      rightSideText={`${posts.length.toString().padStart(2, '0')} ENTRIES_INDEXED`}
     >
       {/* Main content */}
       <div className="relative z-10 min-h-screen px-6 md:px-16 lg:px-24 pt-32 pb-[var(--frame-content-bottom-clearance)]">
         <header ref={headerRef} className="mb-16 md:mb-24">
           <div className="flex justify-between items-start mb-4">
             <p className="font-mono text-system text-on-surface-muted tracking-widest">
-              C  TRANSMISSION LOG
+              {"// JOURNAL_ARCHIVE"}
             </p>
             <p className="font-mono text-system text-on-surface-muted">
-              VIEW: CHRONOLOGICAL
+              STATUS: RECEIVING
             </p>
           </div>
           <h1 className="font-heading text-display text-on-bg-primary mb-4">
-            SIGNAL
+            JOURNAL
           </h1>
           <p className="text-body text-on-bg-tertiary max-w-xl mb-8">
-            Essays, research, and long-form writing on systems, design, and technology. 
+            Essays, research, and long-form writing on systems, design, and technology.
             Published here and syndicated to Substack.
           </p>
           
@@ -189,7 +184,7 @@ export default function SignalPage({ posts }: SignalPageProps) {
 
         <section className="mt-12 border-t border-border-muted pt-6">
           <p className="font-mono text-system text-on-surface-muted mb-3 tracking-widest">
-            {'// BEYOND_THE_LOG'}
+            {'{"// BEYOND_THE_LOG"}'}
           </p>
           <p className="text-small text-on-bg-tertiary leading-relaxed mb-3 max-w-3xl">
             Reading is one channel. If an essay should turn into a build, say so directly - limited bandwidth, clear inquiries first.
@@ -225,11 +220,11 @@ export default function SignalPage({ posts }: SignalPageProps) {
             onClick={handleRssClick}
             className="font-mono text-system text-on-surface-muted hover:text-accent transition-colors inline-flex items-center gap-2 group"
           >
-            <span>{'// SUBSCRIBE_VIA_RSS'}</span>
+            <span>{"// SUBSCRIBE_VIA_RSS"}</span>
             <span className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
           </button>
           <p className="font-mono text-xs text-on-surface-muted/50">
-            Click to copy feed URL
+            CLICK_TO_COPY_FEED_URL
           </p>
           
         </div>

@@ -11,16 +11,16 @@ import { ScrollReveal, StaggerReveal } from '@/components/dom/ScrollReveal';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://studiokiln.io';
 
 export const metadata = {
-  title: 'System — KILN',
+  title: 'About — KILN',
   description: 'How this site is built, why it works this way, and what that says about building for the web.',
   openGraph: {
-    title: 'System — KILN',
+    title: 'About — KILN',
     description: 'How this site is built, why it works this way, and what that says about building for the web.',
     url: `${SITE_URL}/system`,
   },
   twitter: {
     card: 'summary',
-    title: 'System — KILN',
+    title: 'About — KILN',
     description: 'How this site is built, why it works this way, and what that says about building for the web.',
   },
 };
@@ -28,8 +28,8 @@ export const metadata = {
 export default function SystemPage() {
   return (
     <SimplePageShell
-      currentPage="system"
-      leftSideText="SYS_DOCS_V2.0"
+      currentPage="about"
+      leftSideText="ABOUT_V2.0"
       rightSideText="48.8566° N 2.3522° E"
     >
       <div className="min-h-screen pt-32 pb-[var(--frame-content-bottom-clearance)] px-6 md:px-16 lg:px-24">
@@ -49,7 +49,7 @@ export default function SystemPage() {
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
               <h1 className="font-heading text-display text-on-bg-primary mb-4">
-                SYSTEM
+                ABOUT
               </h1>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
@@ -316,7 +316,7 @@ export default function SystemPage() {
           {/* Connect */}
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-              {'// CONNECT'}
+              {"// CONNECT"}
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-border-custom">
               <a 
@@ -453,7 +453,7 @@ export default function SystemPage() {
           {/* Acknowledgments */}
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-              {'// ACKNOWLEDGMENTS'}
+              {"// ACKNOWLEDGMENTS"}
             </p>
             <p className="text-small text-on-bg-tertiary leading-relaxed font-mono">
               Built with gratitude for the open source ecosystem. Special thanks to the teams behind 
@@ -465,16 +465,16 @@ export default function SystemPage() {
           {/* Footer info */}
           <div className="flex justify-between items-end pt-8 border-t border-border-muted">
             <div className="font-mono text-system text-on-surface-muted">
-              STATUS: OPERATIONAL
+              TZ: EST
             </div>
             <div className="flex items-center gap-4">
               <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
               <span className="font-mono text-system text-on-surface-muted">
-                ARCHIVE_ACTIVE
+                STATUS: OPERATIONAL
               </span>
             </div>
             <div className="font-mono text-system text-on-surface-muted">
-              REF: SYS.002
+              REF: ABOUT.002
             </div>
           </div>
         </div>

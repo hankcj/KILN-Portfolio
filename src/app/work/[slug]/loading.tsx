@@ -10,7 +10,7 @@ import { SimplePageShell } from '@/components/dom/PageShell';
 export default function WorkDetailLoading() {
   return (
     <SimplePageShell
-      currentPage="outputs"
+      currentPage="work"
       leftSideText="LOADING..."
       rightSideText="PLEASE_WAIT"
     >
@@ -19,7 +19,7 @@ export default function WorkDetailLoading() {
           {/* Back link skeleton */}
           <div className="inline-flex items-center gap-2 font-mono text-system text-on-surface-muted mb-12">
             <span>←</span>
-            <span className="animate-pulse">LOADING_ARCHIVE...</span>
+            <span className="animate-pulse">LOADING_WORK...</span>
           </div>
 
           {/* Header skeleton */}
@@ -53,7 +53,7 @@ export default function WorkDetailLoading() {
               <div className="flex flex-col items-center gap-4 relative z-10">
                 <div className="w-12 h-12 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
                 <span className="font-mono text-system text-on-surface-muted animate-pulse">
-                  LOADING_OUTPUT_PREVIEW
+                  LOADING_PREVIEW
                 </span>
               </div>
             </div>

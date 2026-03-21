@@ -13,18 +13,18 @@ import { ProjectSignupForm } from './ProjectSignupForm';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://studiokiln.io';
 
 export const metadata: Metadata = {
-  title: 'Project Kiln — KILN',
+  title: 'Product — KILN',
   description:
     'A second brain that thinks with you. Upload your ideas, notes, and fragments — AI finds the connections you can\'t see yet.',
   openGraph: {
-    title: 'Project Kiln — KILN',
+    title: 'Product — KILN',
     description:
       'A second brain that thinks with you. Upload your ideas, notes, and fragments — AI finds the connections you can\'t see yet.',
     url: `${SITE_URL}/project`,
   },
   twitter: {
     card: 'summary',
-    title: 'Project Kiln — KILN',
+    title: 'Product — KILN',
     description:
       'A second brain that thinks with you. Upload your ideas, notes, and fragments — AI finds the connections you can\'t see yet.',
   },
@@ -33,8 +33,8 @@ export const metadata: Metadata = {
 export default function ProjectPage() {
   return (
     <SimplePageShell
-      currentPage="project"
-      leftSideText="PROJECT_KILN"
+      currentPage="product"
+      leftSideText="PRODUCT_V1.0"
       rightSideText="COMING_SOON"
     >
       <div className="min-h-screen pt-32 pb-[var(--frame-content-bottom-clearance)] px-6 md:px-16 lg:px-24">
@@ -125,7 +125,7 @@ export default function ProjectPage() {
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                {'// HOW_IT_WORKS'}
+                {"// HOW_IT_WORKS"}
               </p>
             </ScrollReveal>
             <StaggerReveal
@@ -183,7 +183,7 @@ export default function ProjectPage() {
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                {'// SYSTEM_CAPABILITIES'}
+                {"// SYSTEM_CAPABILITIES"}
               </p>
             </ScrollReveal>
             <StaggerReveal
@@ -217,7 +217,7 @@ export default function ProjectPage() {
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                {'// TARGET_USERS'}
+                {"// TARGET_USERS"}
               </p>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
@@ -253,7 +253,7 @@ export default function ProjectPage() {
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                {'// PRICING_DIRECTION'}
+                {"// PRICING_DIRECTION"}
               </p>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
@@ -303,7 +303,7 @@ export default function ProjectPage() {
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
                   <div className="max-w-xl">
                     <p className="font-mono text-system text-accent mb-2">
-                      {'// REQUEST_EARLY_ACCESS'}
+                      {"// REQUEST_EARLY_ACCESS"}
                     </p>
                     <h3 className="font-heading text-h3 text-on-bg-primary mb-3">
                       Get on the list
@@ -324,7 +324,7 @@ export default function ProjectPage() {
           <section className="mb-16 md:mb-24 border-t border-border-custom pt-16">
             <ScrollReveal>
               <p className="font-mono text-system text-on-surface-muted mb-6 tracking-widest">
-                {'// RELATED_SYSTEMS'}
+                {"// RELATED_SYSTEMS"}
               </p>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
@@ -391,7 +391,7 @@ export default function ProjectPage() {
             <div className="flex items-center gap-4">
               <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
               <span className="font-mono text-system text-on-surface-muted">
-                DEVELOPMENT_ACTIVE
+                STATUS: BUILDING
               </span>
             </div>
             <div className="font-mono text-system text-on-surface-muted">

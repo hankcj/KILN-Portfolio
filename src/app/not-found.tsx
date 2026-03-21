@@ -32,7 +32,7 @@ export default function NotFoundPage() {
 
   return (
     <SimplePageShell
-      currentPage="system"
+      currentPage="about"
       leftSideText="ERROR_404"
       rightSideText="PAGE_NOT_FOUND"
     >
@@ -118,7 +118,7 @@ export default function NotFoundPage() {
               href="/work"
               className="inline-flex items-center gap-3 px-6 py-3 border border-border-custom text-on-bg-primary font-mono text-system hover:bg-bg-secondary transition-colors"
             >
-              <span>BROWSE_OUTPUTS →</span>
+              <span>BROWSE_WORK →</span>
             </BackLink>
           </div>
 

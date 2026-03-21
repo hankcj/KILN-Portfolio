@@ -53,7 +53,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <SimplePageShell
-      currentPage="shop"
+      currentPage="tools"
       leftSideText="PRODUCT_DETAIL"
       rightSideText={product.metadata.code || 'PROD.000'}
     >
@@ -67,7 +67,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               className="inline-flex items-center gap-2 font-mono text-system text-on-surface-muted hover:text-accent transition-colors mb-12"
             >
               <span>←</span>
-              <span>BACK_TO_SHOP</span>
+              <span>BACK_TO_TOOLS</span>
             </a>
           </ScrollReveal>
 

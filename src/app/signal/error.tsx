@@ -22,7 +22,7 @@ export default function SignalError({
 
   return (
     <SimplePageShell
-      currentPage="signal"
+      currentPage="journal"
       leftSideText="SIGNAL_LOST"
       rightSideText="NO_CARRIER"
     >

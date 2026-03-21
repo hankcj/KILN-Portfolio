@@ -167,31 +167,31 @@ export function PageRouter() {
   );
 }
 
-// Placeholder for Signal page before posts are loaded
+// Placeholder for Journal page before posts are loaded
 // Uses PageShell for consistent decorative elements
-function SignalPagePlaceholder() {
+function JournalPagePlaceholder() {
   return (
     <PageShell 
-      currentPage="signal"
-      leftSideText="TRANSMISSION_LOG"
-      rightSideText="00 ENTRIES LOGGED"
+      currentPage="journal"
+      leftSideText="JOURNAL_V1.0"
+      rightSideText="00 ENTRIES_INDEXED"
       animateEntrance={false}
     >
       <div className="min-h-screen pt-32 px-6 md:px-16 lg:px-24">
         <header className="mb-16">
           <div className="flex justify-between items-start mb-4">
             <p className="font-mono text-system text-on-surface-muted tracking-widest">
-              C  TRANSMISSION LOG
+              {"// JOURNAL_ARCHIVE"}
             </p>
             <p className="font-mono text-system text-on-surface-muted">
-              VIEW: CHRONOLOGICAL
+              STATUS: LOADING
             </p>
           </div>
           <h1 className="font-heading text-display text-on-bg-primary mb-4">
-            SIGNAL
+            JOURNAL
           </h1>
           <p className="text-body text-on-bg-tertiary max-w-xl">
-            Loading transmissions...
+            Loading entries...
           </p>
         </header>
         <div className="space-y-px bg-border-custom">
@@ -215,25 +215,25 @@ function getPageComponent(page: string) {
   switch (page) {
     case 'home':
       return <HomePage />;
-    case 'signal':
-      // Signal page requires server data fetching, so we show a placeholder
+    case 'journal':
+      // Journal page requires server data fetching, so we show a placeholder
       // In production, the actual route at /signal handles data fetching
-      return <SignalPagePlaceholder />;
-    case 'system':
+      return <JournalPagePlaceholder />;
+    case 'about':
       return (
         <PageShell 
-          currentPage="system"
-          leftSideText="SYS_DOCS_V1.0"
+          currentPage="about"
+          leftSideText="ABOUT_V2.0"
           rightSideText="48.8566° N 2.3522° E"
           animateEntrance={false}
         >
           <div className="min-h-screen pt-32 px-6 md:px-16 lg:px-24">
             <header className="mb-16">
               <p className="font-mono text-system text-on-surface-muted mb-4 tracking-widest">
-                {'// SYSTEM DIAGNOSTIC'}
+                {"// SYSTEM_DIAGNOSTIC"}
               </p>
               <h1 className="font-heading text-display text-on-bg-primary">
-                SYSTEM
+                ABOUT
               </h1>
             </header>
           </div>

@@ -24,7 +24,7 @@ export default function GlobalError({
 
   return (
     <SimplePageShell
-      currentPage="system"
+      currentPage="about"
       leftSideText="CRITICAL_ERROR"
       rightSideText="RECOVERY_MODE"
     >

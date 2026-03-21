@@ -34,14 +34,14 @@ interface NavItem {
 
 /** In-site destinations (keyboard 1-8) */
 const SITE_NAV_ITEMS: NavItem[] = [
-  { key: '1', label: 'origin', path: '/', prefix: '[K]', description: 'System root' },
-  { key: '2', label: 'outputs', path: '/work', prefix: 'C', description: 'Object store' },
-  { key: '3', label: 'signal', path: '/signal', prefix: 'C', description: 'Field notes' },
-  { key: '4', label: 'operations', path: '/services', prefix: 'C', description: 'Active processes' },
-  { key: '5', label: 'inquiry', path: '/intake', prefix: '>>', description: 'Project intake - new studio work' },
-  { key: '6', label: 'shop', path: '/shop', prefix: '>>', description: 'Digital products' },
-  { key: '7', label: 'project', path: '/project', prefix: '>>', description: 'Second brain' },
-  { key: '8', label: 'system', path: '/system', prefix: '//', description: 'Documentation' },
+  { key: '1', label: 'home', path: '/', prefix: '[K]', description: 'Entry point' },
+  { key: '2', label: 'work', path: '/work', prefix: 'C', description: 'Selected outputs' },
+  { key: '3', label: 'journal', path: '/signal', prefix: 'C', description: 'Essays on systems' },
+  { key: '4', label: 'services', path: '/services', prefix: 'C', description: 'Available for hire' },
+  { key: '5', label: 'contact', path: '/intake', prefix: '>>', description: 'Start a project' },
+  { key: '6', label: 'tools', path: '/shop', prefix: '>>', description: 'Digital products' },
+  { key: '7', label: 'product', path: '/project', prefix: '>>', description: 'Second brain app' },
+  { key: '8', label: 'about', path: '/system', prefix: '//', description: 'Colophon & systems' },
 ];
 
 /** Client portal (external); keyboard [9] */

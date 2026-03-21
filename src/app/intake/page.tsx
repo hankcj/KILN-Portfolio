@@ -15,7 +15,7 @@ export default function IntakePage() {
   return (
     <SimplePageShell
       currentPage="services"
-      leftSideText="INTAKE_FORM"
+      leftSideText="CONTACT_V1.0"
       rightSideText="PROJECT_INQUIRY"
     >
       <div className="min-h-screen pt-32 pb-24 px-6 md:px-16 lg:px-24">
@@ -32,7 +32,7 @@ export default function IntakePage() {
               </p>
             </div>
             <h1 className="font-heading text-display text-on-bg-primary mb-4">
-              INITIATE PROJECT
+              CONTACT
             </h1>
             <p className="text-body text-on-bg-tertiary">
               Complete the form below to begin the conversation. 
