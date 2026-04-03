@@ -1,64 +1,188 @@
-import Image from "next/image";
+'use client';
+
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import LoadingScreen from '@/components/dom/LoadingScreen';
+import DecorativeElements from '@/components/dom/DecorativeElements';
+import Hero from '@/components/dom/Hero';
+import Work from '@/components/dom/Work';
+import GridSignal from '@/components/dom/ExpandingImage';
+import Philosophy from '@/components/dom/Philosophy';
+import Contact from '@/components/dom/Contact';
+import Marquee from '@/components/dom/Marquee';
+import SectionHeader from '@/components/dom/SectionHeader';
+import HeroClone from '@/components/dom/HeroClone';
+import { useLenis } from '@/components/dom/LenisProvider';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const HOME_HERO_IMAGE_SRC = '/assets/Saturn.png';
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isReady, setIsReady] = useState(false);
+  const [isContentVisible, setIsContentVisible] = useState(false);
+  const mainRef = useRef<HTMLDivElement>(null);
+  const getLenis = useLenis();
+
+  useEffect(() => {
+    const lenis = getLenis();
+    if (!lenis) return;
+
+    if (isLoading) {
+      lenis.scrollTo(0, { immediate: true });
+      lenis.stop();
+      return;
+    }
+
+    lenis.start();
+    lenis.scrollTo(0, { immediate: true });
+    ScrollTrigger.refresh();
+
+    const fadeTimer = requestAnimationFrame(() => {
+      setIsContentVisible(true);
+    });
+    return () => cancelAnimationFrame(fadeTimer);
+  }, [isLoading, getLenis]);
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    const timer = setTimeout(() => {
+      setIsReady(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [isLoading]);
+
+  useEffect(() => {
+    const lenis = getLenis();
+    if (!isReady || !lenis) return;
+
+    // Background color transitions
+    const colorStops = [
+      { trigger: '#hero', color: '#161a26' },
+      { trigger: '#work', color: '#13161F' },
+      { trigger: '#process', color: '#171c24' },
+      { trigger: '#philosophy', color: '#111420' },
+      { trigger: '#contact', color: '#0f1219' },
+    ];
+
+    const colorTriggers: ScrollTrigger[] = [];
+    if (mainRef.current) {
+      colorStops.forEach(({ trigger, color }) => {
+        const el = document.querySelector(trigger);
+        if (!el) return;
+        const st = ScrollTrigger.create({
+          trigger: el,
+          start: 'top center',
+          end: 'bottom center',
+          onEnter: () =>
+            gsap.to(mainRef.current, {
+              backgroundColor: color,
+              duration: 0.8,
+              ease: 'power2.out',
+            }),
+          onEnterBack: () =>
+            gsap.to(mainRef.current, {
+              backgroundColor: color,
+              duration: 0.8,
+              ease: 'power2.out',
+            }),
+        });
+        colorTriggers.push(st);
+      });
+    }
+
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 200);
+
+    return () => {
+      clearTimeout(refreshTimer);
+      colorTriggers.forEach((t) => t.kill());
+    };
+  }, [isReady, getLenis]);
+
+  useEffect(() => {
+    const lenis = getLenis();
+    if (!isReady || !lenis) return;
+
+    let isLoopJumping = false;
+    let unlockTimer: number | undefined;
+    const edgeBufferPx = 4;
+
+    const jumpTo = (target: string | number) => {
+      if (isLoopJumping) return;
+      isLoopJumping = true;
+      lenis.scrollTo(target, { immediate: true });
+      ScrollTrigger.update();
+
+      unlockTimer = window.setTimeout(() => {
+        isLoopJumping = false;
+      }, 160);
+    };
+
+    const handleLoop = (event: { scroll: number; limit: number; velocity: number }) => {
+      if (isLoopJumping) return;
+
+      const { scroll, limit, velocity } = event;
+
+      if (velocity > 0 && scroll >= limit - edgeBufferPx) {
+        jumpTo('#hero');
+        return;
+      }
+
+      if (velocity < 0 && scroll <= edgeBufferPx) {
+        jumpTo(Math.max(0, limit - edgeBufferPx));
+      }
+    };
+
+    lenis.on('scroll', handleLoop);
+
+    return () => {
+      if (unlockTimer) window.clearTimeout(unlockTimer);
+      lenis.off?.('scroll', handleLoop);
+      isLoopJumping = false;
+    };
+  }, [isReady, getLenis]);
+
+  const handleLoadingComplete = useCallback(() => {
+    setIsLoading(false);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <LoadingScreen
+        onComplete={handleLoadingComplete}
+        heroImageSrc={HOME_HERO_IMAGE_SRC}
+      />
+    );
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <div
+      className="transition-opacity duration-1000 ease-out"
+      style={{ opacity: isContentVisible ? 1 : 0 }}
+    >
+      <DecorativeElements />
+      <SectionHeader />
+
+      <main ref={mainRef} className="relative bg-[#13161F] overflow-x-hidden">
+        <Hero />
+
+        <Marquee text="Objects, systems, and frameworks from the studio archive" speed={35} />
+
+        <Work />
+
+        <GridSignal />
+
+        <Philosophy />
+
+        <Contact />
+
+        <HeroClone />
       </main>
     </div>
   );

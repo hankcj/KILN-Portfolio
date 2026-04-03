@@ -1,0 +1,166 @@
+# Ghost CMS Integration Setup
+
+## Overview
+
+Your KILN portfolio now has a fully integrated publishing platform using Ghost CMS as a headless content source. The `/signal` route displays your essays and writings fetched from your self-hosted Ghost instance.
+
+## Architecture
+
+```
+┌─────────────────┐      Content API       ┌──────────────────┐
+│  Your Next.js   │  ◄──────────────────►  │  Self-hosted     │
+│  Frontend       │    (build-time fetch)  │  Ghost           │
+│  - /signal      │                        │  - Editor        │
+│  - /signal/[id] │                        │  - Members       │
+└─────────────────┘                        │  - Newsletters   │
+                                           └──────────────────┘
+```
+
+## Setup Instructions
+
+### 1. Deploy Ghost
+
+Self-host Ghost on your preferred platform:
+
+**Option A: EC2 + Nginx + SSL (ghost.studiokiln.io)**  
+See [GHOST_EC2_DEPLOY.md](./GHOST_EC2_DEPLOY.md) for a full runbook: Docker Ghost behind Nginx with Let's Encrypt at https://ghost.studiokiln.io. Config files are in [deploy/ghost/](../deploy/ghost/).
+
+**Option B: DigitalOcean (Easiest)**
+```bash
+# Use the 1-Click Ghost droplet
+# https://marketplace.digitalocean.com/apps/ghost
+```
+
+**Option C: Docker (generic)**
+```yaml
+# docker-compose.yml
+version: '3.1'
+services:
+  ghost:
+    image: ghost:latest
+    ports:
+      - "2368:2368"
+    environment:
+      url: https://cms.yourdomain.com
+      NODE_ENV: production
+    volumes:
+      - ghost-data:/var/lib/ghost/content
+volumes:
+  ghost-data:
+```
+
+### 2. Configure Ghost Integration
+
+1. In your Ghost admin panel, go to **Settings → Integrations**
+2. Click **"Add custom integration"**
+3. Name it "KILN Portfolio"
+4. Copy the **Content API Key**
+
+### 3. Configure Environment Variables
+
+Create `.env.local` in your project root:
+
+```env
+GHOST_URL=https://cms.yourdomain.com
+GHOST_CONTENT_API_KEY=your_content_api_key_here
+```
+
+### 4. Test the Integration
+
+```bash
+# Run development server
+npm run dev
+
+# Visit http://localhost:3000/signal
+```
+
+## Features
+
+### /signal (Index Page)
+- Lists all posts from Ghost in chronological order
+- Shows reading time, publish date, author, and tags
+- Featured posts are marked with ★
+- Includes link to RSS feed
+- Empty state when no posts available
+
+### /signal/[slug] (Individual Post)
+- Full post content rendered with KILN styling
+- Syntax highlighting for code blocks
+- Pull quotes and styled blockquotes
+- Author bio and profile image
+- Tags display
+- Navigation back to index
+
+### Individual posts
+
+Each post has a canonical URL at `/signal/[slug]` (e.g. `/signal/my-essay-title`). These pages are statically generated at build time when Ghost is configured; new or updated posts are picked up on demand and revalidated every 60 seconds (ISR), so you do not need a full rebuild to see new content.
+
+### UI State Microcopy
+Transition and status labels should follow the current KILN observational register:
+- **Loading:** `ACQUIRING`
+- **Complete:** `RESOLVED`
+- **Published/live:** `VISIBLE`
+- **Unavailable:** `DARK`
+- **Empty/404/no results:** `NO SIGNAL RETURNED`
+
+For interaction metadata, use:
+- **Hover/approach:** `APPROACH`
+- **Open/read more:** `SURFACE`
+- **Contact pathways:** `MAKE CONTACT`
+
+Avoid legacy machine-syntax labels and mission-control phrasing for UI transitions.
+
+## Content Styling
+
+Ghost content is styled with the `ghost-content` class in `globals.css`. Supported elements:
+
+- Headings (H1-H6) with serif typography
+- Paragraphs with comfortable line height
+- Blockquotes with accent border
+- Code blocks with dark background
+- Tables with styled headers
+- Images with captions
+- Bookmarks/cards
+- Toggle cards
+
+## Syndication to Substack
+
+The Signal page can include a plain syndication metadata indicator (for example: `VISIBLE` when the canonical archive entry is live). Keep this as metadata, not promotional copy.
+
+To syndicate:
+
+1. Write and publish in Ghost
+2. Use Substack's import feature or manually cross-post
+3. Keep traffic flowing to Substack while owning your canonical content
+
+## Static Generation & Revalidation
+
+- Posts are statically generated at build time
+- ISR (Incremental Static Regeneration) revalidates every 60 seconds
+- Run `next build` to regenerate with latest content
+
+## Fallback Behavior
+
+If Ghost is not configured, the site gracefully degrades:
+- `/signal` shows empty state message
+- No build errors
+- Console warning indicates missing configuration
+
+## RSS Feed
+
+Ghost provides an RSS feed at:
+```
+https://cms.yourdomain.com/rss/
+```
+
+You can proxy this through your Next.js site if desired.
+
+## Next Steps
+
+1. Deploy your Ghost instance (e.g. DigitalOcean 1-Click or Docker).
+2. In Ghost Admin, create a Custom Integration and copy the Content API Key.
+3. Add `GHOST_URL` and `GHOST_CONTENT_API_KEY` to `.env.local` (copy from `.env.local.example`).
+4. Run `npm install` if you have not already (ensures `@tryghost/content-api` is installed).
+5. Run `npm run dev` to test, or `npm run build` and deploy. New content revalidates every 60 seconds; no rebuild required for new posts.
+6. Write your first post in Ghost (editor at `https://<your-ghost-url>/ghost`).
+7. Optionally set up Substack cross-posting workflow.
